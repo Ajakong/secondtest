@@ -87,7 +87,7 @@ private:
 	ImageGroundManager* m_pBgManager;
 	// “G
 	EnemyBase* m_pEnemy[ENEMY_NUM];
-	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_NUM*3];
+	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_NUM];
 	Boss* m_pBoss;
 
 	Shot* m_pShot[SHOT_NUM_LIMIT];

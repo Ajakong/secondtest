@@ -69,7 +69,7 @@ void Player::PlayerMove()
 	if (m_isGroundFlag==true&&Pad::IsPress(PAD_INPUT_RIGHT))
 	{
 		m_velocity.x += 3.0f;
-		if (Pad::IsPress(PAD_INPUT_6)&&m_isFaceDownFlag == false)
+		if (Pad::IsPress(PAD_INPUT_6)&&m_isFaceDownFlag == false)//ƒ_ƒbƒVƒ…
 		{
 			m_isDushFlag = true;
 		}

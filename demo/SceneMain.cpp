@@ -47,6 +47,19 @@ SceneMain::SceneMain()
 	m_enePos[7] = Vec2(7100, 0);
 	m_enePos[8] = Vec2(5000, 0);
 	m_enePos[9] = Vec2(5500, 800);
+
+	m_eneToPlayerPos[0] = Vec2(500, 0);
+	m_eneToPlayerPos[1] = Vec2(550, 0);
+	m_eneToPlayerPos[2] = Vec2(600, 0);
+	m_eneToPlayerPos[3] = Vec2(1200, 0);
+	m_eneToPlayerPos[4] = Vec2(1250, 0);
+	m_eneToPlayerPos[5] = Vec2(1300, 0);
+	m_eneToPlayerPos[6] = Vec2(1800, 0);
+	m_eneToPlayerPos[7] = Vec2(2200, 0);
+	m_eneToPlayerPos[8] = Vec2(2500, 0);
+	m_eneToPlayerPos[9] = Vec2(2900, 0);
+	
+
 }
 
 SceneMain::~SceneMain()
@@ -86,7 +99,7 @@ void SceneMain::Init()
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	for (int e = 0; e < ENEMY_NUM * 3; e++)
+	for (int e = 0; e < ENEMY_NUM ; e++)
 	{
 		m_pEnemyToPlayer[e]->GetSceneMain(this);
 		m_pEnemyToPlayer[e]->Init();
@@ -145,7 +158,7 @@ void SceneMain::Update()
 
 	if (m_pEnemyToPlayer != nullptr)
 	{
-		for (int e = 0; e < ENEMY_NUM*3; e++)
+		for (int e = 0; e < ENEMY_NUM; e++)
 		{
 			m_pEnemyToPlayer[e]->Update();
 		}
@@ -293,7 +306,7 @@ void SceneMain::CollisionUpdate()
 		}
 		if (m_pEnemyToPlayer != nullptr)
 		{
-			for (int e = 0; e < ENEMY_NUM*3; e++)
+			for (int e = 0; e < ENEMY_NUM; e++)
 			{
 				if (m_pEnemyToPlayer != nullptr)
 				{
@@ -358,7 +371,7 @@ void SceneMain::Draw() const
 	if (m_pBoss != nullptr)m_pBoss->Draw();
 	if(m_pEnemyToPlayer!=nullptr)
 	{
-		for (int e = 0; e < ENEMY_NUM*3; e++)
+		for (int e = 0; e < ENEMY_NUM; e++)
 		{
 			m_pEnemyToPlayer[e]->Draw();
 		}

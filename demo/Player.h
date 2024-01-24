@@ -42,7 +42,7 @@ public:
 	void NeutralUpdate();
 	void FaceDownUpdate();
 	void JumpingUpdate();
-	void DushUpdate();
+	void DushUpdate();//ƒ_ƒbƒVƒ…‚Í‚¢‚ç‚ñ(‚»‚Ìó‘Ô‚É‚È‚Á‚½Û‚Å‚«‚È‚¢‚±‚Æ‚â‚Å‚«‚é‚±‚Æ‚ª‚ ‚é‚Ì‚ªó‘Ô•ÊŠÖ”‚ÌğŒ)
 
 	//“–‚½‚è”»’èŠÖ”
 	void OnMapCollision();

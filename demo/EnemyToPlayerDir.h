@@ -1,4 +1,5 @@
 #pragma once
+#include"Vec2.h"
 #include "EnemyBase.h"
 
 class EnemyToPlayerDir :
@@ -8,7 +9,7 @@ public:
     EnemyToPlayerDir();
     virtual ~EnemyToPlayerDir();
 
-    virtual void Init() ;
+    virtual void Init(Vec2 pos) ;
 	void CollisionUpdate();
     virtual void Update() override;
     virtual void Draw();
