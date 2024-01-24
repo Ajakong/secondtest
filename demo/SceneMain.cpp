@@ -102,7 +102,7 @@ void SceneMain::Init()
 	for (int e = 0; e < ENEMY_NUM ; e++)
 	{
 		m_pEnemyToPlayer[e]->GetSceneMain(this);
-		m_pEnemyToPlayer[e]->Init();
+		m_pEnemyToPlayer[e]->Init(m_eneToPlayerPos[e],m_pPlayer);
 	}
 }
 
@@ -119,8 +119,11 @@ void SceneMain::Update()
 	m_wipeFrame++;
 
 	m_pBgManager->Update();
-	m_pPlayer->Update();
-	m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
+	if (m_pPlayer != nullptr)
+	{
+		m_pPlayer->Update();
+		m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
+	}
 	/*if (m_pPlayer->GetPos().x > (Game::kScreenWidth * 0.675))
 	{
 		m_pMap->OnScreenMoveAdd();
@@ -163,15 +166,19 @@ void SceneMain::Update()
 			m_pEnemyToPlayer[e]->Update();
 		}
 	}
-	if (m_pEnemy != nullptr)
+	
 	{
 		//m_pEnemy->GetScreenMove(m_pPlayer->GetVelocity().x);
 		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
-			m_pEnemy[e]->Update();
+			if (m_pEnemy[e] != nullptr)
+			{
+				m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
+				m_pEnemy[e]->Update();
 
-			if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
+				if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
+			}
+			
 		}
 		
 	}
@@ -192,75 +199,77 @@ void SceneMain::CollisionUpdate()
 {
 	//ToDoオブジェクトそれぞれのRectを配列でとってfor文のiで管理する
 
-
-
-	//toEnemyのCollision
-	if (m_pEnemy != nullptr)
-	{
-		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	for (int e = 0; e < ENEMY_NUM; e++)
+	{//toEnemyのCollision
+		if (m_pEnemy[e] != nullptr)
 		{
-			if (m_pShot[i] != nullptr)
+			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 			{
-				for(int e=0;e<ENEMY_NUM;e++)
+				if (m_pShot[i] != nullptr)
 				{
-					if (m_pShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+
 					{
-						m_pEnemy[e]->OnHitShot();
+						if (m_pShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+						{
+							m_pEnemy[e]->OnHitShot();
+						}
+						if (m_pShot[i]->GetIsDestroy() == true)
+						{
+							m_pShot[i] = nullptr;
+						}
 					}
-					if (m_pShot[i]->GetIsDestroy() == true)
-					{
-						m_pShot[i] = nullptr;
-					}
+
 				}
-				
+
 			}
 
-		}
-	
-		for (int i = 0; i < 3; i++)
-		{
-			if (m_circleShot[i] != nullptr)
+			for (int i = 0; i < 3; i++)
+			{
+				if (m_circleShot[i] != nullptr)
+				{
+					for (int e = 0; e < ENEMY_NUM; e++)
+					{
+
+						if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+						{
+							m_pEnemy[e]->OnHitShot();
+						}
+						if (m_circleShot[i]->GetIsDestroy() == true)
+						{
+							m_circleShot[i] = nullptr;
+						}
+					}
+				}
+
+			}
+
+			if (m_pLaser != nullptr)
 			{
 				for (int e = 0; e < ENEMY_NUM; e++)
 				{
 
-					if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+					if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 					{
-						m_pEnemy[e]->OnHitShot();
-					}
-					if (m_circleShot[i]->GetIsDestroy() == true)
-					{
-						m_circleShot[i] = nullptr;
+						int d = 0;
 					}
 				}
+				if (m_pLaser->GetIsDestroy())
+				{
+					m_pLaser = nullptr;
+				}
 			}
-
-		}
-	
-		if (m_pLaser != nullptr)
-		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
 
-				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
+				if (m_pPlayer->OnCollision(m_pEnemy[e]->GetCollRect()))
 				{
-					int d = 0;
+					//プレイヤーが敵にヒット
+					m_pPlayer->OnDamage();
 				}
 			}
-			if (m_pLaser->GetIsDestroy())
-			{
-				m_pLaser = nullptr;
-			}
 		}
-		for (int e = 0; e < ENEMY_NUM; e++)
-		{
 
-			if (m_pPlayer->OnCollision(m_pEnemy[e]->GetCollRect()))
-			{
-				//プレイヤーが敵にヒット
-				int b = 0;
-			}
-		}
+	
 	}
 
 	//toPlayerのCollision
@@ -308,7 +317,7 @@ void SceneMain::CollisionUpdate()
 		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-				if (m_pEnemyToPlayer != nullptr)
+				if (m_pEnemyToPlayer[e] != nullptr)
 				{
 					if (m_pMap->IsPlayerCollision(m_pEnemyToPlayer[e]->GetCollRect(), 20, m_pEnemyToPlayer[e]->GetVelocity()))
 					{
@@ -366,7 +375,7 @@ void SceneMain::Draw() const
 	for (int e = 0; e < ENEMY_NUM; e++)
 	{
 
-		if (m_pEnemy != nullptr)m_pEnemy[e]->Draw();
+		if (m_pEnemy[e] != nullptr)m_pEnemy[e]->Draw();
 	}
 	if (m_pBoss != nullptr)m_pBoss->Draw();
 	if(m_pEnemyToPlayer!=nullptr)

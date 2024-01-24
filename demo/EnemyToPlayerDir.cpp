@@ -35,10 +35,11 @@ EnemyToPlayerDir::~EnemyToPlayerDir()
 {
 }
 
-void EnemyToPlayerDir::Init(Vec2 pos)
+void EnemyToPlayerDir::Init(Vec2 pos,Player* player)
 {
 	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	m_pos = pos;
+	m_player = player;
 }
 
 void EnemyToPlayerDir::CollisionUpdate()
@@ -53,13 +54,18 @@ void EnemyToPlayerDir::Update()
 {
 	m_velocity.y = 0;
 	CollisionUpdate();
-	m_velocity.x = m_player->GetPos().x - m_pos.x;
-	m_velocity.Normalize();
+	if (m_player != nullptr)
+	{
+		m_velocity.x = m_player->GetPos().x - m_pos.x;
+		if (m_velocity.x >= 700)return;
+		m_velocity.Normalize();
 
-	m_velocity.y += 9.8f;
-	m_velocity.x=m_velocity.x*3;
-	m_pos += m_velocity;
+		m_velocity.y += 9.8f;
+		m_velocity.x = m_velocity.x * 3;
+		m_pos += m_velocity;
 
+
+	}
 	if (m_pos.y > Game::kScreenHeight - 130)
 	{
 		m_pos.y = Game::kScreenHeight - 130;

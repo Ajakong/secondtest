@@ -9,7 +9,7 @@ public:
     EnemyToPlayerDir();
     virtual ~EnemyToPlayerDir();
 
-    virtual void Init(Vec2 pos) ;
+    virtual void Init(Vec2 pos, Player* player) ;
 	void CollisionUpdate();
     virtual void Update() override;
     virtual void Draw();
@@ -61,8 +61,7 @@ private:
 
 	Player* m_player;
 
-	//////////*ShotŠÖ˜A*///////////
-	EneShot* m_shot;
+	
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
 	bool shotBulletFlag;
