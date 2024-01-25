@@ -124,111 +124,121 @@ void SceneMain::End()
 
 void SceneMain::Update()
 {
-	CollisionUpdate();
+	if (bossZone = false)
+	{
+		CollisionUpdate();
 
-	m_wipeFrame++;
+		m_wipeFrame++;
 
-	m_pBgManager->Update();
-	if (m_pPlayer != nullptr)
-	{
-		m_pPlayer->Update();
-		m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
-		if (m_pPlayer->GetPos().x > Game::kScreenWidth * 6 / 8)
+		m_pBgManager->Update();
+		if (m_pPlayer != nullptr)
 		{
-			m_pMap->GetScreenMove(3);
-		}
-	}
-	/*if (m_pPlayer->GetPos().x > (Game::kScreenWidth * 0.675))
-	{
-		m_pMap->OnScreenMoveAdd();
-		m_pPlayer->screenAdd();	
-	}*/
-	/*if (m_pPlayer->GetPos().x < (Game::kScreenWidth * 0.375))
-	{
-		m_pMap->OnScreenMoveSub();
-		if (m_pMap->GetScreenMove() <= 0)
-		{
-			m_pPlayer->screenSub();
-		}
-	}*/
-
-	if(m_pMap!=nullptr)
-	{
-		m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
-		m_pMap->Update();
-		if (!bossZone)
-		{
-			if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
+			m_pPlayer->Update();
+			m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
+			if (m_pPlayer->GetPos().x > Game::kScreenWidth * 6 / 8)
 			{
-				m_screenMove = m_pMap->GetScreenMove();
-				m_pMap->GetScreenMove(6750);
-				m_pPlayer->GetPos(500);
+				m_pMap->GetScreenMove(3);
+			}
+		}
+		/*if (m_pPlayer->GetPos().x > (Game::kScreenWidth * 0.675))
+		{
+			m_pMap->OnScreenMoveAdd();
+			m_pPlayer->screenAdd();
+		}*/
+		/*if (m_pPlayer->GetPos().x < (Game::kScreenWidth * 0.375))
+		{
+			m_pMap->OnScreenMoveSub();
+			if (m_pMap->GetScreenMove() <= 0)
+			{
+				m_pPlayer->screenSub();
+			}
+		}*/
+
+		if (m_pMap != nullptr)
+		{
+			m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
+			m_pMap->Update();
+			if (!bossZone)
+			{
+				if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
+				{
+					m_screenMove = m_pMap->GetScreenMove();
+					m_pMap->GetScreenMove(6750);
+					m_pPlayer->GetPos(500);
+					m_toBoss = true;
+				}
+			}
+		}
+
+		if (m_toBoss)
+		{
+			m_frame++;
+			if (m_frame >= 60)
+			{
 				bossZone = true;
-				m_toBoss = true;
+
+				m_isClear = true;
 			}
 		}
-	}
 
-	if (m_toBoss)
-	{
-		m_frame++;
-		if (m_frame >= 60)
+
+
+
 		{
-			m_isClear = true;
-		}
-	}
-	
-	
-
-	
-	{
-		for (int e = 0; e < ENEMY_NUM; e++)
-		{
-
-			if (m_pEnemyToPlayer[e] != nullptr)
+			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-				m_pEnemyToPlayer[e]->ScreenMove(m_pMap->GetScreenMove());
-				m_pEnemyToPlayer[e]->Update();
+
+				if (m_pEnemyToPlayer[e] != nullptr)
+				{
+					m_pEnemyToPlayer[e]->ScreenMove(m_pMap->GetScreenMove());
+					m_pEnemyToPlayer[e]->Update();
 
 
+				}
 			}
 		}
+
+		{
+			//m_pEnemy->GetScreenMove(m_pPlayer->GetVelocity().x);
+			for (int e = 0; e < ENEMY_NUM; e++)
+			{
+				if (m_pEnemy[e] != nullptr)
+				{
+					m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
+					m_pEnemy[e]->Update();
+
+					if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
+				}
+
+			}
+
+		}
+
+		if (m_pBoss != nullptr)
+		{
+			//m_pBoss->GetScreenMove(m_pPlayer->GetVelocity().x);
+			m_pBoss->Update();
+			if (m_pBoss->OnDie())m_pBoss = nullptr;
+		}
+
+		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+		{
+			if (m_pShot[i] != nullptr)
+			{
+				if (m_pShot[i]->GetIsDestroy() == true)
+				{
+					m_pShot[i] = nullptr;
+				}
+			}
+		}
+
+	}
+
+	if (bossZone = true)
+	{
+
 	}
 	
-	{
-		//m_pEnemy->GetScreenMove(m_pPlayer->GetVelocity().x);
-		for (int e = 0; e < ENEMY_NUM; e++)
-		{
-			if (m_pEnemy[e] != nullptr)
-			{
-				m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
-				m_pEnemy[e]->Update();
-
-				if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
-			}
-			
-		}
-		
-	}
-	
-	if (m_pBoss != nullptr)
-	{
-		//m_pBoss->GetScreenMove(m_pPlayer->GetVelocity().x);
-		m_pBoss->Update();
-		if (m_pBoss->OnDie())m_pBoss = nullptr;
-	}
-
-	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
-	{
-		if (m_pShot[i] != nullptr)
-		{
-			if (m_pShot[i]->GetIsDestroy() == true)
-			{
-				m_pShot[i] = nullptr;
-			}
-		}
-	}
-
 	Pad::Update();
 	
 	
