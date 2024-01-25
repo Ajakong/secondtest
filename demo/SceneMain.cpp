@@ -37,7 +37,7 @@ SceneMain::SceneMain()
 	for (int e = 0; e < ENEMY_NUM * 3; e++)m_pEnemyToPlayer[e] = new EnemyToPlayerDir;
 	m_pLaser = nullptr;
 
-	m_enePos[0] = Vec2(0, 0);
+	m_enePos[0] = Vec2(100, 50);
 	m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 800);
 	m_enePos[3] = Vec2(2400, 800);
@@ -159,11 +159,12 @@ void SceneMain::Update()
 		}
 	}
 
-	if (m_pEnemyToPlayer != nullptr)
+	
 	{
 		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			m_pEnemyToPlayer[e]->Update();
+
+			if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Update();
 		}
 	}
 	
@@ -260,12 +261,15 @@ void SceneMain::CollisionUpdate()
 			}
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-
-				if (m_pPlayer->OnCollision(m_pEnemy[e]->GetCollRect()))
+				if(m_pEnemy[e]!=nullptr)
 				{
-					//プレイヤーが敵にヒット
-					m_pPlayer->OnDamage();
+					if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+					{
+						//プレイヤーが敵にヒット
+						//m_pPlayer->OnDamage();
+					}
 				}
+				
 			}
 		}
 
@@ -313,7 +317,7 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 		}
-		if (m_pEnemyToPlayer != nullptr)
+		
 		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
@@ -378,11 +382,11 @@ void SceneMain::Draw() const
 		if (m_pEnemy[e] != nullptr)m_pEnemy[e]->Draw();
 	}
 	if (m_pBoss != nullptr)m_pBoss->Draw();
-	if(m_pEnemyToPlayer!=nullptr)
+	
 	{
 		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			m_pEnemyToPlayer[e]->Draw();
+			if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Draw();
 		}
 	}
 	

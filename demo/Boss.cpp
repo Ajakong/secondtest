@@ -115,11 +115,11 @@ void Boss::Draw()
 {
 	if (m_isDeathFlag == false)
 	{
-		DrawBox(m_pos.x-m_screenMove, m_pos.y+300, m_pos.x + 500-m_screenMove, m_pos.y +896, 0xaaaaaa, true);
-		DrawBox(m_pos.x - 170- m_screenMove, m_pos.y + 450, m_pos.x- m_screenMove, m_pos.y + 470, 0x660066, true);//‰œ
-		DrawBox(m_pos.x+200- m_screenMove, m_pos.y+100, m_pos.x +320- m_screenMove, m_pos.y + 420, 0x00dddd, true);//Žè‘O
-		
-		DrawPixel(m_pos.x + 25- m_screenMove, m_pos.y + 25, 0x000000);
+		//DrawBox(m_pos.x-m_screenMove, m_pos.y+300, m_pos.x + 500-m_screenMove, m_pos.y +896, 0xaaaaaa, true);
+		//DrawBox(m_pos.x - 170- m_screenMove, m_pos.y + 450, m_pos.x- m_screenMove, m_pos.y + 470, 0x660066, true);//‰œ
+		//DrawBox(m_pos.x+200- m_screenMove, m_pos.y+100, m_pos.x +320- m_screenMove, m_pos.y + 420, 0x00dddd, true);//Žè‘O
+		//
+		//DrawPixel(m_pos.x + 25- m_screenMove, m_pos.y + 25, 0x000000);
 		
 		//DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
 	}
