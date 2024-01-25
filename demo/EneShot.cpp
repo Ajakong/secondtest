@@ -104,7 +104,6 @@ bool EneShot::GetShotColli(const Rect& rect)
 				m_isEffectFlag = true;
 				m_shotEffect->WantHitPos(this, m_shotPos);
 				return true;
-				
 			}
 		}
 	}

@@ -2,7 +2,6 @@
 #include <iostream>
 #include"Game.h"
 #include"Object.h"
-#include"Shot.h"
 #include "EnemyBase.h"
 #include"Player.h"
 #include"SceneMain.h"
@@ -27,8 +26,8 @@ EnemyToPlayerDir::EnemyToPlayerDir():
 {
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + 130;
-	m_colRect.left = m_pos.x;
-	m_colRect.right = m_pos.x + 75;
+	m_colRect.left = m_pos.x-m_screenMove;
+	m_colRect.right = m_pos.x + 75-m_screenMove;
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
@@ -40,6 +39,11 @@ void EnemyToPlayerDir::Init(Vec2 pos,Player* player)
 	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	m_pos = pos;
 	m_player = player;
+	m_velocity.x = m_player->GetPos().x - m_pos.x;
+	
+	m_velocity.x = m_velocity.x * 3;
+	m_velocity.Normalize();
+		
 }
 
 void EnemyToPlayerDir::CollisionUpdate()
@@ -53,24 +57,12 @@ void EnemyToPlayerDir::CollisionUpdate()
 void EnemyToPlayerDir::Update()
 {
 	m_velocity.y = 0;
-	m_velocity.x = 0;
+	
 	CollisionUpdate();
 	if (m_player != nullptr)
 	{
-		m_velocity.x = m_player->GetPos().x - m_pos.x;
-		if (m_velocity.x <= 100)
-		{
-			m_velocity.Normalize();
-
-			
-			//m_velocity.x = m_velocity.x * 3;
-			//m_velocity.x -= 2;
-			
-		}
-		else
-		{
-			m_velocity.x = 0;
-		}
+		
+		
 		m_velocity.y += 9.8f;
 		m_pos += m_velocity;
 	}
@@ -98,7 +90,8 @@ void EnemyToPlayerDir::Draw()
 {
 	if (m_isDeathFlag == false)
 	{
-		DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
+		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
+		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
 	}
 }
 
@@ -113,7 +106,7 @@ void EnemyToPlayerDir::OnHitShot()
 
 void EnemyToPlayerDir::OnMapCol()
 {
-	m_velocity.y = 0;
+	m_velocity.y = -5;
 	m_velocity.x = -m_velocity.x;
 }
 

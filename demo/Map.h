@@ -43,21 +43,13 @@ public:
 private:
 	
 
-	int m_handle;
-	int m_graphX;
-	int m_graphY;
-	int graphRateX;
+	
 
+	int screenVelocityX=0;//スクリーンのx軸移動量(フレーム単位)
+	int screenMove=0;//スクリーンのx軸移動量(合計)
 
-	// グラフィックに含まれるマップチップの数
-	int m_graphChipNumX;
-	int m_graphChipNumY;
-
-	int screenVelocityX;//スクリーンのx軸移動量(フレーム単位)
-	int screenMove;//スクリーンのx軸移動量(合計)
-
-	bool m_isScreenMoveAddFlag;
-	bool m_isScreenMoveSubFlag;
+	bool m_isScreenMoveAddFlag=false;
+	bool m_isScreenMoveSubFlag=true;
 
 
 	Player* m_player;

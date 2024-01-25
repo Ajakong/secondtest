@@ -23,7 +23,7 @@ public:
 
 
 	//Shotのプログラミング統括
-	void ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<ShotEffect> shotEffect);
+	void ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph);
 
 	bool GetIsDestroy()const { return m_isDestroy; }
 
@@ -51,18 +51,18 @@ private:
 	//ベクトルの向き
 	Vec2 m_DirVec;
 	//Shotのグラフィックハンドル
-	int m_handle;
-	int m_graph;
+	int m_handle=0;
+	int m_graph=0;
 
 	Sqhere m_collider;
 
-	int m_radius;
+	int m_radius=0;
 
-	int m_screenMove;
+	int m_screenMove=0;
 
 	bool m_isVisible = true;
 
-	bool m_isDestroy = false;
+	bool m_isDestroy;
 
 	bool effectFlag=false;
 
@@ -72,6 +72,7 @@ private:
 
 	Player* m_player;
 	EnemyBase* m_enemy;
+
 
 	std::shared_ptr<ShotEffect> m_shotEffect;
 };

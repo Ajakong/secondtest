@@ -18,6 +18,8 @@ public:
 
 	void OnDamage(int Atk) { m_Hp - Atk; }
 
+	void ScreenMove(int screenmove) { m_screenMove = screenmove; };
+
 	void OnHitShot();
 
 	void OnMapCol();
@@ -39,6 +41,7 @@ private:
     int m_attackFrame;
 	int m_shotGraph;
 
+	int m_screenMove;
 
 	bool m_isShotCollFlag;
 

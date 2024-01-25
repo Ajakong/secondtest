@@ -2,7 +2,9 @@
 #include"Shot.h"
 #include "ShotEffect.h"
 
-ShotEffect::ShotEffect()
+ShotEffect::ShotEffect():
+	m_pos(0,0),
+	m_isAppear(false)
 {
 	
 }

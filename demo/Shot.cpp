@@ -11,10 +11,12 @@ Shot::Shot() :
 	m_handle(-1),
 	m_shotPos(0, 0),
 	m_Velocity(0, 0),
-	m_radius(15)
+	m_radius(15),
+	m_isVisible(false),
+	m_isDestroy(false),
+	effectFlag(false)
 {
-
-
+	m_shotEffect = nullptr;
 }
 
 Shot::~Shot()
@@ -23,9 +25,7 @@ Shot::~Shot()
 
 void Shot::Init()
 {
-
 	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
-
 }
 
 void Shot::Update()
@@ -33,18 +33,24 @@ void Shot::Update()
 	//collision‚ÌXV
 	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
-	if (m_isVisible == false)
+	if (!m_isVisible)
 	{
 		if (m_shotPos.x >= Game::kScreenWidth)
+		{
 			m_isDestroy = true;
+		}
 		if (m_shotPos.x <= 0 - m_graphSize.x)
+		{
 			m_isDestroy = true;
+		}
 		if (m_shotPos.y >= Game::kScreenHeight)
+		{
 			m_isDestroy = true;
+		}
 		if (m_shotPos.y <= 0 - m_graphSize.y)
+		{
 			m_isDestroy = true;
-
-
+		}
 
 		/*m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
@@ -53,8 +59,6 @@ void Shot::Update()
 
 		m_Velocity.Normalize();
 		m_shotPos += m_Velocity * 20.0f;
-
-		
 	}
 	if (effectFlag == true)
 	{
@@ -70,10 +74,7 @@ void Shot::Draw()
 {
 	if (m_isVisible == false)
 	{
-
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
-		
-		
 	}
 
 	if (effectFlag == true)
@@ -85,24 +86,18 @@ void Shot::Draw()
 
 
 
-void Shot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<ShotEffect> shotEffect)
+void Shot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph)
 {
-	m_shotEffect = shotEffect;
-
-	m_isVisible = false;
+	m_shotEffect= std::make_shared<ShotEffect>();;
 	m_shotPos = Spos;
 	m_Velocity = DirVec;
-
 	m_handle = graph;
-
-
 }
 
 bool Shot::GetShotColli(const Rect& rect)
 {
 	if (m_isVisible == false)
 	{
-
 		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
 		{
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
@@ -115,22 +110,19 @@ bool Shot::GetShotColli(const Rect& rect)
 			}
 		}
 	}
-
-
-
 	return false;
 }
 
 void Shot::OnMapCol()
 {
-	if(m_isMapColFlag==false)
+	if (m_isVisible == false)
 	{
 		m_shotEffect = make_shared<ShotEffect>();
 		m_shotEffect->WantHitPos(this, m_shotPos);
 		effectFlag = true;
 		m_isVisible = true;
-		m_isMapColFlag = true;
 	}
+	
 	
 }
 

@@ -3,7 +3,6 @@
 #include <iostream>
 #include"Game.h"
 #include"Object.h"
-#include"Shot.h"
 #include "EnemyBase.h"
 #include"EneShotEffect.h"
 #include"EneShot.h"
@@ -64,8 +63,8 @@ void EnemyBase::CollisionUpdate()
 {
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + 50;
-	m_colRect.left = m_pos.x;
-	m_colRect.right = m_pos.x + 50;
+	m_colRect.left = m_pos.x-m_screenMove;
+	m_colRect.right = m_pos.x + 50-m_screenMove;
 
 	
 }
@@ -182,7 +181,7 @@ void EnemyBase::Draw()
 	
 	if(m_isDeathFlag==false)
 	{
-		DrawBox(m_pos.x-m_screenMove, m_pos.y, m_pos.x + 50-m_screenMove, m_pos.y + 50, 0xff0000, true);
+		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xff0000, true);
 		DrawPixel(m_pos.x-m_screenMove + 25, m_pos.y + 25, 0x000000);
 		for (int i = 0; i < 10; i++)
 		{

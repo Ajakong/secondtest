@@ -46,8 +46,7 @@ namespace
 	};
 }
 
-Map::Map(Player* player):
-	m_handle(-1)
+Map::Map(Player* player)
 {
 	m_player = player;
 	for (int h = 0; h < kChipNumY; h++)
@@ -68,7 +67,7 @@ Map::~Map()
 
 void Map::Init()
 {
-	m_handle = LoadGraph("data/image/Map/Tiles.png");
+	//m_handle = LoadGraph("data/image/Map/Tiles.png");
 }
 
 void Map::Update()
@@ -135,7 +134,7 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 			if (m_chipData[h][w] == 1)
 			{
 				
-				Rect& adRect = rect;
+				
 				if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
 				{
 
@@ -172,7 +171,7 @@ bool Map::IsCollision(Rect& rect, Vec2 velo)
 			{
 				if (h*kChipHeight <= rect.bottom && h * kChipHeight+kChipHeight >= rect.top)
 				{
-					if (w * kChipWidth+kChipWidth >= rect.left && w*kChipWidth <= rect.right)
+					if (w * kChipWidth+kChipWidth - screenMove >= rect.left && w*kChipWidth - screenMove <= rect.right)
 					{
 						if (rect.top > (h + 1) * kChipHeight)
 						{
@@ -213,7 +212,7 @@ bool Map::IsCollision(Vec2 pos, int radius)
 					if (pos.x + radius >= w * kChipWidth - screenMove && pos.x - radius <= w * kChipWidth + kChipWidth - screenMove)
 					{
 
-						return false;
+						return true;
 					}
 				}
 			}

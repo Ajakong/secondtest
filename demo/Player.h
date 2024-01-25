@@ -14,7 +14,6 @@ namespace
 
 class SceneMain;
 class Shot;
-class ShotEffect;
 class Laser;
 class CircleShot;
 
@@ -42,7 +41,7 @@ public:
 	void NeutralUpdate();
 	void FaceDownUpdate();
 	void JumpingUpdate();
-	void DushUpdate();//ダッシュはいらん(その状態になった際できないことやできることがあるのが状態別関数の条件)
+	//ダッシュはいらん(その状態になった際できないことやできることがあるのが状態別関数の条件)
 
 	//当たり判定関数
 	void OnMapCollision();
@@ -118,7 +117,7 @@ private:
 	//Shot m_shot[SHOT_NUM_LIMIT];
 	std::shared_ptr<Shot> m_shot[SHOT_NUM_LIMIT] ;
 
-	std::shared_ptr<ShotEffect> m_shotEffect[SHOT_NUM_LIMIT];
+	
 	std::shared_ptr<Laser> m_laser;
 	std::shared_ptr<CircleShot> m_circleShot[3];
 

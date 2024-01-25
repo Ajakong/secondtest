@@ -65,11 +65,11 @@ private:
 	// グラフィックのハンドル
 	int m_gameScreenhandle;//ゲーム画面
 
-	int m_playerHandle;
+	//int m_playerHandle;
 	
 	int m_gameScreenHandle;
 
-	int screenMove;
+	int m_screenMove;
 
 	int m_bgHandle;
 
@@ -91,7 +91,7 @@ private:
 	Boss* m_pBoss;
 
 	Shot* m_pShot[SHOT_NUM_LIMIT];
-	ShotEffect* m_pshotEffect[SHOT_NUM_LIMIT];
+	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 
 	Laser* m_pLaser;
 
@@ -104,7 +104,7 @@ private:
 	//Shot m_pShot[SHOT_NUM_LIMIT];
 	//std::shared_ptr<Shot> m_pShot[SHOT_NUM_LIMIT];
 
-	Rect EnemyRect[ENEMY_NUM];
+	
 
 
 	//画面ワイプ処理

@@ -14,7 +14,12 @@
 #include"ImageGroundManager.h"
 #include"Pad.h"
 
-SceneMain::SceneMain()
+SceneMain::SceneMain():
+	m_screenMove(0),
+	m_bgHandle(0),
+	m_wipeFrame(0),
+	m_enemyInterval(0),
+	m_shakeFrame(0)
 {
 	for (auto& shot : m_pShot)
 	{
@@ -34,7 +39,10 @@ SceneMain::SceneMain()
 	m_pBgManager = new ImageGroundManager;
 	m_pBoss = new Boss;
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase;
-	for (int e = 0; e < ENEMY_NUM * 3; e++)m_pEnemyToPlayer[e] = new EnemyToPlayerDir;
+	for (int e = 0; e < ENEMY_NUM; e++)
+	{
+		m_pEnemyToPlayer[e] = new EnemyToPlayerDir;
+	}
 	m_pLaser = nullptr;
 
 	m_enePos[0] = Vec2(100, 50);
@@ -80,8 +88,8 @@ SceneMain::~SceneMain()
 	delete m_pPlayer ;
 	delete m_pMap ;
 	delete m_pBgManager ;
-	delete m_pEnemy ;
-	delete m_pEnemyToPlayer;
+	for (int i = 0; i < ENEMY_NUM; i++)delete m_pEnemy[i] ;
+	for (int e = 0; e < ENEMY_NUM; e++)delete m_pEnemyToPlayer[e];
 	delete m_pLaser;
 }
 
@@ -151,7 +159,7 @@ void SceneMain::Update()
 	{
 		if (m_pMap->GetScreenMove()+m_pPlayer->GetPos().x > 6500)
 		{
-			screenMove = m_pMap->GetScreenMove();
+			m_screenMove = m_pMap->GetScreenMove();
 			m_pMap->GetScreenMove(6750);
 			m_pPlayer->GetPos(500);
 			bossZone = true;
@@ -164,7 +172,13 @@ void SceneMain::Update()
 		for (int e = 0; e < ENEMY_NUM; e++)
 		{
 
-			if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Update();
+			if (m_pEnemyToPlayer[e] != nullptr)
+			{
+				m_pEnemyToPlayer[e]->ScreenMove(m_pMap->GetScreenMove());
+				m_pEnemyToPlayer[e]->Update();
+
+
+			}
 		}
 	}
 	
@@ -191,6 +205,17 @@ void SceneMain::Update()
 		if (m_pBoss->OnDie())m_pBoss = nullptr;
 	}
 
+	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	{
+		if (m_pShot[i] != nullptr)
+		{
+			if (m_pShot[i]->GetIsDestroy() == true)
+			{
+				m_pShot[i] = nullptr;
+			}
+		}
+	}
+
 	Pad::Update();
 	
 	
@@ -208,20 +233,11 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pShot[i] != nullptr)
 				{
-
+					if (m_pShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
 					{
-						if (m_pShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
-						{
-							m_pEnemy[e]->OnHitShot();
-						}
-						if (m_pShot[i]->GetIsDestroy() == true)
-						{
-							m_pShot[i] = nullptr;
-						}
+						m_pEnemy[e]->OnHitShot();
 					}
-
 				}
-
 			}
 
 			for (int i = 0; i < 3; i++)
@@ -230,7 +246,6 @@ void SceneMain::CollisionUpdate()
 				{
 					for (int e = 0; e < ENEMY_NUM; e++)
 					{
-
 						if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
 						{
 							m_pEnemy[e]->OnHitShot();
@@ -241,7 +256,6 @@ void SceneMain::CollisionUpdate()
 						}
 					}
 				}
-
 			}
 
 			if (m_pLaser != nullptr)
@@ -254,7 +268,7 @@ void SceneMain::CollisionUpdate()
 						int d = 0;
 					}
 				}
-				if (m_pLaser->GetIsDestroy())
+				if (m_pLaser->GetVisible())
 				{
 					m_pLaser = nullptr;
 				}
@@ -272,9 +286,27 @@ void SceneMain::CollisionUpdate()
 				
 			}
 		}
-
-	
 	}
+	for (int e = 0; e < ENEMY_NUM; e++)
+	{
+		if (m_pEnemyToPlayer[e] != nullptr)
+		{
+			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+			{
+				if (m_pShot[i] != nullptr)
+				{
+					if (m_pShot[i]->GetShotColli(m_pEnemyToPlayer[e]->GetCollRect()))
+					{
+						m_pEnemyToPlayer[e]->OnDamage(10);
+					}
+
+				}
+
+			}
+		}
+		
+	}
+	
 
 	//toPlayer‚ÌCollision
 	if (m_pPlayer != nullptr)
@@ -297,6 +329,8 @@ void SceneMain::CollisionUpdate()
 
 		}
 
+
+		//ƒ}ƒbƒv‚Æ‚Ì“–‚½‚è”»’è
 		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
 		{
 			m_pPlayer->OnMapCollision();
@@ -307,7 +341,7 @@ void SceneMain::CollisionUpdate()
 			{
 				m_pShot[i]->GetScreenMove(m_pPlayer->GetVelocity().x);
 
-				if (!m_pMap->IsCollision(m_pShot[i]->GetPos(), m_pShot[i]->GetRadius()))
+				if (m_pMap->IsCollision(m_pShot[i]->GetPos(), m_pShot[i]->GetRadius())==true)
 				{
 					m_pShot[i]->OnMapCol();
 				}
@@ -323,7 +357,7 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
-					if (m_pMap->IsPlayerCollision(m_pEnemyToPlayer[e]->GetCollRect(), 20, m_pEnemyToPlayer[e]->GetVelocity()))
+					if (m_pMap->IsPlayerCollision(m_pEnemyToPlayer[e]->GetCollRect(), 20, m_pEnemyToPlayer[e]->GetVelocity())==true)
 					{
 						m_pEnemyToPlayer[e]->OnMapCol();
 					}

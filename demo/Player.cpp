@@ -206,10 +206,10 @@ void Player::ShotIt()
 			{
 				if (m_shot[i] == nullptr)
 				{
-					m_shotEffect[i] = std::make_shared<ShotEffect>();
+					
 					m_shot[i] = std::make_shared<Shot>();
 					m_dir.y = m_fireDir.y;
-					m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph, m_shotEffect[i]);
+					m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
 					m_WorldMana->AddShot(m_shot[i]);
 					if (m_shot[i]->GetIsDestroy() == true){
 						m_shot[i] = nullptr;
@@ -225,19 +225,16 @@ void Player::ShotIt()
 			{
 				if (m_shot[i] == nullptr)
 				{
-					if (m_shotEffect[i] == nullptr)
-					{
-						if (m_shotBulletInterval > 10)
+					if (m_shotBulletInterval > 10)
 						{
-							m_shotEffect[i] = std::make_shared<ShotEffect>();
 							m_shot[i] = std::make_shared<Shot>();
 							m_dir.y = m_fireDir.y;
-							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph, m_shotEffect[i]);
+							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
 							m_WorldMana->AddShot(m_shot[i]);
 							m_shotBulletInterval = 0;
 							break;
 						}
-					}
+					
 				}
 			}
 		}
@@ -252,10 +249,10 @@ void Player::ShotIt()
 				{
 					if (m_shot[i] == nullptr)
 					{
-						m_shotEffect[i] = std::make_shared<ShotEffect>();
+						
 						m_shot[i] = std::make_shared<Shot>();
 						m_dir.y = m_dir.y + (a-1 ) * 0.5f;
-						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph, m_shotEffect[i + a]);
+						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
 						m_WorldMana->AddShot(m_shot[i]);
 						m_shotBulletInterval = 0;
 						break;
@@ -320,11 +317,12 @@ void Player::DeleteShot()
 	{
 		if (m_shot[i] != nullptr)
 		{
+			
 			m_shot[i]->Update();
 			if (m_shot[i]->GetIsDestroy())
 			{
 				m_shot[i] = nullptr;
-				m_shotEffect[i] = nullptr;
+				
 			}
 		}
 	}

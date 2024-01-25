@@ -3,8 +3,7 @@
 
 class ColllisionMaster;
 
-class Laser :
-    public Shot
+class Laser 
 {
 public:
     Laser();
