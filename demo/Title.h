@@ -14,7 +14,9 @@ private:
 
 	int m_frame = 0;
 
-	int m_fadeFrame = 0;
+	int a = -1;
+
+	int m_fadeFrame = 60;
 
 	int m_handle;
 

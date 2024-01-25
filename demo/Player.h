@@ -62,7 +62,6 @@ public:
 	using playerState_t = void(Player::*)();
 	playerState_t m_playerUpdate;
 
-
 private:
 	/*メンバ変数*/
 	//Pos
@@ -82,12 +81,8 @@ private:
 	bool m_isFaceDownFlag;//伏せ
 	bool m_isLeftFlag;//左を向いてるかフラグ
 
-
-
 	bool flyFlag;
-
 	Vec2 flySpeed;//飛行時速度
-
 	int flyingFrame;
 
 	int m_collisionRadius;//この範囲の中でしか当たり判定を取らない
@@ -102,7 +97,6 @@ private:
 
 	float m_angle;
 	float m_rotateAngle;
-
 	float toZeroSpeed;
 
 	bool m_isScreenAdd;
@@ -124,7 +118,6 @@ private:
 
 	//弾の発射フラグ
 	bool shotBulletFlag;
-
 	int m_shotBulletInterval = 20;
 
 ///////////////////////////////

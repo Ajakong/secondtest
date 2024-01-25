@@ -50,7 +50,7 @@ public:
 	void GameOver() { m_isGameOver = true; }
 	bool GetGameOverFlag() { return m_isGameOver; }
 
-	void Clear() { m_isClear = true; }
+	void Clear();
 	bool GetClearFlag() { return m_isClear; }
 
 	void AddShot(std::shared_ptr<Shot> shot);
@@ -65,6 +65,7 @@ private:
 	// グラフィックのハンドル
 	int m_gameScreenhandle;//ゲーム画面
 
+	int m_frame=0;
 	//int m_playerHandle;
 	
 	int m_gameScreenHandle;
@@ -74,6 +75,8 @@ private:
 	int m_bgHandle;
 
 	bool m_isGameOver = false;
+
+	bool m_toBoss = false;
 
 	bool m_isClear = false;
 

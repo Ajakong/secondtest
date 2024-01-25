@@ -19,7 +19,9 @@ SceneMain::SceneMain():
 	m_bgHandle(0),
 	m_wipeFrame(0),
 	m_enemyInterval(0),
-	m_shakeFrame(0)
+	m_shakeFrame(0),
+	m_gameScreenhandle(0),
+	m_gameScreenHandle(0)
 {
 	for (auto& shot : m_pShot)
 	{
@@ -131,6 +133,10 @@ void SceneMain::Update()
 	{
 		m_pPlayer->Update();
 		m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
+		if (m_pPlayer->GetPos().x > Game::kScreenWidth * 6 / 8)
+		{
+			m_pMap->GetScreenMove(3);
+		}
 	}
 	/*if (m_pPlayer->GetPos().x > (Game::kScreenWidth * 0.675))
 	{
@@ -146,26 +152,33 @@ void SceneMain::Update()
 		}
 	}*/
 
-	m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
-	m_pMap->Update();
-
-
-	if (m_pPlayer->GetPos().x > Game::kScreenWidth*6/8)
+	if(m_pMap!=nullptr)
 	{
-		m_pMap->GetScreenMove(3);
-	}
-	
-	if (!bossZone)
-	{
-		if (m_pMap->GetScreenMove()+m_pPlayer->GetPos().x > 6500)
+		m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
+		m_pMap->Update();
+		if (!bossZone)
 		{
-			m_screenMove = m_pMap->GetScreenMove();
-			m_pMap->GetScreenMove(6750);
-			m_pPlayer->GetPos(500);
-			bossZone = true;
+			if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
+			{
+				m_screenMove = m_pMap->GetScreenMove();
+				m_pMap->GetScreenMove(6750);
+				m_pPlayer->GetPos(500);
+				bossZone = true;
+				m_toBoss = true;
+			}
+		}
+	}
+
+	if (m_toBoss)
+	{
+		m_frame++;
+		if (m_frame >= 60)
+		{
 			m_isClear = true;
 		}
 	}
+	
+	
 
 	
 	{
@@ -391,12 +404,12 @@ void SceneMain::Draw() const
 	int wipeHeight = Game::kScreenHeight * wipeRate;
 
 	/*DrawRectGraph(screenX,screenY,
-		0,0,Game::kScreenWidth, wipeHeight,
-		m_gameScreenHandle, true, false);*/
+	0,0,Game::kScreenWidth, wipeHeight,
+	m_gameScreenHandle, true, false);*/
 
-		//offsetの値をwipeの進行に合わせて320->0に変化させたい
+	//offsetの値をwipeの進行に合わせて320->0に変化させたい
 
-		//0->320に変化させるのはわかりやすい  320*wipeRate
+	//0->320に変化させるのはわかりやすい  320*wipeRate
 
 	int offset = 320 * (1.0f - wipeRate);
 
@@ -426,8 +439,17 @@ void SceneMain::Draw() const
 	
 	m_pMap->Draw();
 	
-	
-	
+	if(m_toBoss)
+	{
+		int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
+		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+		DrawBox(0, 0, 2000, 1000, 0xffffff, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+	}
+}
+
+void SceneMain::Clear()
+{
 	
 	
 }

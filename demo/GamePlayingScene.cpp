@@ -63,7 +63,7 @@ void GamePlayingScene::FadeOutUpdate()
 	{
 		if (60 <= m_frame)
 		{
-			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
+			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 		}
 	}
 	if (m_Scene->GetClearFlag())
@@ -73,7 +73,6 @@ void GamePlayingScene::FadeOutUpdate()
 			m_manager.ChangeScene(std::make_shared<ClearScene>(m_manager));
 		}
 	}
-	
 }
 
 void GamePlayingScene::FadeDraw()
@@ -94,5 +93,4 @@ void GamePlayingScene::NormalDraw()
 	int idx = m_btnFrame / 10 % 3;
 	constexpr int kButtonSize = 16;
 	constexpr float kBtnScale = 3.0f;
-
 }

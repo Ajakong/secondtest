@@ -28,14 +28,28 @@ Player::Player(SceneMain* main) :
 	flyingFrame(),
 	m_isGroundFlag(false),
 	m_isJumpFlag(true),
+	m_isDushFlag(false),
+	m_isFaceDownFlag(false),
+	m_isLeftFlag(false),
+	m_isScreenAdd(false),
+	m_isScreenSub(false),
+	flyFlag(false),
+	shotBulletFlag(false),
+	m_angle(0),
+	m_collisionRadius(20),
+	m_handle(0),
 	m_kindOfBullet(0),
-	m_rotateAngle(0)
+	m_rotateAngle(0),
+	m_ShotGraph(false)
 {
 	for (auto& shot : m_shot)
 	{
 		shot = nullptr;
 	}
-
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 80;
 }
 
 Player::~Player()
@@ -188,9 +202,9 @@ void Player::PlayerMove()
 		m_isFaceDownFlag = true;
 	}
 
-	if (m_pos.x > Game::kScreenWidth * 6 / 8)
+	if (m_pos.x > Game::kScreenWidth * 6.0f / 8.0f)
 	{
-		m_pos.x = Game::kScreenWidth * 6 / 8;
+		m_pos.x = Game::kScreenWidth * 6.0f / 8.0f;
 	}
 }
 

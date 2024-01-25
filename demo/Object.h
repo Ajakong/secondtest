@@ -6,7 +6,7 @@ class Object
 protected:
 	Vec2 pos;
 
-	int graph;
+	int graph=0;
 public:
 
 	Object() {};

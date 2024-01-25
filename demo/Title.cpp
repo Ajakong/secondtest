@@ -47,18 +47,22 @@ void Title::FadeInUpdate()
 	{
 		// 次の遷移先
 		m_updateFunc = &Title::NormalUpdate;
+		m_fadeFrame = 60;
 		m_drawFunc = &Title::NormalDraw;
 	}
 }
 
 void Title::NormalUpdate()
 {
-	m_updateFunc = &Title::FadeOutUpdate;
-	m_drawFunc = &Title::FadeDraw;
-	m_fadeFrame = 0;
-	m_fadeFrame = m_fadeFrame + 8;
-	m_frame++;
-	GetJoypadInputState(DX_INPUT_KEY_PAD1);
+	if(GetJoypadInputState(DX_INPUT_KEY_PAD1))
+	{
+		m_updateFunc = &Title::FadeOutUpdate;
+		m_drawFunc = &Title::FadeDraw;
+		m_fadeFrame = 0;
+		m_fadeFrame = m_fadeFrame + 8;
+		m_frame++;
+	}
+	
 }
 
 void Title::FadeOutUpdate()
@@ -72,21 +76,38 @@ void Title::FadeOutUpdate()
 
 void Title::FadeDraw()
 {
-	DrawRotaGraph(500, 700,0.3,0, m_handle, true);
+	DrawRotaGraph(800, 300,0.8,0, m_handle, true);
 	// 通常の描画
-	DrawString(10, 100, "TitleScene", 0xffffff);
+	DrawString(700, 700, "Press any button", 0xffffff);
 	// フェード暗幕
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(0, 0, 2000, 2000, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+
 }
 
 void Title::NormalDraw()
 {
-	DrawRotaGraph(500, 700, 0.3, 0, m_handle, true);
-	DrawString(10, 100, "TitleScene", 0xffffff);
-	int dx = abs((m_fadeFrame + 640) % (640 * 2) - 640);
+	
+	DrawRotaGraph(800, 300, 0.8, 0, m_handle, true);
+	m_fadeFrame+=a;
+	if (m_fadeFrame > 60)
+	{
+		a = -1;
+	}
+	if (m_fadeFrame < 0)
+	{
+		a = 1;
+	}
+	
+	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
+	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+	DrawString(700, 700, "Press any button", 0xffffff);
+	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	/*int dx = abs((m_fadeFrame + 640) % (640 * 2) - 640);
 	int num = 200;
 	float dy = abs((m_fadeFrame + num) % (num * 2) - num) * 0.1f;
 	dy = dy * dy;
@@ -94,6 +115,6 @@ void Title::NormalDraw()
 	auto& app = Application::GetInstance();
 	auto size = app.GetWindowSize();
 	int idx = m_frame / 10 % 3;
-	constexpr int kButtonSize = 16;
+	constexpr int kButtonSize = 16;*/
 	
 }

@@ -211,7 +211,6 @@ bool Map::IsCollision(Vec2 pos, int radius)
 				{
 					if (pos.x + radius >= w * kChipWidth - screenMove && pos.x - radius <= w * kChipWidth + kChipWidth - screenMove)
 					{
-
 						return true;
 					}
 				}
