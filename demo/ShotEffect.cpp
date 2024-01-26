@@ -39,11 +39,11 @@ void ShotEffect::Draw()
 	if (m_isAppear)
 	{
 		int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
-		for (int i = 0; i < 255; i++)
+		//for (int i = 0; i < 255; i++)
 		{
-			SetDrawBlendMode(DX_BLENDMODE_SUB, alpha-i);
+			//SetDrawBlendMode(DX_BLENDMODE_SUB, alpha-i);
 			DrawCircle(m_pos.x, m_pos.y, m_radius, 0xffdddd, false, 2);
-			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+			//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 			
 		}
 		
