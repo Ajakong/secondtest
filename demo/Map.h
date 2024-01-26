@@ -29,6 +29,7 @@ public:
 	bool IsCollision(Rect& rect, Vec2 velo);
 	bool IsCollision(Vec2 pos, int radius);
 
+	Vec2 GetCollisionVelocity(){ return m_collisionVelocity; }
 	
 	//Vec2 GetEnePos() { return m_enemyPos; }
 	
@@ -56,7 +57,7 @@ private:
 
 	Vec2 m_playerPos;
 
-	
+	Vec2 m_collisionVelocity;
 
 
 

@@ -20,12 +20,13 @@ public:
 	bool GetIsDestroy()const { return m_isVisible; }
 
 	bool GetShotColli(const Rect& rect);
+	void OnCollision();
 
 	void setShotBullet() { m_isVisible = false; }
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 
-	float GetPosX() { return m_shotPos.x; }
+	Vec2 GetPos() { return m_shotPos; }
 
 	Sqhere GetCollSqhere()const { return m_collider; }
 private:

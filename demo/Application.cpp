@@ -37,10 +37,17 @@ bool Application::Init()
 {
     ChangeWindowMode(true); // ウィンドウモードにします
     SetGraphMode(m_windowSize.w, m_windowSize.h, 1);
-    SetWindowSizeChangeEnableFlag(FALSE, FALSE);
+    SetWindowSizeChangeEnableFlag(TRUE, TRUE);
+    SetChangeScreenModeGraphicsSystemResetFlag(false);
 
     SetGraphMode(1600, 900, 32);
     SetWindowSize(1600, 900);
+    //SetWindowSizeExtendRate(1.2f,1.2f);
+    void* CallBack();
+
+    DxLib_Init();
+   
+    SetUseASyncChangeWindowModeFunction(TRUE,NULL, NULL);
 
     SetWindowText("ごっついアクションゲーム");
     if (DxLib_Init() == -1)
@@ -67,7 +74,10 @@ void Application::Run()
             time = GetNowHiPerformanceCount();
 
             ClearDrawScreen();
-            
+            if (CheckHitKey(KEY_INPUT_ESCAPE))
+            {
+                ChangeWindowMode(true);
+            }
             sceneManager.Update();
             sceneManager.Draw();
             ScreenFlip();
@@ -76,7 +86,7 @@ void Application::Run()
             while (16667 > GetNowHiPerformanceCount() - time) {};
         }
     }
-    Terminate();
+    //Terminate();
 }
 
 const Size& Application::GetWindowSize() const

@@ -9,6 +9,15 @@
 #include <sstream>
 #include <iomanip>
 
+namespace
+{
+	constexpr int graphPosX = 800;
+	constexpr int graphPosY = 400;
+
+	constexpr int drawStringPosX = 550;
+	constexpr int drawStringPosY = 700;
+}
+
 Title::Title(SceneManager& manager) :
 	Scene(manager)
 {
@@ -54,7 +63,7 @@ void Title::FadeInUpdate()
 
 void Title::NormalUpdate()
 {
-	if(GetJoypadInputState(DX_INPUT_KEY_PAD1))
+	if(GetJoypadInputState(DX_INPUT_KEY_PAD1)&&!GetKeyState(KEY_INPUT_ESCAPE))
 	{
 		m_updateFunc = &Title::FadeOutUpdate;
 		m_drawFunc = &Title::FadeDraw;
@@ -76,22 +85,25 @@ void Title::FadeOutUpdate()
 
 void Title::FadeDraw()
 {
-	DrawRotaGraph(800, 300,0.8,0, m_handle, true);
+	DrawRotaGraph(graphPosX, graphPosY,0.8,0, m_handle, true);
 	// 通常の描画
-	DrawString(700, 700, "Press any button", 0xffffff);
+	DrawRotaString(drawStringPosX, drawStringPosY+m_fadeFrame,3,3,0,0,0, 0xffffbb,0,0, "Press any button");
 	// フェード暗幕
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(0, 0, 2000, 2000, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
-
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(drawStringPosX, drawStringPosY, drawStringPosX+1000, drawStringPosY+20, 0xff0000, true);
+	DrawBox(drawStringPosX, drawStringPosY+20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
+	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void Title::NormalDraw()
 {
 	
-	DrawRotaGraph(800, 300, 0.8, 0, m_handle, true);
+	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 	m_fadeFrame+=a;
 	if (m_fadeFrame > 60)
 	{
@@ -104,9 +116,22 @@ void Title::NormalDraw()
 	
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-	DrawString(700, 700, "Press any button", 0xffffff);
+	DrawRotaString(drawStringPosX, drawStringPosY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(drawStringPosX, drawStringPosY -45+m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);
+	DrawBox(drawStringPosX, drawStringPosY -30+m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 15 + m_stringColorPlusA, 0xddffff, true);
+	DrawBox(drawStringPosX, drawStringPosY -15+m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY -  0 + m_stringColorPlusA, 0xffddff, true);
+	DrawBox(drawStringPosX, drawStringPosY +   m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 15 + m_stringColorPlusA, 0xffdddd, true);
+	DrawBox(drawStringPosX, drawStringPosY +15+m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 30 + m_stringColorPlusA, 0xddffdd, true);
+	DrawBox(drawStringPosX, drawStringPosY +30+m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 45 + m_stringColorPlusA, 0xddddff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	m_stringColorPlusA++;
+	if (m_stringColorPlusA > 50)
+	{
+		m_stringColorPlusA = 0;
+	}
 	/*int dx = abs((m_fadeFrame + 640) % (640 * 2) - 640);
 	int num = 200;
 	float dy = abs((m_fadeFrame + num) % (num * 2) - num) * 0.1f;

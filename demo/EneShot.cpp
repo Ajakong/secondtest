@@ -112,3 +112,10 @@ bool EneShot::GetShotColli(const Rect& rect)
 	
 	
 }
+
+void EneShot::OnCollision()
+{
+	m_isVisible = true;
+	m_isEffectFlag = true;
+	m_shotEffect->WantHitPos(this, m_shotPos);
+}

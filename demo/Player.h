@@ -38,9 +38,11 @@ public:
 	void OnDamage();
 
 	//状態別関数(ポインタで呼び出す)
+	void StartUpdate();
 	void NeutralUpdate();
 	void FaceDownUpdate();
 	void JumpingUpdate();
+	void FlyingUpdate();
 	//ダッシュはいらん(その状態になった際できないことやできることがあるのが状態別関数の条件)
 
 	//当たり判定関数
@@ -102,6 +104,8 @@ private:
 	bool m_isScreenAdd;
 	bool m_isScreenSub;
 
+	
+
 
 /////////////////////////////////	
 	
@@ -113,7 +117,7 @@ private:
 
 	
 	std::shared_ptr<Laser> m_laser;
-	std::shared_ptr<CircleShot> m_circleShot[3];
+	std::shared_ptr<CircleShot> m_circleShot[SHOT_NUM_LIMIT];
 
 
 	//弾の発射フラグ

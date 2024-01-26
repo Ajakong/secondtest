@@ -24,6 +24,8 @@ private:
 	bool m_isAppear = false;
 
 	int m_radius = 0;
+	
+	int m_frame;
 
 	int m_lineThickNess = 5;
 

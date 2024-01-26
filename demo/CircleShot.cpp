@@ -93,7 +93,7 @@ void CircleShot::ShotProgram(const Vec2& Spos,const Vec2& DirVec,const int& grap
 	m_handle = graph;
 }
 
-bool CircleShot::GetShotColli(const Rect& rect)
+bool CircleShot::GetShotColli(const Rect rect)
 {
 	if (m_isVisible == false)
 	{

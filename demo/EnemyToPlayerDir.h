@@ -22,7 +22,7 @@ public:
 
 	void OnHitShot();
 
-	void OnMapCol();
+	void OnMapCol(Vec2 colRange);
 
 	bool OnDie();
 
@@ -42,10 +42,13 @@ private:
 	int m_shotGraph;
 
 	int m_screenMove;
+	Vec2 m_colRange;
 
 	bool m_isShotCollFlag;
 
 	bool m_isDeathFlag;
+
+	bool m_isMapCol = false;
 
 	Vec2 m_targetPos;
 

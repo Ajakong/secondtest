@@ -20,7 +20,7 @@ public:
 
 	bool GetIsDestroy()const { return m_isVisible; }
 
-	bool GetShotColli(const Rect& rect);
+	bool GetShotColli(const Rect rect);
 
 	void setShotBullet() { m_isVisible = false; }
 

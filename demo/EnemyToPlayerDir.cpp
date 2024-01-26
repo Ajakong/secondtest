@@ -11,6 +11,9 @@ namespace
 {
 	constexpr int animDisX = 288;
 	constexpr int animDisY = 112;
+
+	constexpr int collisionSizeX = 75;
+	constexpr int collisionSizeY = 80;
 }
 
 
@@ -24,10 +27,7 @@ EnemyToPlayerDir::EnemyToPlayerDir():
 	m_isShotCollFlag(false),
 	m_attackFrame(0)
 {
-	m_colRect.top = m_pos.y;
-	m_colRect.bottom = m_pos.y + 130;
-	m_colRect.left = m_pos.x-m_screenMove;
-	m_colRect.right = m_pos.x + 75-m_screenMove;
+	
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
@@ -49,9 +49,9 @@ void EnemyToPlayerDir::Init(Vec2 pos,Player* player)
 void EnemyToPlayerDir::CollisionUpdate()
 {
 	m_colRect.top = m_pos.y;
-	m_colRect.bottom = m_pos.y + 130;
+	m_colRect.bottom = m_pos.y + collisionSizeY;
 	m_colRect.left = m_pos.x;
-	m_colRect.right = m_pos.x + 75;
+	m_colRect.right = m_pos.x +collisionSizeX;
 }
 
 void EnemyToPlayerDir::Update()
@@ -61,10 +61,17 @@ void EnemyToPlayerDir::Update()
 	CollisionUpdate();
 	if (m_player != nullptr)
 	{
-		
-		
-		m_velocity.y += 9.8f;
-		m_pos += m_velocity;
+		if (m_isMapCol)
+		{
+			m_velocity.y = 0;
+			
+		}
+		if (!m_isMapCol)
+		{
+			m_velocity.y += 9.8f;
+			m_pos += m_velocity;
+		}
+		m_isMapCol = false;
 	}
 	if (m_pos.y > Game::kScreenHeight - 130)
 	{
@@ -104,10 +111,10 @@ void EnemyToPlayerDir::OnHitShot()
 {
 }
 
-void EnemyToPlayerDir::OnMapCol()
+void EnemyToPlayerDir::OnMapCol(Vec2 colRange)
 {
-	m_velocity.y = -5;
-	m_velocity.x = -m_velocity.x;
+	m_isMapCol = true;
+	m_pos += colRange;
 }
 
 bool EnemyToPlayerDir::OnDie()

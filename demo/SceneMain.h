@@ -98,7 +98,7 @@ private:
 
 	Laser* m_pLaser;
 
-	CircleShot* m_circleShot[3];
+	CircleShot* m_circleShot[SHOT_NUM_LIMIT];
 
 	EneShot* m_eneShot[ENEMY_NUM];
 

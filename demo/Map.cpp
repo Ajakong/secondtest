@@ -133,11 +133,8 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 		{
 			if (m_chipData[h][w] == 1)
 			{
-				
-				
 				if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
 				{
-
 					if (w * kChipWidth + kChipWidth-screenMove >= rect.left && w * kChipWidth-screenMove <= rect.right)
 					{
 						if (rect.top >= (h + 1) * kChipHeight)
@@ -161,6 +158,7 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 	
 }
 
+
 bool Map::IsCollision(Rect& rect, Vec2 velo)
 {
 	for (int h = 0; h < kChipNumY; h++)
@@ -173,6 +171,23 @@ bool Map::IsCollision(Rect& rect, Vec2 velo)
 				{
 					if (w * kChipWidth+kChipWidth - screenMove >= rect.left && w*kChipWidth - screenMove <= rect.right)
 					{
+						if (h * kChipHeight - rect.bottom <= h * kChipHeight + kChipHeight - rect.top)
+						{
+							m_collisionVelocity.x = h * kChipHeight - rect.bottom;
+						}
+						else
+						{
+							m_collisionVelocity.x = h * kChipHeight + kChipHeight - rect.top;
+						}
+						if (w * kChipWidth + kChipWidth - screenMove - rect.left <= w * kChipWidth - screenMove <= rect.right)
+						{
+							m_collisionVelocity.y = w * kChipWidth + kChipWidth - screenMove - rect.left;
+						}
+						else
+						{
+							m_collisionVelocity.y = w * kChipWidth - screenMove - rect.right;
+						}
+
 						if (rect.top > (h + 1) * kChipHeight)
 						{
 							rect.top = (h + 1) * kChipHeight;

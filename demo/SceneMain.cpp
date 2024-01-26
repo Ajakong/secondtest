@@ -21,7 +21,8 @@ SceneMain::SceneMain():
 	m_enemyInterval(0),
 	m_shakeFrame(0),
 	m_gameScreenhandle(0),
-	m_gameScreenHandle(0)
+	m_gameScreenHandle(0),
+	bossZone (false)
 {
 	for (auto& shot : m_pShot)
 	{
@@ -120,11 +121,9 @@ void SceneMain::End()
 {
 }
 
-
-
 void SceneMain::Update()
 {
-	if (bossZone = false)
+	//if (bossZone == false)
 	{
 		CollisionUpdate();
 
@@ -180,10 +179,6 @@ void SceneMain::Update()
 				m_isClear = true;
 			}
 		}
-
-
-
-
 		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
@@ -197,7 +192,6 @@ void SceneMain::Update()
 				}
 			}
 		}
-
 		{
 			//m_pEnemy->GetScreenMove(m_pPlayer->GetVelocity().x);
 			for (int e = 0; e < ENEMY_NUM; e++)
@@ -231,7 +225,6 @@ void SceneMain::Update()
 				}
 			}
 		}
-
 	}
 
 	if (bossZone = true)
@@ -263,7 +256,7 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 			{
 				if (m_circleShot[i] != nullptr)
 				{
@@ -330,7 +323,6 @@ void SceneMain::CollisionUpdate()
 		
 	}
 	
-
 	//toPlayerのCollision
 	if (m_pPlayer != nullptr)
 	{
@@ -351,7 +343,6 @@ void SceneMain::CollisionUpdate()
 			}
 
 		}
-
 
 		//マップとの当たり判定
 		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
@@ -382,7 +373,18 @@ void SceneMain::CollisionUpdate()
 				{
 					if (m_pMap->IsPlayerCollision(m_pEnemyToPlayer[e]->GetCollRect(), 20, m_pEnemyToPlayer[e]->GetVelocity())==true)
 					{
-						m_pEnemyToPlayer[e]->OnMapCol();
+						m_pEnemyToPlayer[e]->OnMapCol(m_pMap->GetCollisionVelocity());
+					}
+				}
+			}
+
+			for (int e = 0; e < ENEMY_NUM; e++)
+			{
+				if (m_eneShot[e] != nullptr)
+				{
+					if (m_pMap->IsCollision(m_eneShot[e]->GetPos(), 20))
+					{
+						m_eneShot[e]->OnCollision();
 					}
 				}
 			}
@@ -424,38 +426,42 @@ void SceneMain::Draw() const
 	int offset = 320 * (1.0f - wipeRate);
 
 	//画面の上から1ラインずつ描画を行っている
-	for (int y = 0; y < Game::kScreenHeight; y++)
-	{
-		int x = sinf(y * 0.05f) * offset;
-		DrawRectGraph(x, y,
-			0, y, Game::kScreenWidth, 1,
-			m_gameScreenHandle, true, false);
-	}
-	m_pBgManager->Draw();
-	m_pPlayer->Draw();
-	for (int e = 0; e < ENEMY_NUM; e++)
-	{
 
-		if (m_pEnemy[e] != nullptr)m_pEnemy[e]->Draw();
-	}
-	if (m_pBoss != nullptr)m_pBoss->Draw();
-	
+	//if (bossZone == false)
 	{
+		for (int y = 0; y < Game::kScreenHeight; y++)
+		{
+			int x = sinf(y * 0.05f) * offset;
+			DrawRectGraph(x, y,
+				0, y, Game::kScreenWidth, 1,
+				m_gameScreenHandle, true, false);
+		}
+		m_pBgManager->Draw();
+		m_pPlayer->Draw();
 		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Draw();
+			if (m_pEnemy[e] != nullptr)m_pEnemy[e]->Draw();
+		}
+		if (m_pBoss != nullptr)m_pBoss->Draw();
+
+		{
+			for (int e = 0; e < ENEMY_NUM; e++)
+			{
+				if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Draw();
+			}
+		}
+
+		m_pMap->Draw();
+
+		if (m_toBoss)
+		{
+			int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
+			SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
+			DrawBox(0, 0, 2000, 1000, 0xffffff, true);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		}
 	}
 	
-	m_pMap->Draw();
-	
-	if(m_toBoss)
-	{
-		int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
-		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-		DrawBox(0, 0, 2000, 1000, 0xffffff, true);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
-	}
 }
 
 void SceneMain::Clear()
@@ -502,7 +508,7 @@ void SceneMain::AddCircleShot(std::shared_ptr<CircleShot> circleShot)
 
 void SceneMain::AddEneShot(std::shared_ptr<EneShot> eneShot)
 {
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		if (m_eneShot[i] == nullptr)
 		{

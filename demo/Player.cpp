@@ -19,6 +19,7 @@ namespace
 
 Player::Player(SceneMain* main) :
 	m_WorldMana(main),
+	m_pos(0,50),
 	m_Hp(100),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
@@ -50,6 +51,8 @@ Player::Player(SceneMain* main) :
 	m_playerCol.left = m_pos.x - 30;
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 80;
+
+	m_playerUpdate = &Player::StartUpdate;
 }
 
 Player::~Player()
@@ -62,8 +65,8 @@ void Player::Init()
 {
 	m_handle = LoadGraph("data/image/PlayerDevil2.png");
 	m_ShotGraph = LoadGraph("data/image/Shot.png");
-	m_pos.x = 612.0f;
-	m_pos.y = 200.0f;
+	m_pos.x = 50.0f;
+	m_pos.y = 50.0f;
 	
 }
 
@@ -370,14 +373,7 @@ void Player::DeleteShot()
 
 void Player::Update()
 {
-	PlayerMove();
-
-	ShotIt();
-
-	DeleteShot();
-
-	VelocityToZero();
-
+	(this->*m_playerUpdate)();
 
 }
 
@@ -441,18 +437,44 @@ void Player::OnDamage()
 	}
 }
 
-void Player::NeutralUpdate()
+void Player::StartUpdate()
 {
-	//ループ時の初期化処理
-	m_isDushFlag = false;
-	shotBulletFlag = false;
-	m_fireDir.y = 0;
-	m_animFrame.x = 0.0f;
-	m_animFrame.y = 0.0f;
 	m_playerCol.top = m_pos.y - 15;
 	m_playerCol.left = m_pos.x - 30;
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 80;
+
+	m_pos.x += 2;
+	m_velocity.y+= 0.5f;
+	m_angle += 1.0f;
+	m_pos.y += m_velocity.y;
+	if(m_isGroundFlag==true)
+	{
+		m_playerUpdate = &Player::NeutralUpdate;
+	}
+	
+}
+
+void Player::NeutralUpdate()
+{
+	////ループ時の初期化処理
+	//m_isDushFlag = false;
+	//shotBulletFlag = false;
+	//m_fireDir.y = 0;
+	//m_animFrame.x = 0.0f;
+	//m_animFrame.y = 0.0f;
+	//m_playerCol.top = m_pos.y - 15;
+	//m_playerCol.left = m_pos.x - 30;
+	//m_playerCol.right = m_pos.x + 30;
+	//m_playerCol.bottom = m_pos.y + 80;
+
+	PlayerMove();
+
+	ShotIt();
+
+	DeleteShot();
+
+	VelocityToZero();
 }
 
 void Player::FaceDownUpdate()
@@ -470,6 +492,51 @@ void Player::FaceDownUpdate()
 }
 
 void Player::JumpingUpdate()
+{
+	//ループ時の初期化処理
+	m_isDushFlag = false;
+	shotBulletFlag = false;
+	m_isGroundFlag == false;
+	m_fireDir.y = 0;
+	m_animFrame.x = 0.0f;
+	m_animFrame.y = 0.0f;
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 80;
+
+
+	if (m_isLeftFlag == false&& Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1)
+	{
+		m_isLeftFlag = false;
+		m_angle = 0.0f;
+		m_velocity.x = 1.5f;
+
+		m_dir.x = 1.0f;
+
+		m_velocity.y -= 1.6f;
+	}
+	else if (m_isLeftFlag == false&& Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	{
+		m_playerUpdate = &Player::FlyingUpdate;
+	}
+	if (m_isLeftFlag == true&& Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1)
+	{
+		m_isLeftFlag = true;
+		m_angle = 4.5f;
+		m_velocity.x = -1.5f;
+
+		m_dir.x = -1.0f;
+
+		m_velocity.y -= 1.6f;
+	}
+	else if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	{
+		m_playerUpdate = &Player::FlyingUpdate;
+	}
+}
+
+void Player::FlyingUpdate()
 {
 }
 
