@@ -142,6 +142,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bg.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossSphere.cpp" />
     <ClCompile Include="CircleShot.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="CollisionMaster.cpp" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Bg.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossSphere.h" />
     <ClInclude Include="CircleShot.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="CollisionMaster.h" />

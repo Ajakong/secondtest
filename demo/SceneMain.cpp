@@ -233,7 +233,7 @@ void SceneMain::Update()
 	}
 	
 	Pad::Update();
-	
+	      
 	
 }
 

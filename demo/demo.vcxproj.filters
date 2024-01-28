@@ -55,6 +55,12 @@
     <Filter Include="ヘッダー ファイル\Effect">
       <UniqueIdentifier>{e1b47027-abba-44a8-8a0c-9eac593475e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Boss">
+      <UniqueIdentifier>{783bda3a-837d-4d2e-ae54-9bf1fe33eb09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Boss">
+      <UniqueIdentifier>{1f02cc0f-900a-4cfb-b066-0f4f60597451}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -147,9 +153,6 @@
     <ClCompile Include="DieEnemyEffect.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="Boss.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Missile.cpp">
       <Filter>ソース ファイル\Shot</Filter>
     </ClCompile>
@@ -170,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="ClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>ソース ファイル\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="BossSphere.cpp">
+      <Filter>ソース ファイル\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +275,6 @@
     <ClInclude Include="DieEnemyEffect.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="Boss.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Missile.h">
       <Filter>ヘッダー ファイル\Shot</Filter>
     </ClInclude>
@@ -289,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="ClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>ヘッダー ファイル\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="BossSphere.h">
+      <Filter>ヘッダー ファイル\Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
