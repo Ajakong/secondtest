@@ -5,6 +5,7 @@
 #include"Shot.h"
 #include "EnemyBase.h"
 #include "Boss.h"
+#include"BossSphere.h"
 #include"EneShot.h"
 #include"Player.h"
 #include"SceneMain.h"
@@ -19,11 +20,13 @@ Boss::Boss() :
 	m_isShotCollFlag(false),
 	m_attackFrame(0)	
 {
+	
 	for (auto& shot : m_shot)
 	{
 		shot = nullptr;
 	}
 
+	m_bossSphere = std::make_shared<BossSphere>(this);
 
 
 	m_colRect.top = m_pos.y;
@@ -31,11 +34,11 @@ Boss::Boss() :
 	m_colRect.left = m_pos.x;
 	m_colRect.right = m_pos.x + 500;
 
-	/*m_shotGraph =  LoadGraph("data/image/eneShot.png") ;
+	m_shotGraph =  LoadGraph("data/image/eneShot.png") ;
 
 	m_WorldMana = new SceneMain;
 	m_player = new Player{ m_WorldMana };
-	m_shot = nullptr;*/
+	//m_shot = nullptr;
 }
 
 
@@ -45,6 +48,7 @@ Boss::~Boss()
 
 void Boss::Init()
 {
+	m_bossSphere->Init();
 }
 
 void Boss::CollisionUpdate()
@@ -68,10 +72,7 @@ void Boss::Update()
 		if (m_distance < 1000)
 		{
 			m_fireDir = m_velocity;
-
 			m_fireDir.Normalize();
-
-
 			for (int i = 0; i < 10; i++)
 			{
 				if (m_attackFrame >= 60)
@@ -80,8 +81,6 @@ void Boss::Update()
 					{
 						m_shot[i] = std::make_shared<EneShot>();
 
-
-
 						//m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph);
 						m_WorldMana->AddEneShot(m_shot[i]);
 						m_attackFrame = 0;
@@ -89,13 +88,7 @@ void Boss::Update()
 
 					}
 				}
-
-
 			}
-
-
-
-
 		}
 		for (int i = 0; i < 10; i++)
 		{
@@ -109,6 +102,9 @@ void Boss::Update()
 			}
 		}
 	}
+
+	//////////
+	m_bossSphere->Update();
 }
 
 void Boss::Draw()
@@ -123,6 +119,9 @@ void Boss::Draw()
 		
 		//DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
 	}
+
+	////////////
+	m_bossSphere->Draw();
 }
 
 void Boss::OnHitShot()

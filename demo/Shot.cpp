@@ -51,7 +51,6 @@ void Shot::Update()
 		{
 			m_isDestroy = true;
 		}
-
 		/*m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
 		m_Velocity.y = (m_enePos.y- m_shotPos.y);
@@ -76,7 +75,6 @@ void Shot::Draw()
 	{
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
 	}
-
 	if (effectFlag == true)
 	{
 		if (m_shotEffect != nullptr)m_shotEffect->Draw();

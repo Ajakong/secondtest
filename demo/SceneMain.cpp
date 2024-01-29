@@ -168,27 +168,22 @@ void SceneMain::Update()
 				}
 			}
 		}
-
 		if (m_toBoss)
 		{
 			m_frame++;
 			if (m_frame >= 60)
 			{
 				bossZone = true;
-
 				m_isClear = true;
 			}
 		}
 		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
 					m_pEnemyToPlayer[e]->ScreenMove(m_pMap->GetScreenMove());
 					m_pEnemyToPlayer[e]->Update();
-
-
 				}
 			}
 		}
@@ -203,9 +198,7 @@ void SceneMain::Update()
 
 					if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
 				}
-
 			}
-
 		}
 
 		if (m_pBoss != nullptr)
@@ -233,14 +226,15 @@ void SceneMain::Update()
 	}
 	
 	Pad::Update();
-	      
-	
 }
 
 void SceneMain::CollisionUpdate()
 {
 	//ToDoオブジェクトそれぞれのRectを配列でとってfor文のiで管理する
-
+	if (m_pBoss != nullptr)
+	{
+		m_pBoss->Update();
+	}
 	for (int e = 0; e < ENEMY_NUM; e++)
 	{//toEnemyのCollision
 		if (m_pEnemy[e] != nullptr)
@@ -278,7 +272,6 @@ void SceneMain::CollisionUpdate()
 			{
 				for (int e = 0; e < ENEMY_NUM; e++)
 				{
-
 					if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 					{
 						int d = 0;
@@ -299,7 +292,6 @@ void SceneMain::CollisionUpdate()
 						//m_pPlayer->OnDamage();
 					}
 				}
-				
 			}
 		}
 	}
@@ -315,18 +307,15 @@ void SceneMain::CollisionUpdate()
 					{
 						m_pEnemyToPlayer[e]->OnDamage(10);
 					}
-
 				}
-
 			}
 		}
-		
 	}
 	
 	//toPlayerのCollision
 	if (m_pPlayer != nullptr)
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < ENEMY_NUM; i++)
 		{
 			if (m_eneShot[i] != nullptr)
 			{
@@ -343,7 +332,18 @@ void SceneMain::CollisionUpdate()
 			}
 
 		}
+		for (int i = 0; i < ENEMY_NUM; i++)
+		{
+			if (m_pEnemyToPlayer[i] != nullptr)
+			{
+				if (m_pPlayer->OnCollision(m_pEnemyToPlayer[i]->GetCollRect()))
+				{
+					//Playerが攻撃を受けた処理	
+					m_pPlayer->OnDamage();
 
+				}
+			}
+		}
 		//マップとの当たり判定
 		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
 		{
@@ -460,6 +460,11 @@ void SceneMain::Draw() const
 			DrawBox(0, 0, 2000, 1000, 0xffffff, true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 		}
+
+		if (m_pBoss != nullptr)
+		{
+			m_pBoss->Draw();
+		}
 	}
 	
 }
@@ -479,7 +484,6 @@ void SceneMain::AddShot(std::shared_ptr<Shot> shot)
 			m_pShot[i] = shot.get();
 			break;
 		}
-		
 	}
 }
 
@@ -488,9 +492,7 @@ void SceneMain::AddLaser(std::shared_ptr<Laser> laser)
 	if (m_pLaser == nullptr)
 	{
 		m_pLaser = laser.get();
-		
 	}
-	
 }
 
 void SceneMain::AddCircleShot(std::shared_ptr<CircleShot> circleShot)
@@ -502,7 +504,6 @@ void SceneMain::AddCircleShot(std::shared_ptr<CircleShot> circleShot)
 			m_circleShot[i] = circleShot.get();
 			break;
 		}
-
 	}
 }
 
@@ -515,6 +516,5 @@ void SceneMain::AddEneShot(std::shared_ptr<EneShot> eneShot)
 			m_eneShot[i] = eneShot.get();
 			break;
 		}
-
 	}
 }

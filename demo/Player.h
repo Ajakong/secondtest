@@ -39,6 +39,8 @@ public:
 
 	//状態別関数(ポインタで呼び出す)
 	void StartUpdate();
+	void IdleUpdate();
+	void WalkingUpdate();
 	void NeutralUpdate();
 	void FaceDownUpdate();
 	void JumpingUpdate();
@@ -82,19 +84,20 @@ private:
 	bool m_isDushFlag;//ダッシュしているか
 	bool m_isFaceDownFlag;//伏せ
 	bool m_isLeftFlag;//左を向いてるかフラグ
+	bool m_isHitFlag=false;//ダメージフラグ
+
+	int m_animInterval=0;
+	int m_animXlimit;
+	int m_visibleLimitTime;//無敵時間
 
 	bool flyFlag;
 	Vec2 flySpeed;//飛行時速度
 	int flyingFrame;
 
 	int m_collisionRadius;//この範囲の中でしか当たり判定を取らない
-	
 	int m_handle;//プレイヤーのgraphHandle;
-	
 	int m_ShotGraph;//弾のグラフィックハンドル
-
 	int m_kindOfBullet;
-
 	int m_Hp;
 
 	float m_angle;

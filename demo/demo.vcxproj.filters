@@ -180,6 +180,9 @@
     <ClCompile Include="BossSphere.cpp">
       <Filter>ソース ファイル\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="PauseScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="BossSphere.h">
       <Filter>ヘッダー ファイル\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

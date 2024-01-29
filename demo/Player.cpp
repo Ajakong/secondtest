@@ -11,7 +11,7 @@
 
 namespace
 {
-	constexpr int animDisX = 188;
+	constexpr int animDisX = 192;
 	constexpr int animDisY = 112;
 	constexpr float shotAngle = 8.0f;
 	constexpr float dushSpeed=6.0f;
@@ -20,11 +20,12 @@ namespace
 Player::Player(SceneMain* main) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(100),
+	m_Hp(50),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
 	m_size(80.0f,112.0f),
+	m_animFrame(0,0),
 	toZeroSpeed(0.5f),
 	flyingFrame(),
 	m_isGroundFlag(false),
@@ -57,7 +58,6 @@ Player::Player(SceneMain* main) :
 
 Player::~Player()
 {
-	
 
 }
 
@@ -67,7 +67,6 @@ void Player::Init()
 	m_ShotGraph = LoadGraph("data/image/Shot.png");
 	m_pos.x = 50.0f;
 	m_pos.y = 50.0f;
-	
 }
 
 void Player::PlayerMove()
@@ -76,7 +75,7 @@ void Player::PlayerMove()
 	m_isDushFlag = false;
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
-	m_animFrame.x = 0.0f;
+	
 	m_animFrame.y = 0.0f;
 	m_playerCol.top = m_pos.y-15;
 	m_playerCol.left = m_pos.x-30;
@@ -90,19 +89,16 @@ void Player::PlayerMove()
 		{
 			m_isDushFlag = true;
 		}
-		
 		if (m_velocity.x > dushSpeed)
 		{
 			m_velocity.x = dushSpeed;
 		}
-
 		m_dir.x = 1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
 	}
 	else if (m_isGroundFlag==true&&Pad::IsPress(PAD_INPUT_LEFT))
-	{
-		
+	{	
 		m_velocity.x -=3.0f;
 		if (Pad::IsPress(PAD_INPUT_6)&&m_isFaceDownFlag==false)
 		{
@@ -112,51 +108,12 @@ void Player::PlayerMove()
 		{
 			m_velocity.x = -dushSpeed;
 		}
-
 		m_dir.x = -1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = true;
 	}
-	if (m_isLeftFlag==false&&m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2)&&m_velocity.y>=-1&&flyFlag==false)
-	{
-		m_isLeftFlag = false;
-		m_angle = 0.0f;
-		m_velocity.x = 1.5f;
-		
-		m_dir.x = 1.0f;
-		
-		m_velocity.y -= 1.6f;
-	}
-	else if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
-	{
-		flyFlag = true;
-	}
-	if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
-	{
-		m_isLeftFlag = true;
-		m_angle = 4.5f;
-		m_velocity.x = -1.5f;
-
-		m_dir.x =- 1.0f;
-
-		m_velocity.y -= 1.6f;
-	}
-	else if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
-	{
-		flyFlag = true;
-
-	}
-	if (Pad::IsPress(PAD_INPUT_UP))
-	{
-		m_fireDir.y -= shotAngle;
-	}
-	if (Pad::IsPress(PAD_INPUT_DOWN))
-	{
-		m_fireDir.y += shotAngle;
-	}
 	if (m_isJumpFlag==false&&Pad::IsPress(PAD_INPUT_2))
 	{
-		
 		m_velocity.y = -35.0f;
 		m_isGroundFlag = false;
 		m_isJumpFlag = true;
@@ -168,25 +125,6 @@ void Player::PlayerMove()
 	m_pos += m_velocity;
 	//伏せ判定は使ったのでfalseにする
 	m_isFaceDownFlag = false;
-	if (m_pos.y > Game::kScreenHeight-45)
-	{
-		m_pos.y = Game::kScreenHeight-45;
-		m_isGroundFlag = true;
-		flyFlag = false;
-	}
-	if (m_pos.x > Game::kScreenWidth-m_size.x)
-	{
-		m_pos.x = Game::kScreenWidth-m_size.x;
-		
-	}
-	if (m_pos.y < 0)
-	{
-		m_pos.y = 0.0f;
-	}
-	if (m_pos.x <0)
-	{
-		m_pos.x = 0.0f;
-	}
 	if (m_isJumpFlag == true && m_isGroundFlag == false)
 	{
 		m_angle += 1.0f;
@@ -196,7 +134,6 @@ void Player::PlayerMove()
 		m_angle = 0.0f;
 		m_isJumpFlag = false;
 	}
-
 	//伏せ
 	if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_DOWN))
 	{
@@ -204,15 +141,23 @@ void Player::PlayerMove()
 		m_animFrame.y = 6.0f;
 		m_isFaceDownFlag = true;
 	}
-
 	if (m_pos.x > Game::kScreenWidth * 6.0f / 8.0f)
 	{
 		m_pos.x = Game::kScreenWidth * 6.0f / 8.0f;
 	}
+	m_animInterval++;
 }
 
 void Player::ShotIt()
 {
+	if (Pad::IsPress(PAD_INPUT_UP))
+	{
+		m_fireDir.y -= shotAngle;
+	}
+	if (Pad::IsPress(PAD_INPUT_DOWN))
+	{
+		m_fireDir.y += shotAngle;
+	}
 	//Shot it!!
 	switch (m_kindOfBullet)
 	{
@@ -314,7 +259,6 @@ void Player::ShotIt()
 
 void Player::DeleteShot()
 {
-
 	if (m_laser != nullptr)
 	{
 		if (m_laser != nullptr)
@@ -329,7 +273,6 @@ void Player::DeleteShot()
 
 
 	}
-
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
 		if (m_shot[i] != nullptr)
@@ -343,8 +286,6 @@ void Player::DeleteShot()
 			}
 		}
 	}
-
-
 	for (int i = 0; i < 3; i++)
 	{
 		if (m_circleShot[i] != nullptr)
@@ -356,7 +297,6 @@ void Player::DeleteShot()
 			}
 		}
 	}
-
 	if (Pad::IsTrigger(PAD_INPUT_3))
 	{
 		m_kindOfBullet++;
@@ -365,7 +305,6 @@ void Player::DeleteShot()
 			m_kindOfBullet = 0;
 		}
 	}
-	
 	m_shotBulletInterval++;
 }
 
@@ -373,18 +312,59 @@ void Player::DeleteShot()
 
 void Player::Update()
 {
-	(this->*m_playerUpdate)();
+	m_velocity.y += 2;//重力
 
+	//ループ時の初期化処理
+	m_isDushFlag = false;
+	shotBulletFlag = false;
+	m_fireDir.y = 0;
+	m_animFrame.y = 0.0f;
+	m_angle = 0.0f;
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 80;
+
+	(this->*m_playerUpdate)();//状態遷移
+
+	if (m_pos.y > Game::kScreenHeight - 45)
+	{
+		m_pos.y = Game::kScreenHeight - 45;
+		m_isGroundFlag = true;
+		flyFlag = false;
+	}
+	if (m_pos.x > Game::kScreenWidth - m_size.x)
+	{
+		m_pos.x = Game::kScreenWidth - m_size.x;
+	}
+	if (m_pos.y < 0)
+	{
+		m_pos.y = 0.0f;
+	}
+	if (m_pos.x < 0)
+	{
+		m_pos.x = 0.0f;
+	}
+	m_visibleLimitTime++;//無敵時間制限は常に加算しておく
+
+	ShotIt();
+	DeleteShot();
+	VelocityToZero();
 }
 
 void Player::Draw()
 {
-	
-	
-
-	DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX*m_animFrame.x, animDisY*m_animFrame.y, animDisX, animDisY,1,m_angle+m_rotateAngle, m_handle,true,m_isLeftFlag,0);
-	
-
+	if(m_visibleLimitTime<60)
+	{
+		if (m_visibleLimitTime % 5 == 1)
+		{
+			DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+		}
+	}
+	else
+	{
+		DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+	}
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
 		if (m_shot[i] !=nullptr)m_shot[i]->Draw();
@@ -397,7 +377,6 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	
 }
 
 void Player::VelocityToZero()
@@ -417,7 +396,6 @@ void Player::VelocityToZero()
 				m_velocity.x = 0.0f;
 			}
 		}
-	
 	if (m_velocity.y > 0)
 	{
 		m_velocity.y -= 0.5f;
@@ -430,6 +408,12 @@ void Player::VelocityToZero()
 
 void Player::OnDamage()
 {
+	if (m_visibleLimitTime < 60)
+	{
+		return;
+	}
+	m_visibleLimitTime = 0;
+	m_isHitFlag = true;
 	m_Hp -= 10;
 	if (m_Hp < 0)
 	{
@@ -450,34 +434,141 @@ void Player::StartUpdate()
 	m_pos.y += m_velocity.y;
 	if(m_isGroundFlag==true)
 	{
-		m_playerUpdate = &Player::NeutralUpdate;
+		m_playerUpdate = &Player::IdleUpdate;
 	}
-	
+}
+
+void Player::IdleUpdate()
+{
+	if (m_animInterval >= 6)
+	{
+		m_animFrame.x++;
+		if (m_animFrame.x >= 14)
+		{
+			m_animFrame.x = 0;
+		}
+		m_animInterval = 0;
+	}
+	if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_RIGHT))
+	{
+		m_isLeftFlag = false;
+		m_playerUpdate = &Player::WalkingUpdate;
+	}
+	if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_LEFT))
+	{
+		m_isLeftFlag = true;
+		m_playerUpdate = &Player::WalkingUpdate;
+	}
+	if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	{
+		m_angle = 0.0f;	
+		m_playerUpdate = &Player::FlyingUpdate;
+	}
+	if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	{
+		m_angle = 4.5f;	
+		m_playerUpdate = &Player::FlyingUpdate;
+	}
+	if (m_isJumpFlag == false && Pad::IsPress(PAD_INPUT_2))
+	{
+		m_playerUpdate = &Player::JumpingUpdate;
+		m_velocity.y = -35.0f;
+		m_isGroundFlag = false;
+		m_isJumpFlag = true;
+		m_angle += 1.0f;
+	}
+	m_animInterval++;
+}
+
+void Player::WalkingUpdate()
+{
+	//ループ時の初期化処理
+	m_isDushFlag = false;
+	shotBulletFlag = false;
+	m_fireDir.y = 0;
+
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 80;
+
+	m_velocity.y += 2;
+	//if(Pad::IsRepeat(PAD_INPUT_UP,))
+	m_pos += m_velocity;
+	//伏せ判定は使ったのでfalseにする
+	m_isFaceDownFlag = false;
+
+	m_animInterval++;
+
+	if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_RIGHT))
+	{
+		m_velocity.x += 3.0f;
+		m_isDushFlag = true;
+		if (Pad::IsPress(PAD_INPUT_6))//ダッシュ
+		{
+			
+		}
+		if (m_velocity.x > dushSpeed)
+		{
+			m_velocity.x = dushSpeed;
+		}
+		m_animFrame.y = 1;
+		if (m_animInterval >= 6)
+		{
+			m_animFrame.x++;
+			if (m_animFrame.x >= 11)
+			{
+				m_animFrame.x = 0;
+			}
+			m_animInterval = 0;
+		}
+		m_dir.x = 1.0f;
+		m_dir.y = 0.0f;
+		m_isLeftFlag = false;
+	}
+	else if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_LEFT))
+	{
+		m_velocity.x -= 3.0f;
+		m_isDushFlag = true;
+		if (Pad::IsPress(PAD_INPUT_6))
+		{
+			
+		}
+		if (m_velocity.x < -dushSpeed)
+		{
+			m_velocity.x = -dushSpeed;
+		}
+		m_animFrame.y = 1;
+		if (m_animInterval >= 6)
+		{
+			m_animFrame.x++;
+			if (m_animFrame.x >= 11)
+			{
+				m_animFrame.x = 0;
+			}
+			m_animInterval = 0;
+		}
+		m_dir.x = -1.0f;
+		m_dir.y = 0.0f;
+		m_isLeftFlag = true;
+	}
+	else
+	{
+		m_playerUpdate = &Player::IdleUpdate;
+	}
+	if (m_isJumpFlag == false && Pad::IsPress(PAD_INPUT_2))
+	{
+		m_playerUpdate = &Player::JumpingUpdate;
+		m_velocity.y = -35.0f;
+		m_isGroundFlag = false;
+		m_isJumpFlag = true;
+		m_angle += 1.0f;
+	}
+	VelocityToZero();
+	ShotIt();
 }
 
 void Player::NeutralUpdate()
-{
-	////ループ時の初期化処理
-	//m_isDushFlag = false;
-	//shotBulletFlag = false;
-	//m_fireDir.y = 0;
-	//m_animFrame.x = 0.0f;
-	//m_animFrame.y = 0.0f;
-	//m_playerCol.top = m_pos.y - 15;
-	//m_playerCol.left = m_pos.x - 30;
-	//m_playerCol.right = m_pos.x + 30;
-	//m_playerCol.bottom = m_pos.y + 80;
-
-	PlayerMove();
-
-	ShotIt();
-
-	DeleteShot();
-
-	VelocityToZero();
-}
-
-void Player::FaceDownUpdate()
 {
 	//ループ時の初期化処理
 	m_isDushFlag = false;
@@ -485,10 +576,27 @@ void Player::FaceDownUpdate()
 	m_fireDir.y = 0;
 	m_animFrame.x = 0.0f;
 	m_animFrame.y = 0.0f;
-	m_playerCol.top = m_pos.y +20;
+	m_playerCol.top = m_pos.y - 15;
 	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 65;
+	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 80;
+
+	PlayerMove();
+	ShotIt();
+	DeleteShot();
+	VelocityToZero();
+}
+
+void Player::FaceDownUpdate()
+{
+	if (m_isJumpFlag == false && Pad::IsTrigger(PAD_INPUT_2))
+	{
+		m_playerUpdate = &Player::JumpingUpdate;
+		m_velocity.y = -35.0f;
+		m_isGroundFlag = false;
+		m_isJumpFlag = true;
+		m_angle += 1.0f;
+	}
 }
 
 void Player::JumpingUpdate()
@@ -505,47 +613,53 @@ void Player::JumpingUpdate()
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 80;
 
-
-	if (m_isLeftFlag == false&& Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1)
+	if (m_isJumpFlag == true)m_fireDir.y += shotAngle / 8;
+	if (m_isJumpFlag == true && m_isGroundFlag == false)
 	{
-		m_isLeftFlag = false;
-		m_angle = 0.0f;
-		m_velocity.x = 1.5f;
-
-		m_dir.x = 1.0f;
-
-		m_velocity.y -= 1.6f;
+		m_angle += 1.0f;
 	}
-	else if (m_isLeftFlag == false&& Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	if (m_isGroundFlag == true)
 	{
+		m_angle = 0.0f;
+		m_isJumpFlag = false;
+		m_playerUpdate = &Player::IdleUpdate;
+	}
+	if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	{
+		m_angle = 0.0f;
 		m_playerUpdate = &Player::FlyingUpdate;
 	}
-	if (m_isLeftFlag == true&& Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1)
+	if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
 	{
-		m_isLeftFlag = true;
 		m_angle = 4.5f;
+		m_playerUpdate = &Player::FlyingUpdate;
+	}
+	ShotIt();
+}
+
+void Player::FlyingUpdate()
+{
+	if (!m_isLeftFlag)
+	{
 		m_velocity.x = -1.5f;
 
 		m_dir.x = -1.0f;
 
 		m_velocity.y -= 1.6f;
 	}
-	else if (m_isLeftFlag == true && m_isGroundFlag == false && Pad::IsRelase(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	if (m_isLeftFlag)
 	{
-		m_playerUpdate = &Player::FlyingUpdate;
+		m_velocity.x = 1.5f;
+
+		m_dir.x = 1.0f;
+
+		m_velocity.y -= 1.6f;
 	}
+	ShotIt();
 }
-
-void Player::FlyingUpdate()
-{
-}
-
-
 
 void Player::OnMapCollision()
 {
-	
-	
 	if(m_velocity.y>0)
 	{
 		m_pos.y = m_playerCol.bottom - 45;
@@ -564,28 +678,21 @@ void Player::OnMapCollision()
 	//	m_pos.x = m_playerCol.left;//こっちは右側
 	//	m_velocity.x = 0;
 	//}
-	
-	
 }
 
 bool Player::OnCollision(Rect rect)
 {
-	
-	if (m_pos.y- 112 / 2 <= rect.bottom && m_pos.y + 112/2  >= rect.top)
+	if (m_pos.y- 15 <= rect.bottom && m_pos.y + 80  >= rect.top)
 	{
-		if (m_pos.x + 188/2  >= rect.left && m_pos.x- 188 / 2 <= rect.right)
+		if (m_pos.x +30  >= rect.left && m_pos.x- 30 <= rect.right)
 		{
-			
-			
 			return true;
-
 		}
 	}
 	else
 	{
 		return false;
 	}
-	
 }
 
 

@@ -6,6 +6,8 @@
 #include "GameOverScene.h"
 #include"ClearScene.h"
 #include"SceneMain.h"
+#include"Pad.h"
+#include"PauseScene.h"
 
 
 GamePlayingScene::GamePlayingScene(SceneManager& manager) :
@@ -54,6 +56,11 @@ void GamePlayingScene::NormalUpdate()
 	}
 	m_fps = GetFPS();
 	m_btnFrame++;
+
+	if (Pad::IsPress(PAD_INPUT_R))//XBOXコントローラーのSTART
+	{
+		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
+	}
 }
 
 void GamePlayingScene::FadeOutUpdate()
@@ -63,7 +70,7 @@ void GamePlayingScene::FadeOutUpdate()
 	{
 		if (60 <= m_frame)
 		{
-			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
 		}
 	}
 	if (m_Scene->GetClearFlag())

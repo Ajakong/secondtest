@@ -24,7 +24,9 @@ public:
 
 	void OnMapCol(Vec2 colRange);
 
-	bool OnDie();
+
+
+	bool OnDie() { return m_isDeathFlag; }
 
 	Rect& GetCollRect() { return m_colRect; }
 
@@ -41,12 +43,16 @@ private:
     int m_attackFrame;
 	int m_shotGraph;
 
+	int m_animInterval=0;
+
 	int m_screenMove;
 	Vec2 m_colRange;
 
 	bool m_isShotCollFlag;
 
-	bool m_isDeathFlag;
+	bool m_isDeathFlag=false;
+
+	bool m_isDesitionMyWay = false;
 
 	bool m_isMapCol = false;
 

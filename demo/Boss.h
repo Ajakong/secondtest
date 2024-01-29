@@ -2,6 +2,7 @@
 #include "EnemyBase.h"
 
 class Missile;
+class BossSphere;
 
 class Boss :
     public EnemyBase
@@ -15,7 +16,7 @@ public:
 	virtual void Update();
 	void Draw();
 
-
+	
 
 	void OnDamage(int Atk) { m_Hp - Atk; }
 
@@ -71,6 +72,7 @@ private:
 
 	//////////*ShotŠÖ˜A*///////////
 	std::shared_ptr<EneShot> m_shot[10];
+	std::shared_ptr<BossSphere> m_bossSphere;
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
 	bool shotBulletFlag;
