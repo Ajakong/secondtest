@@ -469,13 +469,14 @@ void Player::IdleUpdate()
 		m_angle = 4.5f;	
 		m_playerUpdate = &Player::FlyingUpdate;
 	}
-	if (m_isJumpFlag == false && Pad::IsPress(PAD_INPUT_2))
+	if (Pad::IsPress(PAD_INPUT_2))
 	{
-		m_playerUpdate = &Player::JumpingUpdate;
+		
 		m_velocity.y = -35.0f;
 		m_isGroundFlag = false;
 		m_isJumpFlag = true;
 		m_angle += 1.0f;
+		m_playerUpdate = &Player::JumpingUpdate;
 	}
 	m_animInterval++;
 }

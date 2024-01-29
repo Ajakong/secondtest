@@ -10,7 +10,7 @@
 #include"Player.h"
 #include"SceneMain.h"
 
-Boss::Boss() :
+Boss::Boss(SceneMain* mana) :
 	m_isDeathFlag(false),
 	m_Hp(1600),
 	m_pos(8000.0f, 0.0f),
@@ -21,10 +21,10 @@ Boss::Boss() :
 	m_attackFrame(0)	
 {
 	
-	for (auto& shot : m_shot)
+	/*for (auto& shot : m_shot)
 	{
 		shot = nullptr;
-	}
+	}*/
 
 	m_bossSphere = std::make_shared<BossSphere>(this);
 
@@ -34,9 +34,9 @@ Boss::Boss() :
 	m_colRect.left = m_pos.x;
 	m_colRect.right = m_pos.x + 500;
 
-	m_shotGraph =  LoadGraph("data/image/eneShot.png") ;
+	/*m_shotGraph =  LoadGraph("data/image/eneShot.png") ;*/
 
-	m_WorldMana = new SceneMain;
+	m_WorldMana = mana;
 	m_player = new Player{ m_WorldMana };
 	//m_shot = nullptr;
 }
@@ -77,20 +77,20 @@ void Boss::Update()
 			{
 				if (m_attackFrame >= 60)
 				{
-					if (m_shot[i] == nullptr)
-					{
-						m_shot[i] = std::make_shared<EneShot>();
+					//if (m_shot[i] == nullptr)
+					//{
+					//	m_shot[i] = std::make_shared<EneShot>();
 
-						//m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph);
-						m_WorldMana->AddEneShot(m_shot[i]);
-						m_attackFrame = 0;
-						break;
+					//	//m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph);
+					//	m_WorldMana->AddEneShot(m_shot[i]);
+					//	m_attackFrame = 0;
+					//	break;
 
-					}
+					//}
 				}
 			}
 		}
-		for (int i = 0; i < 10; i++)
+		/*for (int i = 0; i < 10; i++)
 		{
 			if (m_shot[i] != nullptr)
 			{
@@ -100,7 +100,7 @@ void Boss::Update()
 					m_shot[i] = nullptr;
 				}
 			}
-		}
+		}*/
 	}
 
 	//////////

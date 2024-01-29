@@ -13,10 +13,6 @@ namespace
 
 using namespace std;
 
-
-
-
-
 class Player;
 class ImageGroundManager;
 class EnemyBase;

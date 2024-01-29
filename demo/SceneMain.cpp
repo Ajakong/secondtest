@@ -40,7 +40,7 @@ SceneMain::SceneMain():
 	m_pPlayer = new Player{this};
 	m_pMap = new Map{m_pPlayer};
 	m_pBgManager = new ImageGroundManager;
-	m_pBoss = new Boss;
+	m_pBoss = new Boss{this};
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase;
 	for (int e = 0; e < ENEMY_NUM; e++)
 	{

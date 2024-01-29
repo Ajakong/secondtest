@@ -4,11 +4,10 @@
 class Missile;
 class BossSphere;
 
-class Boss :
-    public EnemyBase
+class Boss 
 {
 public:
-	Boss();
+	Boss(SceneMain* mana);
 	~Boss();
 
 	void Init();
@@ -71,7 +70,7 @@ private:
 	Player* m_player;
 
 	//////////*ShotŠÖ˜A*///////////
-	std::shared_ptr<EneShot> m_shot[10];
+	/*std::shared_ptr<EneShot> m_shot[10];*/
 	std::shared_ptr<BossSphere> m_bossSphere;
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
