@@ -28,7 +28,6 @@ Boss::Boss(SceneMain* mana) :
 
 	m_bossSphere = std::make_shared<BossSphere>(this);
 
-
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + 896;
 	m_colRect.left = m_pos.x;
@@ -40,7 +39,6 @@ Boss::Boss(SceneMain* mana) :
 	m_player = new Player{ m_WorldMana };
 	//m_shot = nullptr;
 }
-
 
 Boss::~Boss()
 {
@@ -54,7 +52,6 @@ void Boss::Init()
 void Boss::CollisionUpdate()
 {
 }
-
 
 void Boss::Update()
 {

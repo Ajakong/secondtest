@@ -25,6 +25,8 @@ public:
 
 	void ScreenMove(int screenMove) { m_screenMove = screenMove; };
 
+	
+
 	bool OnDie();
 
 	void GetSceneMain(SceneMain* sceneMain) { m_WorldMana = sceneMain; }
@@ -32,6 +34,8 @@ public:
 	Rect GetCollRect()const { return m_colRect; }
 
 	Vec2 GetEnePos() { return m_pos; }
+
+
 
 	
 private:
