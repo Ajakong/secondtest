@@ -37,12 +37,12 @@ private:
 	//ベクトルの向き
 	Vec2 m_DirVec;
 	//Shotのグラフィックハンドル
-	int m_handle;
-	int m_graph;
+	int m_handle=0;
+	int m_graph=0;
 
 	Sqhere m_collider;
 
-	int m_radius;
+	int m_radius=0;
 
 	bool m_isVisible = true;
 

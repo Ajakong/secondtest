@@ -79,33 +79,33 @@ private:
 	Vec2 m_fireDir;//照準の方向
 	Vec2 m_bulletStartPos;//弾の生成位置
 	//フラグ
-	bool m_isGroundFlag;//地面と接触している
-	bool m_isJumpFlag;//ジャンプ中を読み取るFlag
-	bool m_isDushFlag;//ダッシュしているか
-	bool m_isFaceDownFlag;//伏せ
-	bool m_isLeftFlag;//左を向いてるかフラグ
+	bool m_isGroundFlag=false;//地面と接触している
+	bool m_isJumpFlag=false;//ジャンプ中を読み取るFlag
+	bool m_isDushFlag=false;//ダッシュしているか
+	bool m_isFaceDownFlag=false;//伏せ
+	bool m_isLeftFlag=false;//左を向いてるかフラグ
 	bool m_isHitFlag=false;//ダメージフラグ
 
 	int m_animInterval=0;
-	int m_animXlimit;
-	int m_visibleLimitTime;//無敵時間
+	int m_animXlimit=0;
+	int m_visibleLimitTime=0;//無敵時間
 
-	bool flyFlag;
+	bool flyFlag=false;
 	Vec2 flySpeed;//飛行時速度
-	int flyingFrame;
+	int flyingFrame=0;
 
-	int m_collisionRadius;//この範囲の中でしか当たり判定を取らない
-	int m_handle;//プレイヤーのgraphHandle;
-	int m_ShotGraph;//弾のグラフィックハンドル
-	int m_kindOfBullet;
-	int m_Hp;
+	int m_collisionRadius=0;//この範囲の中でしか当たり判定を取らない
+	int m_handle=0;//プレイヤーのgraphHandle;
+	int m_ShotGraph=0;//弾のグラフィックハンドル
+	int m_kindOfBullet=0;
+	int m_Hp=0;
 
-	float m_angle;
-	float m_rotateAngle;
-	float toZeroSpeed;
+	float m_angle=0.0f;
+	float m_rotateAngle=0.0f;
+	float toZeroSpeed=0.0f;
 
-	bool m_isScreenAdd;
-	bool m_isScreenSub;
+	bool m_isScreenAdd=false;
+	bool m_isScreenSub=false;
 
 	
 
@@ -124,7 +124,7 @@ private:
 
 
 	//弾の発射フラグ
-	bool shotBulletFlag;
+	bool shotBulletFlag=false;
 	int m_shotBulletInterval = 20;
 
 ///////////////////////////////

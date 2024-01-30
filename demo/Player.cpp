@@ -459,7 +459,7 @@ void Player::IdleUpdate()
 		m_isLeftFlag = true;
 		m_playerUpdate = &Player::WalkingUpdate;
 	}
-	if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	/*if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
 	{
 		m_angle = 0.0f;	
 		m_playerUpdate = &Player::FlyingUpdate;
@@ -468,8 +468,8 @@ void Player::IdleUpdate()
 	{
 		m_angle = 4.5f;	
 		m_playerUpdate = &Player::FlyingUpdate;
-	}
-	if (Pad::IsPress(PAD_INPUT_2))
+	}*/
+	if (Pad::IsTrigger(PAD_INPUT_2))
 	{
 		
 		m_velocity.y = -35.0f;
@@ -557,7 +557,7 @@ void Player::WalkingUpdate()
 	{
 		m_playerUpdate = &Player::IdleUpdate;
 	}
-	if (m_isJumpFlag == false && Pad::IsPress(PAD_INPUT_2))
+	if (Pad::IsPress(PAD_INPUT_2))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
 		m_velocity.y = -35.0f;
@@ -583,9 +583,7 @@ void Player::NeutralUpdate()
 	m_playerCol.bottom = m_pos.y + 80;
 
 	PlayerMove();
-	ShotIt();
-	DeleteShot();
-	VelocityToZero();
+	
 }
 
 void Player::FaceDownUpdate()
@@ -602,30 +600,17 @@ void Player::FaceDownUpdate()
 
 void Player::JumpingUpdate()
 {
-	//ƒ‹[ƒvŽž‚Ì‰Šú‰»ˆ—
-	m_isDushFlag = false;
-	shotBulletFlag = false;
-	m_isGroundFlag == false;
-	m_fireDir.y = 0;
-	m_animFrame.x = 0.0f;
-	m_animFrame.y = 0.0f;
-	m_playerCol.top = m_pos.y - 15;
-	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
-
-	if (m_isJumpFlag == true)m_fireDir.y += shotAngle / 8;
-	if (m_isJumpFlag == true && m_isGroundFlag == false)
-	{
-		m_angle += 1.0f;
-	}
+	
+	m_fireDir.y += shotAngle / 8;
+	m_angle += 1.0f;
+	
 	if (m_isGroundFlag == true)
 	{
 		m_angle = 0.0f;
 		m_isJumpFlag = false;
 		m_playerUpdate = &Player::IdleUpdate;
 	}
-	if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
+	/*if (m_isLeftFlag == false && m_isGroundFlag == false && Pad::IsPress(PAD_INPUT_2) && m_velocity.y >= -1 && flyFlag == false)
 	{
 		m_angle = 0.0f;
 		m_playerUpdate = &Player::FlyingUpdate;
@@ -634,7 +619,8 @@ void Player::JumpingUpdate()
 	{
 		m_angle = 4.5f;
 		m_playerUpdate = &Player::FlyingUpdate;
-	}
+	}*/
+	m_pos += m_velocity;
 	ShotIt();
 }
 

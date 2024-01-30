@@ -36,15 +36,15 @@ private:
 	static constexpr int kChipNumY = Game::kScreenHeight / kChipHeight;
 
 private:
-	int m_handle;
-	int m_graphX;
-	int m_graphY;
-	int graphRateX;
+	int m_handle=0;
+	int m_graphX=0;
+	int m_graphY=0;
+	int graphRateX=0;
 
 
 	// グラフィックに含まれるマップチップの数
-	int m_graphChipNumX;
-	int m_graphChipNumY;
+	int m_graphChipNumX=0;
+	int m_graphChipNumY=0;
 
 	// マップチップの配置情報
 	int m_chipData[kChipNumY][kChipNumX];

@@ -62,7 +62,7 @@ private:
 
 	bool m_isVisible = true;
 
-	bool m_isDestroy;
+	bool m_isDestroy=false;
 
 	bool effectFlag=false;
 

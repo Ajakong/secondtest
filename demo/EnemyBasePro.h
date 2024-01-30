@@ -43,21 +43,21 @@ public:
 	Vec2 GetEnePos() { return m_pos; }
 
 private:
-	int m_Hp;
+	int m_Hp=0;
 
-	int m_handle;
+	int m_handle=0;
 
-	int m_attackFrame;
+	int m_attackFrame=0;
 
-	int m_shotGraph;
+	int m_shotGraph=0;
 
-	int m_distance;
+	int m_distance=0;
 
-	int m_screenMove;
+	int m_screenMove=0;
 
-	bool m_isShotCollFlag;
+	bool m_isShotCollFlag=0;
 
-	bool m_isDeathFlag;
+	bool m_isDeathFlag=0;
 
 	Vec2 m_targetPos;
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü
@@ -79,7 +79,7 @@ private:
 	std::shared_ptr<EneShot> m_shot[10];
 	std::shared_ptr<EneShotEffect>m_shotEffect[10];
 	//’e‚Ì”­Ëƒtƒ‰ƒO
-	bool shotBulletFlag;
+	bool shotBulletFlag=false;
 
 	///////////////////////////////
 

@@ -40,8 +40,8 @@ private:
     Vec2 m_expLine;//ƒŒ[ƒU[‚Ì1ŸŠÖ”
     int b = 0;//Ø•Ğ
 
-    bool m_isVisible;
+    bool m_isVisible=false;
 
-    int m_limitTime;
+    int m_limitTime=0;
 };
 

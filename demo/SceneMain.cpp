@@ -59,8 +59,8 @@ SceneMain::SceneMain():
 	m_enePos[8] = Vec2(5000, 0);
 	m_enePos[9] = Vec2(5500, 800);
 
-	m_eneToPlayerPos[0] = Vec2(500, 0);
-	m_eneToPlayerPos[1] = Vec2(550, 0);
+	m_eneToPlayerPos[0] = Vec2(800, 0);
+	m_eneToPlayerPos[1] = Vec2(850, 0);
 	m_eneToPlayerPos[2] = Vec2(600, 0);
 	m_eneToPlayerPos[3] = Vec2(1200, 0);
 	m_eneToPlayerPos[4] = Vec2(1250, 0);

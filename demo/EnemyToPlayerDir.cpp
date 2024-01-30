@@ -26,7 +26,8 @@ EnemyToPlayerDir::EnemyToPlayerDir():
 	animFrameMana(0, 0),
 	m_fireDir(1.0f, 0.0f),
 	m_isShotCollFlag(false),
-	m_attackFrame(0)
+	m_attackFrame(0),
+	m_isDesitionMyWay(false)
 {
 }
 
@@ -39,6 +40,7 @@ void EnemyToPlayerDir::Init(Vec2 pos,Player* player)
 	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	m_pos = pos;
 	m_player = player;
+	m_velocity.y = 0;
 }
 
 void EnemyToPlayerDir::CollisionUpdate()
@@ -51,18 +53,24 @@ void EnemyToPlayerDir::CollisionUpdate()
 
 void EnemyToPlayerDir::Update()
 {
-	m_velocity.y = 0;
+	m_velocity.y =0.0f;
 	m_velocity.y += 9.8f;
 	CollisionUpdate();
-	if(abs(m_player->GetPos().x - m_pos.x)<500)
+	
+	if (m_player != nullptr)
 	{
-		if (m_isDesitionMyWay == false)
+		if (abs(m_player->GetPos().x - m_pos.x) < 300)
 		{
-			m_velocity.x = m_player->GetPos().x - m_pos.x;
-			m_velocity.Normalize();
-			m_isDesitionMyWay = true;
+			if (m_isDesitionMyWay == false)
+			{
+				m_velocity.x = m_player->GetPos().x - m_pos.x;
+				m_velocity.Normalize();
+				m_isDesitionMyWay = true;
+			}
 		}
+
 	}
+	
 	
 	if(m_isDesitionMyWay)
 	{

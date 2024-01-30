@@ -86,7 +86,7 @@ void Application::Run()
             while (16667 > GetNowHiPerformanceCount() - time) {};
         }
     }
-    //Terminate();
+    Terminate();
 }
 
 const Size& Application::GetWindowSize() const

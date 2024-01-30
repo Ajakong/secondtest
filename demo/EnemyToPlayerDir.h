@@ -36,19 +36,20 @@ public:
 
 	void GetSceneMain(SceneMain* sceneMain) { m_WorldMana = sceneMain; }
 private:
-    int m_Hp;
+    int m_Hp=0;
 
-    int m_handle;
+    int m_handle=0;
 
-    int m_attackFrame;
-	int m_shotGraph;
+    int m_attackFrame=0;
+	int m_shotGraph=0;
 
 	int m_animInterval=0;
 
-	int m_screenMove;
+	int m_screenMove=0;
+
 	Vec2 m_colRange;
 
-	bool m_isShotCollFlag;
+	bool m_isShotCollFlag=false;
 
 	bool m_isDeathFlag=false;
 
@@ -76,7 +77,7 @@ private:
 	
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
-	bool shotBulletFlag;
+	bool shotBulletFlag=false;
 
 	///////////////////////////////
 

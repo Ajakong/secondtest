@@ -85,6 +85,7 @@ void Title::FadeOutUpdate()
 
 void Title::FadeDraw()
 {
+	
 	DrawRotaGraph(graphPosX, graphPosY,0.8,0, m_handle, true);
 	// í èÌÇÃï`âÊ
 	DrawRotaString(drawStringPosX, drawStringPosY+m_fadeFrame,3,3,0,0,0, 0xffffbb,0,0, "Press any button");

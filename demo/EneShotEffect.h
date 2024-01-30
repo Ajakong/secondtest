@@ -16,7 +16,7 @@ public:
 	void Update();
 	void Draw();
 
-	void WantHitPos(EneShot* shot, const Vec2& pos) { m_shot = shot; m_pos = pos; m_isAppear = true; }
+	void WantHitPos(EneShot* shot, const Vec2 pos) { m_shot = shot; m_pos = pos; m_isAppear = true; }
 
 private:
 	Vec2 m_pos;
