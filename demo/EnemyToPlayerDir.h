@@ -2,8 +2,7 @@
 #include"Vec2.h"
 #include "EnemyBase.h"
 
-class EnemyToPlayerDir :
-    public EnemyBase
+class EnemyToPlayerDir
 {
 public:
     EnemyToPlayerDir();
@@ -11,12 +10,12 @@ public:
 
     virtual void Init(Vec2 pos, Player* player) ;
 	void CollisionUpdate();
-    virtual void Update() override;
+    virtual void Update();
     virtual void Draw();
 
 	void WantPlayerPoint(Player* player);
 
-	void OnDamage(int Atk) { m_Hp - Atk; }
+	void OnDamage(int Atk = 0);
 
 	void ScreenMove(int screenmove) { m_screenMove = screenmove; };
 
@@ -56,6 +55,10 @@ private:
 	bool m_isDesitionMyWay = false;
 
 	bool m_isMapCol = false;
+
+	bool m_isAttack = false;
+
+	bool m_isRight = false;
 
 	Vec2 m_targetPos;
 

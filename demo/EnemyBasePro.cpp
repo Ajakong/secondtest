@@ -115,7 +115,7 @@ void EnemyBasePro::Update()
 
 
 
-						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i]);
+						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i],m_shot[i]);
 						m_WorldMana->AddEneShot(m_shot[i]);
 						m_attackFrame = 0;
 						break;

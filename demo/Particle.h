@@ -17,7 +17,9 @@ public:
 
 private:
 	Vec2 m_pos;
-	
+	Vec2 m_velocity;
 
+	int m_num;
+	int a;
 };
 

@@ -11,7 +11,7 @@
 namespace
 {
 	constexpr int animDisX = 288;
-	constexpr int animDisY = 112;
+	constexpr int animDisY = 162;
 
 	constexpr int collisionSizeX = 75;
 	constexpr int collisionSizeY = 80;
@@ -59,7 +59,7 @@ void EnemyToPlayerDir::Update()
 	
 	if (m_player != nullptr)
 	{
-		if (abs(m_player->GetPos().x - m_pos.x) < 300)
+		//if (abs(m_player->GetPos().x - m_pos.x) < 300)
 		{
 			if (m_isDesitionMyWay == false)
 			{
@@ -68,10 +68,21 @@ void EnemyToPlayerDir::Update()
 				m_isDesitionMyWay = true;
 			}
 		}
-
 	}
-	
-	
+
+	if (abs(m_player->GetPos().x - m_pos.x) < 50)
+	{
+		m_isAttack = true;
+		if ((m_player->GetPos().x - m_pos.x) < 0)
+		{
+			m_isRight = false;
+		}
+		else
+		{
+			m_isRight = true;
+		}
+	}
+
 	if(m_isDesitionMyWay)
 	{
 		
@@ -80,7 +91,20 @@ void EnemyToPlayerDir::Update()
 			
 			m_isMapCol = false;
 		}
-
+		if (m_animInterval > 6)
+		{
+			animFrameMana.y = 2;
+			animFrameMana.x++;
+			m_animInterval = 0;
+			if (animFrameMana.x > 11)
+			{
+				animFrameMana.x = 0;
+			}
+		}
+		
+	}
+	if (!m_isDesitionMyWay)
+	{
 		if (m_animInterval > 6)
 		{
 			animFrameMana.x++;
@@ -91,19 +115,21 @@ void EnemyToPlayerDir::Update()
 			}
 		}
 	}
-	m_pos += m_velocity;
-	m_animInterval++;
+	
 	if (m_Hp <= 0)
 	{
 		m_isDeathFlag = true;
 	}
+	
+	m_pos += m_velocity;
+	m_animInterval++;
 }
 
 void EnemyToPlayerDir::Draw()
 {
 	if (m_isDeathFlag == false)
 	{
-		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
+		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, m_isRight, m_handle, true);
 		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
 	}
 }
@@ -111,6 +137,11 @@ void EnemyToPlayerDir::Draw()
 void EnemyToPlayerDir::WantPlayerPoint(Player* player)
 {
 	m_player = player;
+}
+
+void EnemyToPlayerDir::OnDamage(int Atk)
+{
+	m_Hp -= Atk;
 }
 
 void EnemyToPlayerDir::OnHitShot()

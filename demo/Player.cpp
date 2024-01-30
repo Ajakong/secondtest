@@ -319,7 +319,7 @@ void Player::Update()
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
 	m_animFrame.y = 0.0f;
-	m_angle = 0.0f;
+	
 	m_playerCol.top = m_pos.y - 15;
 	m_playerCol.left = m_pos.x - 30;
 	m_playerCol.right = m_pos.x + 30;
@@ -408,7 +408,7 @@ void Player::VelocityToZero()
 
 void Player::OnDamage()
 {
-	if (m_visibleLimitTime < 60)
+	if (m_visibleLimitTime < 70)
 	{
 		return;
 	}
@@ -440,6 +440,7 @@ void Player::StartUpdate()
 
 void Player::IdleUpdate()
 {
+	m_angle = 0;
 	if (m_animInterval >= 6)
 	{
 		m_animFrame.x++;
@@ -676,10 +677,10 @@ bool Player::OnCollision(Rect rect)
 			return true;
 		}
 	}
-	else
-	{
-		return false;
-	}
+	
+	
+	return false;
+	
 }
 
 

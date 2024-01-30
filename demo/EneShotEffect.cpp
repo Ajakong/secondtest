@@ -2,7 +2,8 @@
 #include"EneShot.h"
 #include"EneShotEffect.h"
 
-EneShotEffect::EneShotEffect()
+EneShotEffect::EneShotEffect():
+	m_pos(0,0)
 {
 
 }

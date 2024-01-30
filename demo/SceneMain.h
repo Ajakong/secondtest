@@ -5,6 +5,7 @@
 #include<memory>
 #include <vector>
 #include <map>
+#include"Particle.h"
 
 namespace
 {
@@ -23,6 +24,7 @@ class EneShot;
 class Shot;
 class Laser;
 class CircleShot;
+class Particle;
 
 class ShotEffect;
 
@@ -42,6 +44,8 @@ public:
 	void Update();
 	void CollisionUpdate();
 	void Draw() const;
+
+	void CreateEnemy(Vec2 pos,int enemyNumber);
 
 	void GameOver() { m_isGameOver = true; }
 	bool GetGameOverFlag() { return m_isGameOver; }
@@ -72,6 +76,8 @@ private:
 
 	bool m_isGameOver = false;
 
+	bool m_isCreateEnemyFlag;//  ToDo:特定の場所にプレイヤーが来たときtrueにし、敵を生成後すぐにfalse
+
 	bool m_toBoss = false;
 
 	bool m_isClear = false;
@@ -91,6 +97,8 @@ private:
 
 	Shot* m_pShot[SHOT_NUM_LIMIT];
 	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
+
+	
 
 	Laser* m_pLaser;
 

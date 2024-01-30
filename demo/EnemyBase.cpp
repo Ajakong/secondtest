@@ -86,7 +86,7 @@ void EnemyBase::Update()
 						m_shot[i] = std::make_shared<EneShot>();
 
 						m_pos.x -= m_screenMove;
-						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i]);
+						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i],m_shot[i]);
 						m_WorldMana->AddEneShot(m_shot[i]);
 						m_attackFrame = 0;
 						m_pos.x += m_screenMove;

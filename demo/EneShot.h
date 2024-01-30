@@ -15,9 +15,9 @@ public:
 
 
 	//Shotのプログラミング統括
-	void ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect);
+	void ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect, std::shared_ptr<EneShot>shotPointer);
 
-	bool GetIsDestroy()const { return m_isVisible; }
+	bool GetIsDestroy()const { return m_isDestroy; }
 
 	bool GetShotColli(const Rect& rect);
 	void OnCollision();
@@ -25,6 +25,8 @@ public:
 	void setShotBullet() { m_isVisible = false; }
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
+
+	void GetScreenMove(int screenmove) {  }
 
 	Vec2 GetPos() { return m_shotPos; }
 
@@ -44,6 +46,8 @@ private:
 
 	int m_radius=0;
 
+	
+
 	bool m_isVisible = true;
 
 	bool m_isEffectFlag = false;
@@ -54,6 +58,7 @@ private:
 
 	Player* m_player;
 	EnemyBase* m_enemy;
+	std::shared_ptr<EneShot>m_myPointer;
 
 	std::shared_ptr<EneShotEffect> m_shotEffect;
 };

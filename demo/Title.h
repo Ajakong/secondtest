@@ -1,5 +1,7 @@
 #pragma once
 #include "Scene.h"
+#include"Particle.h"
+
 class Title : public Scene
 {
 public:
@@ -21,6 +23,8 @@ private:
 	int m_fadeFrame = 60;
 
 	int m_handle;
+
+	Particle* m_particle;
 
 	// 更新メンバ関数ポインタ
 	void(Title::* m_updateFunc)();

@@ -28,6 +28,7 @@ void EneShot::Init()
 
 void EneShot::Update()
 {
+	
 	//collisionÇÃçXêV
 	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
@@ -50,8 +51,7 @@ void EneShot::Update()
 		m_Velocity.Normalize();*/
 
 		m_Velocity.Normalize();
-		m_shotPos += m_Velocity * 20.0f;
-
+		m_shotPos += m_Velocity * 50.0f;
 
 
 	}
@@ -80,12 +80,12 @@ void EneShot::Draw()
 	}
 }
 
-void EneShot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect)
+void EneShot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect, std::shared_ptr<EneShot>shotPointer)
 {
 	m_isVisible = false;
 	m_shotPos = Spos;
 	m_Velocity = DirVec;
-
+	m_myPointer = shotPointer;
 	m_handle = graph;
 	m_shotEffect = eneShotEffect;
 }
@@ -96,26 +96,28 @@ bool EneShot::GetShotColli(const Rect& rect)
 {
 	if (m_isVisible == false)
 	{
+
 		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
 		{
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
 			{
 				m_isVisible = true;
 				m_isEffectFlag = true;
-				m_shotEffect->WantHitPos(this, m_shotPos);
+				m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
 				return true;
+
 			}
 		}
 	}
-	
+
 	return false;
-	
-	
+
+
 }
 
 void EneShot::OnCollision()
 {
 	m_isVisible = true;
 	m_isEffectFlag = true;
-	m_shotEffect->WantHitPos(this, m_shotPos);
+	m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
 }

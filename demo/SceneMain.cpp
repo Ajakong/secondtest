@@ -41,11 +41,9 @@ SceneMain::SceneMain():
 	m_pMap = new Map{m_pPlayer};
 	m_pBgManager = new ImageGroundManager;
 	m_pBoss = new Boss{this};
+	
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase;
-	for (int e = 0; e < ENEMY_NUM; e++)
-	{
-		m_pEnemyToPlayer[e] = new EnemyToPlayerDir;
-	}
+	
 	m_pLaser = nullptr;
 
 	m_enePos[0] = Vec2(100, 50);
@@ -110,11 +108,11 @@ void SceneMain::Init()
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	for (int e = 0; e < ENEMY_NUM ; e++)
+	for (int e = 0; e < ENEMY_NUM; e++)
 	{
-		m_pEnemyToPlayer[e]->GetSceneMain(this);
-		m_pEnemyToPlayer[e]->Init(m_eneToPlayerPos[e],m_pPlayer);
+		CreateEnemy(m_eneToPlayerPos[e],e);
 	}
+	
 }
 
 void SceneMain::End()
@@ -199,6 +197,18 @@ void SceneMain::Update()
 					if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
 				}
 			}
+			for (int e = 0; e < ENEMY_NUM; e++)
+			{
+				if (m_pEnemyToPlayer[e] != nullptr)
+				{
+					if (m_pEnemyToPlayer[e]->OnDie())
+					{
+						m_pEnemyToPlayer[e] = nullptr;
+					}
+				}
+				
+			}
+			
 		}
 
 		if (m_pBoss != nullptr)
@@ -212,10 +222,15 @@ void SceneMain::Update()
 		{
 			if (m_pShot[i] != nullptr)
 			{
-				if (m_pShot[i]->GetIsDestroy() == true)
+				if(m_pMap!=nullptr)
 				{
-					m_pShot[i] = nullptr;
+					
+					if (m_pShot[i]->GetIsDestroy() == true)
+					{
+						m_pShot[i] = nullptr;
+					}
 				}
+				
 			}
 		}
 	}
@@ -284,12 +299,12 @@ void SceneMain::CollisionUpdate()
 			}
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-				if(m_pEnemy[e]!=nullptr)
+				if(m_pEnemyToPlayer[e]!=nullptr)
 				{
 					if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 					{
 						//ƒvƒŒƒCƒ„[‚ª“G‚Éƒqƒbƒg
-						//m_pPlayer->OnDamage();
+						m_pPlayer->OnDamage();
 					}
 				}
 			}
@@ -306,7 +321,9 @@ void SceneMain::CollisionUpdate()
 					if (m_pShot[i]->GetShotColli(m_pEnemyToPlayer[e]->GetCollRect()))
 					{
 						m_pEnemyToPlayer[e]->OnDamage(10);
+						
 					}
+					
 				}
 			}
 		}
@@ -319,16 +336,17 @@ void SceneMain::CollisionUpdate()
 		{
 			if (m_eneShot[i] != nullptr)
 			{
-				if (m_eneShot[i]->GetShotColli(m_pPlayer->GetRect()))
+				m_eneShot[i]->GetScreenMove(m_pMap->GetScreenMove());
+;				if (m_eneShot[i]->GetShotColli(m_pPlayer->GetRect()))
 				{
 					//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
 					m_pPlayer->OnDamage();
-
 				}
 				if (m_eneShot[i]->GetIsDestroy() == false)
 				{
 					m_eneShot[i] = nullptr;
 				}
+				
 			}
 
 		}
@@ -391,7 +409,8 @@ void SceneMain::CollisionUpdate()
 		}
 	}
 
-
+	
+	
 }
 
 void SceneMain::Draw() const
@@ -444,10 +463,12 @@ void SceneMain::Draw() const
 		}
 		if (m_pBoss != nullptr)m_pBoss->Draw();
 
+		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			for (int e = 0; e < ENEMY_NUM; e++)
+			if (m_pEnemyToPlayer[e] != nullptr)
 			{
-				if (m_pEnemyToPlayer != nullptr)m_pEnemyToPlayer[e]->Draw();
+				m_pEnemyToPlayer[e]->Draw();
+
 			}
 		}
 
@@ -466,6 +487,16 @@ void SceneMain::Draw() const
 			m_pBoss->Draw();
 		}
 	}
+	
+}
+
+void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
+{
+	
+	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir;
+	
+	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
+	m_pEnemyToPlayer[enemyNumber]->Init(pos, m_pPlayer);
 	
 }
 

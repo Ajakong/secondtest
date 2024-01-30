@@ -32,6 +32,8 @@ Title::Title(SceneManager& manager) :
 		" , frame=" << std::dec << std::setw(4) << std::setfill('0') << m_fadeFrame <<
 		" , FPS=" << std::fixed << std::setprecision(2) << GetFPS() << std::endl;
 	OutputDebugStringA(oss.str().c_str());
+
+	m_particle = new Particle;
 }
 
 Title::~Title()
@@ -42,11 +44,13 @@ Title::~Title()
 void Title::Update()
 {
 	(this->*m_updateFunc)();
+	m_particle->Update();
 }
 
 void Title::Draw()
 {
 	(this->*m_drawFunc)();
+	m_particle->Draw();
 }
 
 void Title::FadeInUpdate()
