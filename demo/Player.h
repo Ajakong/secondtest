@@ -89,6 +89,9 @@ private:
 	int m_animInterval=0;
 	int m_animXlimit=0;
 	int m_visibleLimitTime=0;//–³“GŠÔ
+	int m_inputX;
+	int m_inputY;
+
 
 	bool flyFlag=false;
 	Vec2 flySpeed;//”òs‘¬“x

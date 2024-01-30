@@ -68,18 +68,19 @@ void EnemyToPlayerDir::Update()
 				m_isDesitionMyWay = true;
 			}
 		}
-	}
 
-	if (abs(m_player->GetPos().x - m_pos.x) < 50)
-	{
-		m_isAttack = true;
-		if ((m_player->GetPos().x - m_pos.x) < 0)
+
+		if (abs(m_player->GetPos().x - m_pos.x) < 50)
 		{
-			m_isRight = false;
-		}
-		else
-		{
-			m_isRight = true;
+			m_isAttack = true;
+			if ((m_player->GetPos().x - m_pos.x) < 0)
+			{
+				m_isRight = false;
+			}
+			else
+			{
+				m_isRight = true;
+			}
 		}
 	}
 
@@ -130,7 +131,7 @@ void EnemyToPlayerDir::Draw()
 	if (m_isDeathFlag == false)
 	{
 		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, m_isRight, m_handle, true);
-		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
+		
 	}
 }
 

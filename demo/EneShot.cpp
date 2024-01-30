@@ -29,6 +29,10 @@ void EneShot::Init()
 void EneShot::Update()
 {
 	
+	if (m_screenMove > 0)
+	{
+		int b = 0;
+	}
 	//collisionÇÃçXêV
 	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
@@ -43,17 +47,13 @@ void EneShot::Update()
 		if (m_shotPos.y <= 0 - 15)
 			m_isVisible = true;
 
-
-
 		/*m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
 		m_Velocity.y = (m_enePos.y- m_shotPos.y);
 		m_Velocity.Normalize();*/
 
 		m_Velocity.Normalize();
-		m_shotPos += m_Velocity * 50.0f;
-
-
+		m_shotPos += m_Velocity * 10.0f;
 	}
 	if (m_isEffectFlag == true)
 	{
@@ -69,9 +69,9 @@ void EneShot::Draw()
 {
 	if (m_isVisible == false)
 	{
-
-		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
-		//DrawBox(m_shotPos.x-m_radius, m_shotPos.y-m_radius, m_shotPos.x + m_radius, m_shotPos.y + m_radius,0xff0000,0);
+		DrawGraph(m_shotPos.x-m_screenMove, m_shotPos.y, m_handle, true);
+		DrawBox(m_shotPos.x - m_screenMove, m_shotPos.y, m_shotPos.x + m_radius*2 - m_screenMove, m_shotPos.y + m_radius*2,0xff0000,0);
+		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
 	}
 
 	if (m_isEffectFlag == true)
@@ -96,23 +96,18 @@ bool EneShot::GetShotColli(const Rect& rect)
 {
 	if (m_isVisible == false)
 	{
-
-		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
+		if (m_shotPos.y <= rect.bottom && m_shotPos.y + m_radius*2 >= rect.top)
 		{
-			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
+			if (m_shotPos.x + m_radius*2 >= rect.left && m_shotPos.x <= rect.right)
 			{
 				m_isVisible = true;
 				m_isEffectFlag = true;
 				m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
 				return true;
-
 			}
 		}
 	}
-
 	return false;
-
-
 }
 
 void EneShot::OnCollision()

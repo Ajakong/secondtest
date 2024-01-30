@@ -39,18 +39,21 @@ Title::Title(SceneManager& manager) :
 Title::~Title()
 {
 	OutputDebugString("タイトルシーンがdeleteされました\n");
+	m_particle = nullptr;
+	delete m_particle;
 }
 
 void Title::Update()
 {
+	//m_particle->Update();
 	(this->*m_updateFunc)();
-	m_particle->Update();
+	
 }
 
 void Title::Draw()
 {
 	(this->*m_drawFunc)();
-	m_particle->Draw();
+	//m_particle->Draw();
 }
 
 void Title::FadeInUpdate()

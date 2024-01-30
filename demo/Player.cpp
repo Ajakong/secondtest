@@ -82,6 +82,7 @@ void Player::PlayerMove()
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 80;
 
+	
 	if (m_isGroundFlag==true&&Pad::IsPress(PAD_INPUT_RIGHT))
 	{
 		m_velocity.x += 3.0f;
@@ -150,6 +151,10 @@ void Player::PlayerMove()
 
 void Player::ShotIt()
 {
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	m_fireDir.x = m_inputX;
+	m_fireDir.y = m_inputY;
+	m_fireDir.Normalize();
 	if (Pad::IsPress(PAD_INPUT_UP))
 	{
 		m_fireDir.y -= shotAngle;
@@ -158,6 +163,8 @@ void Player::ShotIt()
 	{
 		m_fireDir.y += shotAngle;
 	}
+
+	
 	//Shot it!!
 	switch (m_kindOfBullet)
 	{
@@ -168,15 +175,17 @@ void Player::ShotIt()
 			{
 				if (m_shot[i] == nullptr)
 				{
-					
-					m_shot[i] = std::make_shared<Shot>();
-					m_dir.y = m_fireDir.y;
-					m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
-					m_WorldMana->AddShot(m_shot[i]);
-					if (m_shot[i]->GetIsDestroy() == true){
-						m_shot[i] = nullptr;
+					if (m_shotBulletInterval > 30)
+					{
+						m_shot[i] = std::make_shared<Shot>();
+						m_dir.y = m_fireDir.y;
+						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						m_WorldMana->AddShot(m_shot[i]);
+						if (m_shot[i]->GetIsDestroy() == true) {
+							m_shot[i] = nullptr;
+						}
+						break;
 					}
-					break;
 				}
 			}
 		}
@@ -188,14 +197,14 @@ void Player::ShotIt()
 				if (m_shot[i] == nullptr)
 				{
 					if (m_shotBulletInterval > 10)
-						{
-							m_shot[i] = std::make_shared<Shot>();
-							m_dir.y = m_fireDir.y;
-							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
-							m_WorldMana->AddShot(m_shot[i]);
-							m_shotBulletInterval = 0;
-							break;
-						}
+					{
+						m_shot[i] = std::make_shared<Shot>();
+						m_dir.y = m_fireDir.y;
+						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						m_WorldMana->AddShot(m_shot[i]);
+						m_shotBulletInterval = 0;
+						break;
+					}
 					
 				}
 			}
@@ -205,19 +214,21 @@ void Player::ShotIt()
 		if (Pad::IsTrigger(PAD_INPUT_1))
 		{
 			m_dir.y = m_fireDir.y;
-			for (int a = 0; a < 4; a++)
+			if (m_shotBulletInterval > 30)
 			{
-				for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+				for (int a = 0; a < 4; a++)
 				{
-					if (m_shot[i] == nullptr)
+					for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 					{
-						
-						m_shot[i] = std::make_shared<Shot>();
-						m_dir.y = m_dir.y + (a-1 ) * 0.5f;
-						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
-						m_WorldMana->AddShot(m_shot[i]);
-						m_shotBulletInterval = 0;
-						break;
+						if (m_shot[i] == nullptr)
+						{
+							m_shot[i] = std::make_shared<Shot>();
+							m_dir.y = m_dir.y + (a - 1) * 0.5f;
+							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+							m_WorldMana->AddShot(m_shot[i]);
+							m_shotBulletInterval = 0;
+							break;
+						}
 					}
 				}
 			}
@@ -270,19 +281,15 @@ void Player::DeleteShot()
 				m_laser = nullptr;
 			}
 		}
-
-
 	}
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
 		if (m_shot[i] != nullptr)
 		{
-			
 			m_shot[i]->Update();
 			if (m_shot[i]->GetIsDestroy())
 			{
 				m_shot[i] = nullptr;
-				
 			}
 		}
 	}
@@ -359,6 +366,7 @@ void Player::Draw()
 		if (m_visibleLimitTime % 5 == 1)
 		{
 			DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+			
 		}
 	}
 	else
@@ -377,6 +385,7 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
+	DrawBox(m_playerCol.left, m_playerCol.top, m_playerCol.right, m_playerCol.bottom, 0xff00ff, false);
 }
 
 void Player::VelocityToZero()

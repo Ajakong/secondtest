@@ -179,6 +179,7 @@
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="WeapomItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Title.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2.h" />
+    <ClInclude Include="WeapomItem.h" />
     <ClInclude Include="WorldRule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

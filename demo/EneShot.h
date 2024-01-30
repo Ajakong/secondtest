@@ -10,7 +10,7 @@ public:
 	virtual ~EneShot();
 
 	void Init();
-	virtual void Update();
+	void Update();
 	void Draw();
 
 
@@ -26,7 +26,7 @@ public:
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 
-	void GetScreenMove(int screenmove) {  }
+	void GetScreenMove(int screenmove) { m_screenMove = screenmove; }
 
 	Vec2 GetPos() { return m_shotPos; }
 
@@ -46,7 +46,7 @@ private:
 
 	int m_radius=0;
 
-	
+	int m_screenMove = 0;
 
 	bool m_isVisible = true;
 

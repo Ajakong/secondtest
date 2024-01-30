@@ -49,7 +49,7 @@ bool Application::Init()
    
     SetUseASyncChangeWindowModeFunction(TRUE,NULL, NULL);
 
-    SetWindowText("ごっついアクションゲーム");
+    SetWindowText("スーパーサイヤング7");
     if (DxLib_Init() == -1)
     {
         return false;
