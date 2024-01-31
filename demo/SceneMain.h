@@ -10,6 +10,7 @@
 namespace
 {
 	constexpr int ENEMY_NUM = 10;
+	constexpr int ENEMY_TO_PLAYER_NUM = 20;
 }
 
 using namespace std;
@@ -47,7 +48,8 @@ public:
 
 	void CreateEnemy(Vec2 pos,int enemyNumber);
 
-	void GameOver() { m_isGameOver = true; }
+	void EnemyDelete();
+	void GameOver();
 	bool GetGameOverFlag() { return m_isGameOver; }
 
 	void Clear();
@@ -59,8 +61,6 @@ public:
 	void AddEneShot(std::shared_ptr<EneShot> eneShot);
 	//void AddShot(std::shared_ptr<Shot> shot);
 	
-
-
 private:
 	// グラフィックのハンドル
 	int m_gameScreenhandle;//ゲーム画面
@@ -92,7 +92,7 @@ private:
 	ImageGroundManager* m_pBgManager;
 	// 敵
 	EnemyBase* m_pEnemy[ENEMY_NUM];
-	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_NUM];
+	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_TO_PLAYER_NUM];
 	Boss* m_pBoss;
 
 	Shot* m_pShot[SHOT_NUM_LIMIT];

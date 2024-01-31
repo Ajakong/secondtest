@@ -67,7 +67,16 @@ SceneMain::SceneMain():
 	m_eneToPlayerPos[7] = Vec2(2200, 0);
 	m_eneToPlayerPos[8] = Vec2(2500, 0);
 	m_eneToPlayerPos[9] = Vec2(2900, 0);
-	
+	m_eneToPlayerPos[10] = Vec2(3400, 0);
+	m_eneToPlayerPos[11] = Vec2(3850, 0);
+	m_eneToPlayerPos[12] = Vec2(3900, 0);
+	m_eneToPlayerPos[13] = Vec2(4200, 0);
+	m_eneToPlayerPos[14] = Vec2(4250, 0);
+	m_eneToPlayerPos[15] = Vec2(5300, 0);
+	m_eneToPlayerPos[16] = Vec2(5400, 0);
+	m_eneToPlayerPos[17] = Vec2(5500, 0);
+	m_eneToPlayerPos[18] = Vec2(5700, 0);
+	m_eneToPlayerPos[19] = Vec2(6000, 0);
 
 }
 
@@ -90,7 +99,8 @@ SceneMain::~SceneMain()
 	delete m_pMap ;
 	delete m_pBgManager ;
 	for (int i = 0; i < ENEMY_NUM; i++)delete m_pEnemy[i] ;
-	for (int e = 0; e < ENEMY_NUM; e++)delete m_pEnemyToPlayer[e];
+	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)delete m_pEnemyToPlayer[e];
+	delete m_pBoss;
 	delete m_pLaser;
 }
 
@@ -108,7 +118,7 @@ void SceneMain::Init()
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	for (int e = 0; e < ENEMY_NUM; e++)
+	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 	{
 		CreateEnemy(m_eneToPlayerPos[e],e);
 	}
@@ -176,7 +186,7 @@ void SceneMain::Update()
 			}
 		}
 		{
-			for (int e = 0; e < ENEMY_NUM; e++)
+			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
@@ -197,7 +207,7 @@ void SceneMain::Update()
 					if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
 				}
 			}
-			for (int e = 0; e < ENEMY_NUM; e++)
+			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
@@ -224,7 +234,6 @@ void SceneMain::Update()
 			{
 				if(m_pMap!=nullptr)
 				{
-					
 					if (m_pShot[i]->GetIsDestroy() == true)
 					{
 						m_pShot[i] = nullptr;
@@ -239,7 +248,6 @@ void SceneMain::Update()
 	{
 
 	}
-	
 	Pad::Update();
 }
 
@@ -297,7 +305,7 @@ void SceneMain::CollisionUpdate()
 					m_pLaser = nullptr;
 				}
 			}
-			for (int e = 0; e < ENEMY_NUM; e++)
+			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if(m_pEnemyToPlayer[e]!=nullptr)
 				{
@@ -310,7 +318,7 @@ void SceneMain::CollisionUpdate()
 			}
 		}
 	}
-	for (int e = 0; e < ENEMY_NUM; e++)
+	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 	{
 		if (m_pEnemyToPlayer[e] != nullptr)
 		{
@@ -385,7 +393,7 @@ void SceneMain::CollisionUpdate()
 		}
 		
 		{
-			for (int e = 0; e < ENEMY_NUM; e++)
+			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
@@ -416,45 +424,8 @@ void SceneMain::CollisionUpdate()
 void SceneMain::Draw() const
 {
 
-	//ゲーム画面をバックバッファに描画する
-	int screenX = 0;
-	int screenY = 0;
-	
-	if (m_shakeFrame > 0)
-	{
-		//画面揺れ
-		screenX = GetRand(8) - 4;
-		screenY = GetRand(8) - 4;
-	}
-
-	//m_wipeFrameから描画する範囲を計算する
-	//m_wipeFrameゲーム開始時に0,
-	//毎フレーム加算されてkWipeFrame(30)まで変化する
-	//wipeRateはm_wipeFrameの変化に合わせて0.0->1.0に変化する
-	float wipeRate = static_cast<float>(m_wipeFrame) / static_cast<float>(30);
-	int wipeHeight = Game::kScreenHeight * wipeRate;
-
-	/*DrawRectGraph(screenX,screenY,
-	0,0,Game::kScreenWidth, wipeHeight,
-	m_gameScreenHandle, true, false);*/
-
-	//offsetの値をwipeの進行に合わせて320->0に変化させたい
-
-	//0->320に変化させるのはわかりやすい  320*wipeRate
-
-	int offset = 320 * (1.0f - wipeRate);
-
-	//画面の上から1ラインずつ描画を行っている
-
 	//if (bossZone == false)
 	{
-		for (int y = 0; y < Game::kScreenHeight; y++)
-		{
-			int x = sinf(y * 0.05f) * offset;
-			DrawRectGraph(x, y,
-				0, y, Game::kScreenWidth, 1,
-				m_gameScreenHandle, true, false);
-		}
 		m_pBgManager->Draw();
 		m_pPlayer->Draw();
 		for (int e = 0; e < ENEMY_NUM; e++)
@@ -463,7 +434,7 @@ void SceneMain::Draw() const
 		}
 		if (m_pBoss != nullptr)m_pBoss->Draw();
 
-		for (int e = 0; e < ENEMY_NUM; e++)
+		for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 		{
 			if (m_pEnemyToPlayer[e] != nullptr)
 			{
@@ -498,6 +469,25 @@ void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init(pos, m_pPlayer);
 	
+}
+
+void SceneMain::EnemyDelete()
+{
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		m_pEnemy[i] = nullptr;
+		delete m_pEnemy[i];
+	}
+	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+	{
+		m_pEnemyToPlayer[e] = nullptr;
+		delete m_pEnemyToPlayer[e];
+	}
+}
+
+void SceneMain::GameOver()
+{
+	m_isGameOver = true; 
 }
 
 void SceneMain::Clear()

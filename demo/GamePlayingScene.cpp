@@ -66,18 +66,19 @@ void GamePlayingScene::NormalUpdate()
 void GamePlayingScene::FadeOutUpdate()
 {
 	m_frame++;
-	if (m_Scene->GetGameOverFlag())
-	{
-		if (60 <= m_frame)
-		{
-			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
-		}
-	}
+	
 	if (m_Scene->GetClearFlag())
 	{
 		if (60 <= m_frame)
 		{
 			m_manager.ChangeScene(std::make_shared<ClearScene>(m_manager));
+		}
+	}
+	if (m_Scene->GetGameOverFlag())
+	{
+		if (60 <= m_frame)
+		{
+			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
 		}
 	}
 }

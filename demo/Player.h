@@ -33,9 +33,12 @@ public:
 	void ShotIt();
 	void DeleteShot();
 	void Update();
+	void CollisionUpdate();
 	void Draw();
 	void VelocityToZero();
 	void OnDamage();
+
+	void ToDie();
 
 	//状態別関数(ポインタで呼び出す)
 	void StartUpdate();
@@ -45,7 +48,8 @@ public:
 	void FaceDownUpdate();
 	void JumpingUpdate();
 	void FlyingUpdate();
-	//ダッシュはいらん(その状態になった際できないことやできることがあるのが状態別関数の条件)
+	void DieUpdate();
+	
 
 	//当たり判定関数
 	void OnMapCollision();
@@ -91,6 +95,10 @@ private:
 	int m_visibleLimitTime=0;//無敵時間
 	int m_inputX;
 	int m_inputY;
+
+	//Die
+	bool m_isEndroll;
+	int m_rollCount;
 
 
 	bool flyFlag=false;

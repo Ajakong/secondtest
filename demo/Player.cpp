@@ -20,7 +20,7 @@ namespace
 Player::Player(SceneMain* main) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(50),
+	m_Hp(20),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
@@ -80,7 +80,7 @@ void Player::PlayerMove()
 	m_playerCol.top = m_pos.y-15;
 	m_playerCol.left = m_pos.x-30;
 	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
+	m_playerCol.bottom = m_pos.y + 40;
 
 	
 	if (m_isGroundFlag==true&&Pad::IsPress(PAD_INPUT_RIGHT))
@@ -152,17 +152,28 @@ void Player::PlayerMove()
 void Player::ShotIt()
 {
 	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
-	m_fireDir.x = m_inputX;
+	if(m_fireDir.x!=0)
+	{
+		m_fireDir.x = m_inputX;
+		
+	}
+	
 	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x )<0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
 	m_fireDir.Normalize();
-	if (Pad::IsPress(PAD_INPUT_UP))
+
+	/*if (Pad::IsPress(PAD_INPUT_UP))
 	{
 		m_fireDir.y -= shotAngle;
 	}
 	if (Pad::IsPress(PAD_INPUT_DOWN))
 	{
 		m_fireDir.y += shotAngle;
-	}
+	}*/
 
 	
 	//Shot it!!
@@ -178,7 +189,7 @@ void Player::ShotIt()
 					if (m_shotBulletInterval > 30)
 					{
 						m_shot[i] = std::make_shared<Shot>();
-						m_dir.y = m_fireDir.y;
+						m_dir = m_fireDir;
 						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
 						m_WorldMana->AddShot(m_shot[i]);
 						if (m_shot[i]->GetIsDestroy() == true) {
@@ -325,12 +336,9 @@ void Player::Update()
 	m_isDushFlag = false;
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
-	m_animFrame.y = 0.0f;
 	
-	m_playerCol.top = m_pos.y - 15;
-	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
+	
+	
 
 	(this->*m_playerUpdate)();//èÛë‘ëJà⁄
 
@@ -354,9 +362,18 @@ void Player::Update()
 	}
 	m_visibleLimitTime++;//ñ≥ìGéûä‘êßå¿ÇÕèÌÇ…â¡éZÇµÇƒÇ®Ç≠
 
-	ShotIt();
+	
+	
 	DeleteShot();
 	VelocityToZero();
+}
+
+void Player::CollisionUpdate()
+{
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 40;
 }
 
 void Player::Draw()
@@ -365,13 +382,13 @@ void Player::Draw()
 	{
 		if (m_visibleLimitTime % 5 == 1)
 		{
-			DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+			DrawRectRotaGraph(m_pos.x, m_pos.y,  animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
 			
 		}
 	}
 	else
 	{
-		DrawRectRotaGraph(m_pos.x, m_pos.y, 30 + animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+		DrawRectRotaGraph(m_pos.x, m_pos.y,animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
 	}
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
@@ -424,18 +441,36 @@ void Player::OnDamage()
 	m_visibleLimitTime = 0;
 	m_isHitFlag = true;
 	m_Hp -= 10;
+	
+}
+
+void Player::ToDie()
+{
 	if (m_Hp < 0)
 	{
-		m_WorldMana->GameOver();
+		if (m_isGroundFlag == true)
+		{
+			m_WorldMana->EnemyDelete();
+
+			m_visibleLimitTime = 100;//Ç†ÇΩÇ¡ÇΩç€ÇÃñ≥ìGéûä‘Çí◊Ç∑
+
+			m_playerCol.top = -500;
+			m_playerCol.left = -500;
+			m_playerCol.right = -500;
+			m_playerCol.bottom = -500;
+			m_angle = 0;
+
+			m_animFrame.x = 0;
+
+			m_playerUpdate = &Player::DieUpdate;
+		}
+
 	}
 }
 
 void Player::StartUpdate()
 {
-	m_playerCol.top = m_pos.y - 15;
-	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
+	CollisionUpdate();
 
 	m_pos.x += 2;
 	m_velocity.y+= 0.5f;
@@ -449,6 +484,10 @@ void Player::StartUpdate()
 
 void Player::IdleUpdate()
 {
+	m_animFrame.y = 0.0f;
+
+	CollisionUpdate();
+
 	m_angle = 0;
 	if (m_animInterval >= 6)
 	{
@@ -489,10 +528,17 @@ void Player::IdleUpdate()
 		m_playerUpdate = &Player::JumpingUpdate;
 	}
 	m_animInterval++;
+
+	//Die
+	ToDie();
+
+	ShotIt();
 }
 
 void Player::WalkingUpdate()
 {
+	CollisionUpdate();
+
 	//ÉãÅ[ÉvéûÇÃèâä˙âªèàóù
 	m_isDushFlag = false;
 	shotBulletFlag = false;
@@ -536,6 +582,9 @@ void Player::WalkingUpdate()
 		m_dir.x = 1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
+
+
+		ShotIt();
 	}
 	else if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_LEFT))
 	{
@@ -562,6 +611,7 @@ void Player::WalkingUpdate()
 		m_dir.x = -1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = true;
+		ShotIt();
 	}
 	else
 	{
@@ -575,7 +625,11 @@ void Player::WalkingUpdate()
 		m_isJumpFlag = true;
 		m_angle += 1.0f;
 	}
-	VelocityToZero();
+
+	//Die
+	ToDie();
+
+	
 	ShotIt();
 }
 
@@ -598,6 +652,8 @@ void Player::NeutralUpdate()
 
 void Player::FaceDownUpdate()
 {
+	CollisionUpdate();
+
 	if (m_isJumpFlag == false && Pad::IsTrigger(PAD_INPUT_2))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
@@ -606,10 +662,16 @@ void Player::FaceDownUpdate()
 		m_isJumpFlag = true;
 		m_angle += 1.0f;
 	}
+
+	//Die
+	ToDie();
+
+	ShotIt();
 }
 
 void Player::JumpingUpdate()
 {
+	CollisionUpdate();
 	
 	m_fireDir.y += shotAngle / 8;
 	m_angle += 1.0f;
@@ -631,11 +693,17 @@ void Player::JumpingUpdate()
 		m_playerUpdate = &Player::FlyingUpdate;
 	}*/
 	m_pos += m_velocity;
+
+	//Die
+	ToDie();
+
 	ShotIt();
 }
 
 void Player::FlyingUpdate()
 {
+	CollisionUpdate();
+
 	if (!m_isLeftFlag)
 	{
 		m_velocity.x = -1.5f;
@@ -652,7 +720,30 @@ void Player::FlyingUpdate()
 
 		m_velocity.y -= 1.6f;
 	}
+
+	//Die
+	ToDie();
+
 	ShotIt();
+}
+
+void Player::DieUpdate()
+{
+	if (m_animInterval >= 20)
+	{
+		m_animFrame.y = 6;
+		m_animFrame.x++;
+		if (m_animFrame.x >= 10)
+		{
+			m_animFrame.x = 10;
+		}
+		m_animInterval = 0;
+	}
+	if(m_animFrame.x >= 10)
+	{
+		m_WorldMana->GameOver();
+	}
+	m_animInterval++;
 }
 
 void Player::OnMapCollision()
@@ -679,9 +770,9 @@ void Player::OnMapCollision()
 
 bool Player::OnCollision(Rect rect)
 {
-	if (m_pos.y- 15 <= rect.bottom && m_pos.y + 80  >= rect.top)
+	if (m_playerCol.top <= rect.bottom && m_playerCol.bottom >= rect.top)
 	{
-		if (m_pos.x +30  >= rect.left && m_pos.x- 30 <= rect.right)
+		if (m_playerCol.right >= rect.left && m_playerCol.left <= rect.right)
 		{
 			return true;
 		}
