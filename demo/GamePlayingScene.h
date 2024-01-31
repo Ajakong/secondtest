@@ -25,6 +25,8 @@ private:
 
     float LightingPos = 0;
 
+    bool m_isEndRoll=false;
+
     SceneMain* m_Scene;
 
     // メンバ関数ポインタの宣言

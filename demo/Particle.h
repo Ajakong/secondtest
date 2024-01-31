@@ -12,14 +12,13 @@ public:
 	void Update();
 	void Draw();
 
-	void WantPos(Vec2 pos) { m_pos = pos; }
-
-
 private:
-	Vec2 m_pos;
-	Vec2 m_velocity;
+	Vec2 m_pos[100];
+	Vec2 m_velocity[100];
 
 	int m_num;
-	int a;
+	int m_createFrame=0;
+	
+	bool m_useParticle[100];
 };
 

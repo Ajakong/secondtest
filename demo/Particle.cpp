@@ -1,10 +1,16 @@
 #include"Dxlib.h"
 #include "Particle.h"
 
-Particle::Particle():
-	m_pos(500,500),
-	m_velocity(0,0)
+Particle::Particle()
 {
+	for (int i = 0; i < 100; i++)
+	{
+		m_pos[i].x = 0;
+		m_pos[i].y = 1090;
+		m_velocity[i].x = 0;
+		m_velocity[i].y = 0;
+
+	}
 }
 
 Particle::~Particle()
@@ -17,19 +23,17 @@ void Particle::Init()
 
 void Particle::Update()
 {
-	/*a++;
-	m_num = 30*sinf(3.14 * a / 20);*/
+
+	
 }
 
 void Particle::Draw()
 {
 	for (int i = 0; i < 100; i++)
 	{
-		m_pos.x = m_num*sinf(i*3.14/50)+m_pos.x;
-		m_pos.y = -m_num*cosf(i*3.14/50)+m_pos.y;
-		m_pos += m_velocity;
-		DrawLine(m_pos.x,m_pos.y,m_pos.x - i * 0.42, m_pos.y - i * 0.01, 0xffff22);
-	}
+		m_pos[i].x = GetRand(2000);
+		if(m_createFrame%100)
 	
-
+		DrawLine(m_pos[i].x, m_pos[i].y, m_pos[i].x - i * 0.42, m_pos[i].y - i * 0.01, 0xffff22);
+	}
 }

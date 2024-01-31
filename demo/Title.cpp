@@ -45,7 +45,7 @@ Title::~Title()
 
 void Title::Update()
 {
-	//m_particle->Update();
+	m_particle->Update();
 	(this->*m_updateFunc)();
 	
 }
@@ -53,7 +53,7 @@ void Title::Update()
 void Title::Draw()
 {
 	(this->*m_drawFunc)();
-	//m_particle->Draw();
+	m_particle->Draw();
 }
 
 void Title::FadeInUpdate()
