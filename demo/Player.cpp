@@ -600,11 +600,11 @@ void Player::WalkingUpdate()
 		m_angle += 1.0f;
 	}
 
-	m_animFrame.y = 8;
+	m_animFrame.y = 1;
 	if (m_animInterval >= 6)
 	{
 		m_animFrame.x++;
-		if (m_animFrame.x >= 4)
+		if (m_animFrame.x >= 11)
 		{
 			m_animFrame.x = 0;
 		}

@@ -18,7 +18,12 @@ private:
     
     int m_btnFrame = 0;
     int m_frame = 0;
+    int m_lightingFrame=0;
     float m_fps = 0.0f;
+
+    float m_lightRange = 5;
+
+    float LightingPos = 0;
 
     SceneMain* m_Scene;
 
@@ -33,8 +38,11 @@ private:
     void NormalUpdate();
     void FadeOutUpdate();
 
+    void PlayerLightingUpdate();
+
     // ï`âÊä÷êî
     void FadeDraw();
     void NormalDraw();
+    void PlayerLightingDraw();
 };
 

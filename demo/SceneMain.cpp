@@ -473,6 +473,7 @@ void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 
 void SceneMain::EnemyDelete()
 {
+	m_isPlayerDie = true;
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		m_pEnemy[i] = nullptr;
@@ -488,6 +489,14 @@ void SceneMain::EnemyDelete()
 void SceneMain::GameOver()
 {
 	m_isGameOver = true; 
+}
+
+float SceneMain::GetPlayerPos()
+{
+	if (m_pPlayer != nullptr)
+	{
+		return m_pPlayer->GetPos().x;
+	}
 }
 
 void SceneMain::Clear()

@@ -51,8 +51,9 @@ void GamePlayingScene::NormalUpdate()
 {
 	if(m_Scene->GetGameOverFlag()||m_Scene->GetClearFlag())
 	{
-		m_updateFunc = &GamePlayingScene::FadeOutUpdate;
-		m_drawFunc = &GamePlayingScene::FadeDraw;
+		LightingPos = m_Scene->GetPlayerPos();
+		m_updateFunc = &GamePlayingScene::PlayerLightingUpdate;
+		m_drawFunc = &GamePlayingScene::PlayerLightingDraw;
 	}
 	m_fps = GetFPS();
 	m_btnFrame++;
@@ -74,9 +75,16 @@ void GamePlayingScene::FadeOutUpdate()
 			m_manager.ChangeScene(std::make_shared<ClearScene>(m_manager));
 		}
 	}
+	
+}
+
+void GamePlayingScene::PlayerLightingUpdate()
+{
+	m_lightingFrame++;
+	m_lightRange += 0.5f;
 	if (m_Scene->GetGameOverFlag())
 	{
-		if (60 <= m_frame)
+		if (500 <= m_lightingFrame)
 		{
 			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
 		}
@@ -85,6 +93,7 @@ void GamePlayingScene::FadeOutUpdate()
 
 void GamePlayingScene::FadeDraw()
 {
+	m_Scene->Draw();
 	DrawString(10, 100, "GamePlayingScene", 0xffffff);
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
@@ -94,6 +103,7 @@ void GamePlayingScene::FadeDraw()
 
 void GamePlayingScene::NormalDraw()
 {
+	m_Scene->Draw();
 	DrawString(10, 100, "GamePlayingScene", 0xffffff);
 	DrawFormatString(10, 10, 0xffffff, "fps = %2.2f", m_fps);
 	auto& app = Application::GetInstance();
@@ -101,4 +111,25 @@ void GamePlayingScene::NormalDraw()
 	int idx = m_btnFrame / 10 % 3;
 	constexpr int kButtonSize = 16;
 	constexpr float kBtnScale = 3.0f;
+}
+
+void GamePlayingScene::PlayerLightingDraw()
+{
+	int alpha = 255; //static_cast<int>(255 * (static_cast<float>(m_lightingFrame) / 60.0f));
+	
+	for (int i = 0; i < 200; i++)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha -= 1);
+	}
+
+	for (int i = 50; i < 2000; i++)
+	{
+		DrawLine(LightingPos - 25 - i / 5, i, LightingPos + 25 + i / 5, i, 0x222222, i / 100);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
+	DrawBox(0, 0, 2000, 2000, 0xffffff, true);
+	
+
+	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

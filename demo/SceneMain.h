@@ -50,10 +50,12 @@ public:
 
 	void EnemyDelete();
 	void GameOver();
+	float GetPlayerPos();
 	bool GetGameOverFlag() { return m_isGameOver; }
 
 	void Clear();
 	bool GetClearFlag() { return m_isClear; }
+	bool GetPlayerDie() { return m_isPlayerDie; }
 
 	void AddShot(std::shared_ptr<Shot> shot);
 	void AddLaser(std::shared_ptr<Laser> laser);
@@ -83,6 +85,8 @@ private:
 	bool m_isClear = false;
 
 	bool bossZone=false;
+
+	bool m_isPlayerDie=false;
 	// プレイヤー
 	Player* m_pPlayer;
 	//マップ
