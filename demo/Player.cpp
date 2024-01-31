@@ -63,7 +63,7 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_handle = LoadGraph("data/image/PlayerDevil2.png");
+	m_handle = LoadGraph("data/image/PlayerDevil.png");
 	m_ShotGraph = LoadGraph("data/image/Shot.png");
 	m_pos.x = 50.0f;
 	m_pos.y = 50.0f;
@@ -337,9 +337,6 @@ void Player::Update()
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
 	
-	
-	
-
 	(this->*m_playerUpdate)();//ó‘Ô‘JˆÚ
 
 	if (m_pos.y > Game::kScreenHeight - 45)
@@ -362,8 +359,6 @@ void Player::Update()
 	}
 	m_visibleLimitTime++;//–³“GŽžŠÔ§ŒÀ‚Íí‚É‰ÁŽZ‚µ‚Ä‚¨‚­
 
-	
-	
 	DeleteShot();
 	VelocityToZero();
 }
@@ -373,7 +368,7 @@ void Player::CollisionUpdate()
 	m_playerCol.top = m_pos.y - 15;
 	m_playerCol.left = m_pos.x - 30;
 	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 40;
+	m_playerCol.bottom = m_pos.y + 45;
 }
 
 void Player::Draw()
@@ -544,10 +539,7 @@ void Player::WalkingUpdate()
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
 
-	m_playerCol.top = m_pos.y - 15;
-	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
+	
 
 	m_velocity.y += 2;
 	//if(Pad::IsRepeat(PAD_INPUT_UP,))
@@ -569,16 +561,7 @@ void Player::WalkingUpdate()
 		{
 			m_velocity.x = dushSpeed;
 		}
-		m_animFrame.y = 1;
-		if (m_animInterval >= 6)
-		{
-			m_animFrame.x++;
-			if (m_animFrame.x >= 11)
-			{
-				m_animFrame.x = 0;
-			}
-			m_animInterval = 0;
-		}
+		
 		m_dir.x = 1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
@@ -598,16 +581,7 @@ void Player::WalkingUpdate()
 		{
 			m_velocity.x = -dushSpeed;
 		}
-		m_animFrame.y = 1;
-		if (m_animInterval >= 6)
-		{
-			m_animFrame.x++;
-			if (m_animFrame.x >= 11)
-			{
-				m_animFrame.x = 0;
-			}
-			m_animInterval = 0;
-		}
+		
 		m_dir.x = -1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = true;
@@ -624,6 +598,17 @@ void Player::WalkingUpdate()
 		m_isGroundFlag = false;
 		m_isJumpFlag = true;
 		m_angle += 1.0f;
+	}
+
+	m_animFrame.y = 8;
+	if (m_animInterval >= 6)
+	{
+		m_animFrame.x++;
+		if (m_animFrame.x >= 4)
+		{
+			m_animFrame.x = 0;
+		}
+		m_animInterval = 0;
 	}
 
 	//Die

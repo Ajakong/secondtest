@@ -50,7 +50,6 @@ public:
 	void FlyingUpdate();
 	void DieUpdate();
 	
-
 	//“–‚½‚è”»’èŠÖ”
 	void OnMapCollision();
 	bool OnCollision(Rect rect);
