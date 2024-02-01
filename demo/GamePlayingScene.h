@@ -27,7 +27,7 @@ private:
 
     bool m_isEndRoll=false;
    
-
+    int m_selectTitle=false;
 
     SceneMain* m_Scene;
 

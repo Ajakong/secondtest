@@ -64,7 +64,8 @@ void GameOverScene::FadeDraw()
 	DrawString(1000, 600, "To Title", 0xffffff);
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
-	DrawBox(0, 0, 2000, 1500, 0x000000, true);
+	DrawString(1000, 500, "Continue", 0x000000);
+	DrawString(1000, 600, "To Title", 0x000000);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 

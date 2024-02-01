@@ -35,8 +35,12 @@ void GamePlayingScene::Update()
 
 void GamePlayingScene::Draw()
 {
-	m_Scene->Draw();
-	(this->*m_drawFunc)();
+	if (!m_selectTitle)
+	{
+		m_Scene->Draw();
+		(this->*m_drawFunc)();
+	}
+	
 }
 
 void GamePlayingScene::FadeInUpdate()
@@ -92,6 +96,7 @@ void GamePlayingScene::PlayerLightingUpdate()
 			if (m_isEndRoll)
 			{
 				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+				m_selectTitle=true;
 			}
 			if(!m_isEndRoll)
 			{
