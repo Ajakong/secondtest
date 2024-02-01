@@ -28,6 +28,10 @@ public:
 
 	void GetScreenMove(int screenmove) { m_screenMove = screenmove; }
 
+	void OnHit();
+
+	Rect GetColRect() { return m_colRect; }
+
 	Vec2 GetPos() { return m_shotPos; }
 
 	Sqhere GetCollSqhere()const { return m_collider; }
@@ -53,6 +57,8 @@ private:
 	bool m_isEffectFlag = false;
 
 	bool m_isDestroy=false;
+
+	Rect m_colRect;
 
 	Vec2 m_graphSize;
 

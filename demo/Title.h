@@ -13,15 +13,10 @@ public:
 private:
 	
 	int m_bottonFrame = 0;
-
 	int m_frame = 0;
-
 	int a = -1;
-
 	int m_stringColorPlusA=0;
-
 	int m_fadeFrame = 60;
-
 	int m_handle;
 
 	Particle* m_particle;

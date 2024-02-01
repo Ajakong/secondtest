@@ -153,7 +153,6 @@ void EnemyBase::WantPlayerPoint(Player* player)
 
 void EnemyBase::GetScreenMove(float veloX)
 {
-	//{ m_pos.x -= veloX; }
 }
 
 bool EnemyBase::OnDie()

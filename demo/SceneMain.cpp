@@ -353,8 +353,9 @@ void SceneMain::CollisionUpdate()
 			if (m_eneShot[i] != nullptr)
 			{
 				m_eneShot[i]->GetScreenMove(m_pMap->GetScreenMove());
-;				if (m_eneShot[i]->GetShotColli(m_pPlayer->GetRect()))
+;				if (m_pPlayer->OnCollision(m_eneShot[i]->GetColRect()))
 				{
+					m_eneShot[i]->OnHit();
 					//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
 					m_pPlayer->OnDamage();
 				}
@@ -424,9 +425,6 @@ void SceneMain::CollisionUpdate()
 			}
 		}
 	}
-
-	
-	
 }
 
 void SceneMain::Draw() const
@@ -475,7 +473,7 @@ void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos};
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer);
-	
+
 }
 
 void SceneMain::EnemyDelete()

@@ -52,7 +52,6 @@ void Title::Update()
 void Title::Draw()
 {
 	(this->*m_drawFunc)();
-	
 }
 
 void Title::FadeInUpdate()
@@ -104,7 +103,6 @@ void Title::FadeDraw()
 	DrawBox(drawStringPosX, drawStringPosY+20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
 	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
 }
 
 void Title::NormalDraw()
@@ -139,14 +137,5 @@ void Title::NormalDraw()
 	{
 		m_stringColorPlusA = 0;
 	}
-	/*int dx = abs((m_fadeFrame + 640) % (640 * 2) - 640);
-	int num = 200;
-	float dy = abs((m_fadeFrame + num) % (num * 2) - num) * 0.1f;
-	dy = dy * dy;
-	DrawCircle(dx, static_cast<int>(dy), 10, 0xffaaaa, true);
-	auto& app = Application::GetInstance();
-	auto size = app.GetWindowSize();
-	int idx = m_frame / 10 % 3;
-	constexpr int kButtonSize = 16;*/
 	
 }

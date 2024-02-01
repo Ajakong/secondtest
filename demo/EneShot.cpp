@@ -15,6 +15,10 @@ EneShot::EneShot():
 	m_radius(15),
 	m_isDestroy(false)
 {
+	m_colRect.top = 0;
+	m_colRect.bottom = 0;
+	m_colRect.left = 0;
+	m_colRect.right = 0;
 }
 
 EneShot::~EneShot()
@@ -28,13 +32,12 @@ void EneShot::Init()
 
 void EneShot::Update()
 {
-	
 	if (m_screenMove > 0)
 	{
 		int b = 0;
 	}
-	//collisionの更新
-	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
+	////collisionの更新
+	//m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
 	if (m_isVisible == false)
 	{
@@ -62,6 +65,11 @@ void EneShot::Update()
 			m_shotEffect->Update();
 		}
 	}
+
+	m_colRect.top = m_shotPos.y - m_radius;
+	m_colRect.bottom = m_shotPos.y + m_radius;
+	m_colRect.left = m_shotPos.x - m_radius;
+	m_colRect.right = m_shotPos.x + m_radius;
 	
 }
 
@@ -100,9 +108,7 @@ bool EneShot::GetShotColli(const Rect& rect)
 		{
 			if (m_shotPos.x + m_radius*2 >= rect.left && m_shotPos.x <= rect.right)
 			{
-				m_isVisible = true;
-				m_isEffectFlag = true;
-				m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
+				
 				return true;
 			}
 		}
@@ -111,6 +117,13 @@ bool EneShot::GetShotColli(const Rect& rect)
 }
 
 void EneShot::OnCollision()
+{
+	m_isVisible = true;
+	m_isEffectFlag = true;
+	m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
+}
+
+void EneShot::OnHit()
 {
 	m_isVisible = true;
 	m_isEffectFlag = true;

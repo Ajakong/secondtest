@@ -157,7 +157,6 @@ void EnemyToPlayerDir::NeutralUpdate()
 	CollisionUpdate();
 	m_playerPosX = m_player->GetPos().x + m_screenMove;
 	
-
 	if (abs(m_playerPosX - m_pos.x) < 30)
 	{
 		if (m_animInterval > 6)
