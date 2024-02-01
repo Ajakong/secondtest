@@ -148,6 +148,7 @@
     <ClCompile Include="CollisionMaster.cpp" />
     <ClCompile Include="DieEnemyEffect.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EneDeathEffect.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyBasePro.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="ForeGround.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GamePlayingScene.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="ImageGroundManager.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -177,6 +179,7 @@
     <ClCompile Include="ShotEffect.cpp" />
     <ClCompile Include="Sqhere.cpp" />
     <ClCompile Include="Title.cpp" />
+    <ClCompile Include="tutoBorad.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Vec2.cpp" />
     <ClCompile Include="WeapomItem.cpp" />
@@ -191,6 +194,7 @@
     <ClInclude Include="CollisionMaster.h" />
     <ClInclude Include="DieEnemyEffect.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EneDeathEffect.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyBasePro.h" />
     <ClInclude Include="EnemyManager.h" />
@@ -202,6 +206,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GamePlayingScene.h" />
+    <ClInclude Include="HitEffect.h" />
     <ClInclude Include="ImageGroundManager.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="Map.h" />
@@ -220,6 +225,7 @@
     <ClInclude Include="ShotEffect.h" />
     <ClInclude Include="Sqhere.h" />
     <ClInclude Include="Title.h" />
+    <ClInclude Include="tutoBorad.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="WeapomItem.h" />

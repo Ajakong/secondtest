@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "GameOverScene.h"
 #include "Title.h"
+#include"Pad.h"
 
 
 GameOverScene::GameOverScene(SceneManager& mgr) :
@@ -41,8 +42,11 @@ void GameOverScene::FadeInUpdate()
 void GameOverScene::NormalUpdate()
 {
 	m_btnFrame++;
-	m_updateFunc = &GameOverScene::FadeOutUpdate;
-	m_drawFunc = &GameOverScene::FadeDraw;
+	if(GetJoypadInputState(DX_INPUT_KEY_PAD1))
+	{
+		m_updateFunc = &GameOverScene::FadeOutUpdate;
+		m_drawFunc = &GameOverScene::FadeDraw;
+	}
 }
 
 void GameOverScene::FadeOutUpdate()
@@ -50,22 +54,24 @@ void GameOverScene::FadeOutUpdate()
 	m_frame++;
 	if (60 <= m_frame)
 	{
-		m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+		m_manager.PopScene();
 	}
 }
 
 void GameOverScene::FadeDraw()
 {
-	DrawString(10, 100, "GameOverScene", 0xffffff);
+	DrawString(1000, 500, "Continue", 0xffffff);
+	DrawString(1000, 600, "To Title", 0xffffff);
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
-	DrawBox(0, 0, 640, 480, 0x000000, true);
+	DrawBox(0, 0, 2000, 1500, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
 void GameOverScene::NormalDraw()
 {
-	DrawString(10, 100, "GameOverScene", 0xffffff);
+	DrawString(1000, 500, "Continue", 0xffffff);
+	DrawString(1000, 600, "To Title", 0xffffff);
 	auto& app = Application::GetInstance();
 	auto size = app.GetWindowSize();
 	int idx = m_btnFrame / 10 % 3;

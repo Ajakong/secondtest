@@ -18,7 +18,9 @@ private:
 
 	int m_num;
 	int m_createFrame=0;
-	
+	int m_handle = 0;
+
+
 	bool m_useParticle[100];
 };
 

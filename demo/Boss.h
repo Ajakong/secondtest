@@ -25,8 +25,6 @@ public:
 
 	void ScreenMove(int screenMove) { m_screenMove = screenMove; };
 
-	
-
 	bool OnDie();
 
 	void GetSceneMain(SceneMain* sceneMain) { m_WorldMana = sceneMain; }
@@ -35,9 +33,6 @@ public:
 
 	Vec2 GetEnePos() { return m_pos; }
 
-
-
-	
 private:
 	int m_Hp;
 

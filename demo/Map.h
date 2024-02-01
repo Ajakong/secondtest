@@ -43,9 +43,6 @@ public:
 
 private:
 	
-
-	
-
 	int screenVelocityX=0;//スクリーンのx軸移動量(フレーム単位)
 	int screenMove=0;//スクリーンのx軸移動量(合計)
 

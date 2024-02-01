@@ -2,6 +2,7 @@
 #include"Game.h"
 #include"Pad.h"
 #include"Object.h"
+
 #include"Shot.h"
 #include"ShotEffect.h"
 #include"Laser.h"
@@ -166,16 +167,6 @@ void Player::ShotIt()
 	}
 	m_fireDir.Normalize();
 
-	/*if (Pad::IsPress(PAD_INPUT_UP))
-	{
-		m_fireDir.y -= shotAngle;
-	}
-	if (Pad::IsPress(PAD_INPUT_DOWN))
-	{
-		m_fireDir.y += shotAngle;
-	}*/
-
-	
 	//Shot it!!
 	switch (m_kindOfBullet)
 	{
@@ -286,7 +277,6 @@ void Player::DeleteShot()
 		if (m_laser != nullptr)
 		{
 			m_laser->Update();
-
 			if (m_laser->GetVisible() == true)
 			{
 				m_laser = nullptr;
@@ -326,8 +316,6 @@ void Player::DeleteShot()
 	m_shotBulletInterval++;
 }
 
-
-
 void Player::Update()
 {
 	m_velocity.y += 2;//d—Í
@@ -358,6 +346,8 @@ void Player::Update()
 		m_pos.x = 0.0f;
 	}
 	m_visibleLimitTime++;//–³“GŽžŠÔ§ŒÀ‚Íí‚É‰ÁŽZ‚µ‚Ä‚¨‚­
+
+	
 
 	DeleteShot();
 	VelocityToZero();
@@ -397,6 +387,8 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
+
+	
 	DrawBox(m_playerCol.left, m_playerCol.top, m_playerCol.right, m_playerCol.bottom, 0xff00ff, false);
 }
 
@@ -427,16 +419,16 @@ void Player::VelocityToZero()
 	}
 }
 
-void Player::OnDamage()
+bool Player::OnDamage()
 {
 	if (m_visibleLimitTime < 70)
 	{
-		return;
+		return false;
 	}
 	m_visibleLimitTime = 0;
 	m_isHitFlag = true;
 	m_Hp -= 10;
-	
+	return true;
 }
 
 void Player::ToDie()
@@ -539,14 +531,11 @@ void Player::WalkingUpdate()
 	shotBulletFlag = false;
 	m_fireDir.y = 0;
 
-	
-
 	m_velocity.y += 2;
 	//if(Pad::IsRepeat(PAD_INPUT_UP,))
 	m_pos += m_velocity;
 	//•š‚¹”»’è‚ÍŽg‚Á‚½‚Ì‚Åfalse‚É‚·‚é
 	m_isFaceDownFlag = false;
-
 	m_animInterval++;
 
 	if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_RIGHT))
@@ -565,7 +554,6 @@ void Player::WalkingUpdate()
 		m_dir.x = 1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
-
 
 		ShotIt();
 	}
@@ -632,7 +620,6 @@ void Player::NeutralUpdate()
 	m_playerCol.bottom = m_pos.y + 80;
 
 	PlayerMove();
-	
 }
 
 void Player::FaceDownUpdate()
@@ -692,28 +679,24 @@ void Player::FlyingUpdate()
 	if (!m_isLeftFlag)
 	{
 		m_velocity.x = -1.5f;
-
 		m_dir.x = -1.0f;
-
 		m_velocity.y -= 1.6f;
 	}
 	if (m_isLeftFlag)
 	{
 		m_velocity.x = 1.5f;
-
 		m_dir.x = 1.0f;
-
 		m_velocity.y -= 1.6f;
 	}
 
 	//Die
 	ToDie();
-
 	ShotIt();
 }
 
 void Player::DieUpdate()
 {
+	
 	if (m_animInterval >= 20)
 	{
 		m_animFrame.y = 6;
@@ -726,6 +709,7 @@ void Player::DieUpdate()
 	}
 	if(m_animFrame.x >= 10)
 	{
+		m_pos.y--;
 		m_WorldMana->GameOver();
 	}
 	m_animInterval++;
@@ -759,6 +743,7 @@ bool Player::OnCollision(Rect rect)
 	{
 		if (m_playerCol.right >= rect.left && m_playerCol.left <= rect.right)
 		{
+			
 			return true;
 		}
 	}

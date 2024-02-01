@@ -4,6 +4,7 @@
 #include"Game.h"
 #include"Object.h"
 #include "EnemyBase.h"
+#include"HitEffect.h"
 #include"Player.h"
 #include"SceneMain.h"
 #include "EnemyToPlayerDir.h"
@@ -18,7 +19,7 @@ namespace
 }
 
 
-EnemyToPlayerDir::EnemyToPlayerDir():
+EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos):
 	m_isDeathFlag(false),
 	m_Hp(50),
 	m_pos(0.0f, 0.0f),
@@ -29,16 +30,18 @@ EnemyToPlayerDir::EnemyToPlayerDir():
 	m_attackFrame(0),
 	m_isDesitionMyWay(false)
 {
+	m_enemyUpdate = &EnemyToPlayerDir::IdleUpdate;
+	m_pos = pos;
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
 {
 }
 
-void EnemyToPlayerDir::Init(Vec2 pos,Player* player)
+void EnemyToPlayerDir::Init(Player* player)
 {
 	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
-	m_pos = pos;
+	
 	m_player = player;
 	m_velocity.y = 0;
 }
@@ -53,75 +56,10 @@ void EnemyToPlayerDir::CollisionUpdate()
 
 void EnemyToPlayerDir::Update()
 {
-	m_velocity.y =0.0f;
-	m_velocity.y += 9.8f;
-	CollisionUpdate();
-	
-	if (m_player != nullptr)
-	{
-		//if (abs(m_player->GetPos().x - m_pos.x) < 300)
-		{
-			if (m_isDesitionMyWay == false)
-			{
-				m_velocity.x = m_player->GetPos().x - m_pos.x;
-				m_velocity.Normalize();
-				m_isDesitionMyWay = true;
-			}
-		}
 
-		if (abs(m_player->GetPos().x - m_pos.x) < 50)
-		{
-			m_isAttack = true;
-			if ((m_player->GetPos().x - m_pos.x) < 0)
-			{
-				m_isRight = false;
-			}
-			else
-			{
-				m_isRight = true;
-			}
-		}
-	}
+	(this->*m_enemyUpdate)();//ó‘Ô‘JˆÚ
 
-	if(m_isDesitionMyWay)
-	{
-		
-		if (m_player != nullptr)
-		{
-			
-			m_isMapCol = false;
-		}
-		if (m_animInterval > 6)
-		{
-			animFrameMana.y = 2;
-			animFrameMana.x++;
-			m_animInterval = 0;
-			if (animFrameMana.x > 11)
-			{
-				animFrameMana.x = 0;
-			}
-		}
-	}
-	if (!m_isDesitionMyWay)
-	{
-		if (m_animInterval > 6)
-		{
-			animFrameMana.x++;
-			m_animInterval = 0;
-			if (animFrameMana.x > 5)
-			{
-				animFrameMana.x = 0;
-			}
-		}
-	}
 	
-	if (m_Hp <= 0)
-	{
-		m_isDeathFlag = true;
-	}
-	
-	m_pos += m_velocity;
-	m_animInterval++;
 }
 
 void EnemyToPlayerDir::Draw()
@@ -129,6 +67,10 @@ void EnemyToPlayerDir::Draw()
 	if (m_isDeathFlag == false)
 	{
 		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, m_isRight, m_handle, true);
+	}
+	for (int i = 0; i < m_HitEffect.size(); i++)
+	{
+		m_HitEffect[i]->Draw();
 	}
 }
 
@@ -151,6 +93,105 @@ void EnemyToPlayerDir::OnMapCol(Vec2 colRange)
 	m_isMapCol = true;
 	m_pos.y = m_colRect.bottom - 80;
 	m_pos += colRange;
+}
+
+void EnemyToPlayerDir::OnPlayerHit()
+{
+	m_HitEffect.push_back(std::make_shared<HitEffect>(m_pos.x - m_screenMove,m_pos.y));
+}
+
+void EnemyToPlayerDir::IdleUpdate()
+{
+	m_velocity.y = 0.0f;
+	m_velocity.y += 9.8f;
+	m_playerPosX = m_player->GetPos().x+m_screenMove;
+	CollisionUpdate();
+	
+	if (m_player != nullptr)
+	{
+		if (abs(m_playerPosX - m_pos.x) < 600)
+		{
+			if (m_isDesitionMyWay == false)
+			{
+				m_velocity.x = m_player->GetPos().x - m_pos.x;
+				m_velocity.Normalize();
+				m_isDesitionMyWay = true;
+				
+			}
+		}
+
+		if (m_isDesitionMyWay)
+		{
+			m_isAttack = true;
+			if ((m_player->GetPos().x - m_pos.x) < 0)
+			{
+				m_isRight = false;
+			}
+			else
+			{
+				m_isRight = true;
+			}
+			m_enemyUpdate = &EnemyToPlayerDir::NeutralUpdate;
+		}
+	}
+	if (m_animInterval > 6)
+	{
+		animFrameMana.x++;
+		m_animInterval = 0;
+		if (animFrameMana.x > 5)
+		{
+			animFrameMana.x = 0;
+		}
+	}
+	m_pos += m_velocity;
+	m_animInterval++;
+}
+
+void EnemyToPlayerDir::NeutralUpdate()
+{
+	m_velocity.y = 0.0f;
+	m_velocity.y += 9.8f;
+	CollisionUpdate();
+
+	if (m_isDesitionMyWay)
+	{
+		if (m_player != nullptr)
+		{
+
+			m_isMapCol = false;
+		}
+		if (m_animInterval > 6)
+		{
+			animFrameMana.y = 2;
+			animFrameMana.x++;
+			m_animInterval = 0;
+			if (animFrameMana.x > 11)
+			{
+				animFrameMana.x = 0;
+			}
+		}
+	}
+	
+	if (m_Hp <= 0)
+	{
+		m_WorldMana->AddScore(20000);
+		m_isDeathFlag = true;
+	}
+
+	for (int i = 0; i < m_HitEffect.size(); i++)
+	{
+		m_HitEffect[i]->Update();
+		if (m_HitEffect[i]->OnDestroy())
+		{
+			m_HitEffect.erase(m_HitEffect.begin());
+		}
+	}
+	m_pos += m_velocity;
+	m_animInterval++;
+}
+
+void EnemyToPlayerDir::DyingUpdate()
+{
 }
 
 

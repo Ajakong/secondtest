@@ -28,7 +28,7 @@ void EneShotEffect::Update()
 		}
 	}
 
-
+	
 }
 
 void EneShotEffect::Draw()

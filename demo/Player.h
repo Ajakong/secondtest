@@ -1,5 +1,6 @@
 #pragma once
 #include<iostream>
+#include<vector>
 #include<memory>
 #include"Vec2.h"
 #include"Object.h"
@@ -36,7 +37,7 @@ public:
 	void CollisionUpdate();
 	void Draw();
 	void VelocityToZero();
-	void OnDamage();
+	bool OnDamage();
 
 	void ToDie();
 
@@ -131,7 +132,7 @@ private:
 	
 	std::shared_ptr<Laser> m_laser;
 	std::shared_ptr<CircleShot> m_circleShot[SHOT_NUM_LIMIT];
-
+	
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
 	bool shotBulletFlag=false;

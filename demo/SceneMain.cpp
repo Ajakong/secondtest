@@ -1,3 +1,5 @@
+#include<stdio.h>
+
 #include "SceneMain.h"
 #include"DxLib.h"
 #include"Game.h"
@@ -67,14 +69,14 @@ SceneMain::SceneMain():
 	m_eneToPlayerPos[7] = Vec2(2200, 0);
 	m_eneToPlayerPos[8] = Vec2(2500, 0);
 	m_eneToPlayerPos[9] = Vec2(2900, 0);
-	m_eneToPlayerPos[10] = Vec2(3400, 0);
-	m_eneToPlayerPos[11] = Vec2(3850, 0);
+	m_eneToPlayerPos[10] = Vec2(3400, 500);
+	m_eneToPlayerPos[11] = Vec2(3850, 500);
 	m_eneToPlayerPos[12] = Vec2(3900, 0);
 	m_eneToPlayerPos[13] = Vec2(4200, 0);
-	m_eneToPlayerPos[14] = Vec2(4250, 0);
+	m_eneToPlayerPos[14] = Vec2(4250, 500);
 	m_eneToPlayerPos[15] = Vec2(5300, 0);
 	m_eneToPlayerPos[16] = Vec2(5400, 0);
-	m_eneToPlayerPos[17] = Vec2(5500, 0);
+	m_eneToPlayerPos[17] = Vec2(5500, 500);
 	m_eneToPlayerPos[18] = Vec2(5700, 0);
 	m_eneToPlayerPos[19] = Vec2(6000, 0);
 
@@ -165,14 +167,14 @@ void SceneMain::Update()
 		{
 			m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
 			m_pMap->Update();
-			if (!bossZone)
+			//if (!bossZone)
 			{
 				if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
 				{
 					m_screenMove = m_pMap->GetScreenMove();
 					m_pMap->GetScreenMove(6750);
 					m_pPlayer->GetPos(500);
-					m_toBoss = true;
+					m_isClear = true;
 				}
 			}
 		}
@@ -311,8 +313,14 @@ void SceneMain::CollisionUpdate()
 				{
 					if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 					{
+						if (m_pPlayer->OnDamage())
+						{
+							m_pEnemyToPlayer[e]->OnPlayerHit();
+						}
 						//プレイヤーが敵にヒット
 						m_pPlayer->OnDamage();
+						
+						
 					}
 				}
 			}
@@ -442,7 +450,6 @@ void SceneMain::Draw() const
 
 			}
 		}
-
 		m_pMap->Draw();
 
 		if (m_toBoss)
@@ -457,17 +464,17 @@ void SceneMain::Draw() const
 		{
 			m_pBoss->Draw();
 		}
+
+		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);
 	}
-	
 }
 
 void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 {
 	
-	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir;
-	
+	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos};
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
-	m_pEnemyToPlayer[enemyNumber]->Init(pos, m_pPlayer);
+	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer);
 	
 }
 
@@ -493,6 +500,7 @@ void SceneMain::GameOver()
 
 float SceneMain::GetPlayerPos()
 {
+	
 	if (m_pPlayer != nullptr)
 	{
 		return m_pPlayer->GetPos().x;

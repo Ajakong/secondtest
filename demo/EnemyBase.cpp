@@ -6,6 +6,7 @@
 #include "EnemyBase.h"
 #include"EneShotEffect.h"
 #include"EneShot.h"
+#include"EneDeathEffect.h"
 #include"Player.h"
 #include"SceneMain.h"
 
@@ -36,8 +37,6 @@ EnemyBase::EnemyBase() :
 	m_colRect.right = m_pos.x + 75;
 }
 
-
-
 EnemyBase::~EnemyBase()
 {
 }
@@ -47,7 +46,6 @@ void EnemyBase::Init(Vec2 pos)
 	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
 	m_shotGraph = LoadGraph("data/image/eneShot.png");
-
 	m_pos = pos;
 }
 
@@ -84,7 +82,6 @@ void EnemyBase::Update()
 					{
 						m_shotEffect[i] = std::make_shared<EneShotEffect>();
 						m_shot[i] = std::make_shared<EneShot>();
-
 						m_pos.x -= m_screenMove;
 						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i],m_shot[i]);
 						m_WorldMana->AddEneShot(m_shot[i]);
@@ -107,10 +104,17 @@ void EnemyBase::Update()
 				}
 			}
 		}
+
+		for (int i = 0; i < m_EneDeathEffect.size(); i++)
+		{
+			m_EneDeathEffect[i]->Update();
+			if (m_EneDeathEffect[i]->OnDestroy())
+			{
+				m_EneDeathEffect.erase(m_EneDeathEffect.begin());
+			}
+		}
 	}
 }
-
-
 
 void EnemyBase::Draw()
 {
@@ -124,6 +128,11 @@ void EnemyBase::Draw()
 				m_shot[i]->Draw();
 		}
 	}
+
+	for (int i = 0; i < m_EneDeathEffect.size(); i++)
+	{
+		m_EneDeathEffect[i]->Draw();
+	}
 }
 
 void EnemyBase::OnHitShot()
@@ -131,6 +140,8 @@ void EnemyBase::OnHitShot()
 	m_Hp -= 10;
 	if(m_Hp<0)
 	{
+		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove, m_pos.y));
+		m_WorldMana->AddScore(20000);
 		m_isDeathFlag = true;
 	}
 }
@@ -147,5 +158,12 @@ void EnemyBase::GetScreenMove(float veloX)
 
 bool EnemyBase::OnDie()
 {
-	return m_isDeathFlag;
+	for (int i = 0; i < m_EneDeathEffect.size(); i++)
+	{
+		if (m_EneDeathEffect[i]->GetOnDestroy())
+		{
+			return m_isDeathFlag;
+		}
+	}
+	return false;
 }

@@ -45,3 +45,8 @@ void SceneManager::PopScene()
 {
 	m_scenes.pop_back();
 }
+
+std::shared_ptr<Scene> SceneManager::LookBack()
+{
+	return m_scenes.back();
+}

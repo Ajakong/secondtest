@@ -41,4 +41,5 @@ public:
 	/// </summary>
 	void PopScene();
 
+	std::shared_ptr<Scene> LookBack();
 };

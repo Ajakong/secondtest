@@ -144,7 +144,6 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 						else
 						{
 							
-
 						}
 						if (rect.top >= (h + 1) * kChipHeight)
 						{

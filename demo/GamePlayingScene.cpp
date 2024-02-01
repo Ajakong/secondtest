@@ -8,6 +8,8 @@
 #include"SceneMain.h"
 #include"Pad.h"
 #include"PauseScene.h"
+#include"Title.h"
+
 
 
 GamePlayingScene::GamePlayingScene(SceneManager& manager) :
@@ -61,6 +63,7 @@ void GamePlayingScene::NormalUpdate()
 	if (Pad::IsPress(PAD_INPUT_R))//XBOXコントローラーのSTART
 	{
 		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
+		
 	}
 }
 
@@ -75,20 +78,30 @@ void GamePlayingScene::FadeOutUpdate()
 			m_manager.ChangeScene(std::make_shared<ClearScene>(m_manager));
 		}
 	}
-	
 }
 
 void GamePlayingScene::PlayerLightingUpdate()
 {
+	
 	m_lightingFrame++;
 	m_lightRange += 0.5f;
 	if (m_Scene->GetGameOverFlag())
 	{
 		if (500 <= m_lightingFrame)
 		{
-			m_manager.ChangeScene(std::make_shared<GameOverScene>(m_manager));
+			if (m_isEndRoll)
+			{
+				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+			}
+			if(!m_isEndRoll)
+			{
+				m_isEndRoll = true;
+				m_manager.PushScene(std::make_shared<GameOverScene>(m_manager));
+			}
 		}
 	}
+	
+
 }
 
 void GamePlayingScene::FadeDraw()

@@ -2,13 +2,15 @@
 #include"Vec2.h"
 #include "EnemyBase.h"
 
+class HitEffect;
+
 class EnemyToPlayerDir
 {
 public:
-    EnemyToPlayerDir();
+    EnemyToPlayerDir(Vec2 pos);
     virtual ~EnemyToPlayerDir();
 
-    virtual void Init(Vec2 pos, Player* player) ;
+    virtual void Init( Player* player) ;
 	void CollisionUpdate();
     virtual void Update();
     virtual void Draw();
@@ -23,7 +25,14 @@ public:
 
 	void OnMapCol(Vec2 colRange);
 
+	void OnPlayerHit();
 
+	void IdleUpdate();
+	void NeutralUpdate();
+	void DyingUpdate();
+
+	using EnemyState_t = void(EnemyToPlayerDir::*)();
+	EnemyState_t m_enemyUpdate;
 
 	bool OnDie() { return m_isDeathFlag; }
 
@@ -41,6 +50,8 @@ private:
 
     int m_attackFrame=0;
 	int m_shotGraph=0;
+
+	int m_playerPosX;
 
 	int m_animInterval=0;
 
@@ -77,7 +88,7 @@ private:
 
 	Player* m_player;
 
-	
+	std::vector<std::shared_ptr<HitEffect>> m_HitEffect;
 
 	//’e‚Ì”­ŽËƒtƒ‰ƒO
 	bool shotBulletFlag=false;
