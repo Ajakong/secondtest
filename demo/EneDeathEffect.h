@@ -8,7 +8,7 @@ public:
 
 	void Init();
 	void Update();
-	void Draw();
+	void Draw(int screenMove);
 
 	bool GetOnDestroy() { return m_isDestroy; }
 

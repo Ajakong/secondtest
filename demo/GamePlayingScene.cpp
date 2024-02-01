@@ -146,8 +146,5 @@ void GamePlayingScene::PlayerLightingDraw()
 	}
 	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
 	DrawBox(0, 0, 2000, 2000, 0xffffff, true);
-	
-
-	
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

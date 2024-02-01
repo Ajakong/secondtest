@@ -52,7 +52,7 @@ void Title::Update()
 void Title::Draw()
 {
 	(this->*m_drawFunc)();
-	m_particle->Draw();
+	
 }
 
 void Title::FadeInUpdate()
@@ -90,6 +90,7 @@ void Title::FadeOutUpdate()
 
 void Title::FadeDraw()
 {
+	m_particle->Draw();
 	DrawRotaGraph(graphPosX, graphPosY,0.8,0, m_handle, true);
 	// ’Êí‚Ì•`‰æ
 	DrawRotaString(drawStringPosX, drawStringPosY+m_fadeFrame,3,3,0,0,0, 0xffffbb,0,0, "Press any button");
@@ -103,11 +104,12 @@ void Title::FadeDraw()
 	DrawBox(drawStringPosX, drawStringPosY+20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
 	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 }
 
 void Title::NormalDraw()
 {
-	
+	m_particle->Draw();
 	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 	m_fadeFrame+=a;
 	if (m_fadeFrame > 60)

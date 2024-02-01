@@ -131,7 +131,7 @@ void EnemyBase::Draw()
 
 	for (int i = 0; i < m_EneDeathEffect.size(); i++)
 	{
-		m_EneDeathEffect[i]->Draw();
+		m_EneDeathEffect[i]->Draw(m_screenMove);
 	}
 }
 

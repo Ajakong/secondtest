@@ -59,7 +59,11 @@ void EnemyToPlayerDir::Update()
 
 	(this->*m_enemyUpdate)();//èÛë‘ëJà⁄
 
-	
+	if (m_Hp <= 0)
+	{
+		m_WorldMana->AddScore(20000);
+		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
+	}
 }
 
 void EnemyToPlayerDir::Draw()
@@ -116,7 +120,6 @@ void EnemyToPlayerDir::IdleUpdate()
 				m_velocity.x = m_player->GetPos().x - m_pos.x;
 				m_velocity.Normalize();
 				m_isDesitionMyWay = true;
-				
 			}
 		}
 
@@ -152,17 +155,31 @@ void EnemyToPlayerDir::NeutralUpdate()
 	m_velocity.y = 0.0f;
 	m_velocity.y += 9.8f;
 	CollisionUpdate();
+	m_playerPosX = m_player->GetPos().x + m_screenMove;
+	
 
-	if (m_isDesitionMyWay)
+	if (abs(m_playerPosX - m_pos.x) < 30)
+	{
+		if (m_animInterval > 6)
+		{
+			animFrameMana.y = 2;
+			animFrameMana.x++;
+			m_animInterval = 0;
+			if (animFrameMana.x > 14)
+			{
+				animFrameMana.x = 0;
+			}
+		}
+	}
+	else
 	{
 		if (m_player != nullptr)
 		{
-
 			m_isMapCol = false;
 		}
 		if (m_animInterval > 6)
 		{
-			animFrameMana.y = 2;
+			animFrameMana.y = 1;
 			animFrameMana.x++;
 			m_animInterval = 0;
 			if (animFrameMana.x > 11)
@@ -170,13 +187,10 @@ void EnemyToPlayerDir::NeutralUpdate()
 				animFrameMana.x = 0;
 			}
 		}
+		m_pos += m_velocity;
 	}
 	
-	if (m_Hp <= 0)
-	{
-		m_WorldMana->AddScore(20000);
-		m_isDeathFlag = true;
-	}
+	
 
 	for (int i = 0; i < m_HitEffect.size(); i++)
 	{
@@ -186,12 +200,33 @@ void EnemyToPlayerDir::NeutralUpdate()
 			m_HitEffect.erase(m_HitEffect.begin());
 		}
 	}
-	m_pos += m_velocity;
+	
 	m_animInterval++;
 }
 
 void EnemyToPlayerDir::DyingUpdate()
 {
+	m_velocity.x = 0.0f;
+	/*m_velocity.y = 0.0f;
+	
+	m_velocity.y += 9.8f;
+	CollisionUpdate();*/
+	m_colRect.top = -2000;
+	m_colRect.bottom = -2000;
+	m_colRect.left = -2000;
+	m_colRect.right = -2000;
+	if (m_animInterval > 6)
+	{
+		animFrameMana.y = 4;
+		animFrameMana.x++;
+		m_animInterval = 0;
+		if (animFrameMana.x > 22)
+		{
+			m_isDeathFlag = true;
+		}
+	}
+	
+	m_animInterval++;
 }
 
 
