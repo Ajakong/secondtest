@@ -109,10 +109,7 @@ SceneMain::~SceneMain()
 	{
 		delete shot;
 	}
-	for (auto& shot : m_eneShot)
-	{
-		delete shot;
-	}
+	
 	delete m_pPlayer ;
 	delete m_pMap ;
 	delete m_pBgManager ;
@@ -252,6 +249,8 @@ void SceneMain::Update()
 			CreateEnemy(m_eneToPlayerPos[19], 19);
 			m_isEnemyCreate[6] = true;
 		}
+
+
 		if (m_toBoss)
 		{
 			m_frame++;
@@ -291,6 +290,15 @@ void SceneMain::Update()
 					m_pShot[i]->GetScreenMove(m_pMap->GetScreenMove());
 				}
 			}
+
+			if (m_pLaser != nullptr)
+			{
+				for (int e = 0; e < ENEMY_NUM; e++)
+				{
+					m_pLaser->GetScreenMove(m_pMap->GetScreenMove());
+				}
+			}
+
 			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
@@ -379,7 +387,7 @@ void SceneMain::CollisionUpdate()
 			{
 				for (int e = 0; e < ENEMY_NUM; e++)
 				{
-					if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
+					if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 					{
 						int d = 0;
 					}
@@ -422,27 +430,29 @@ void SceneMain::CollisionUpdate()
 			}
 		}
 	}
-	
+
+	int SIZE = m_eneShot.size();
+	for (int i=0;i < SIZE;i++)
+	{
+		bool hitFlag = m_eneShot[i]->GetShotColli();
+		if (hitFlag == true)
+		{
+			m_pPlayer->OnDamage(0);
+		}
+	}
+
 	//toPlayer‚ÌCollision
 	if (m_pPlayer != nullptr)
 	{
-		for (int i = 0; i < ENEMY_NUM*10; i++)
+		for (int i = 0; i < m_eneShot.size(); i++)
 		{
-			if (m_eneShot[i] != nullptr)
+		
+			m_eneShot[i]->CollisionUpdate();
+;			if (m_eneShot[i]->GetShotColli())
 			{
-				m_eneShot[i]->CollisionUpdate();
-;				if (m_pPlayer->OnCollision(m_eneShot[i]->GetColRect()))
-				{
-					//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
-					m_pPlayer->OnDamage();
-				}
-				if (m_eneShot[i]->GetIsDestroy() == false)
-				{
-					m_eneShot[i] = nullptr;
-				}
-				
+				//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
+				m_pPlayer->OnDamage(0);
 			}
-
 		}
 		for (int i = 0; i < ENEMY_NUM; i++)
 		{
@@ -490,7 +500,7 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 
-			for (int e = 0; e < ENEMY_NUM*10; e++)
+			for (int e = 0; e < m_eneShot.size(); e++)
 			{
 				if (m_eneShot[e] != nullptr)
 				{
@@ -623,12 +633,5 @@ void SceneMain::AddCircleShot(std::shared_ptr<CircleShot> circleShot)
 
 void SceneMain::AddEneShot(std::shared_ptr<EneShot> eneShot)
 {
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		if (m_eneShot[i] == nullptr)
-		{
-			m_eneShot[i] = eneShot.get();
-			break;
-		}
-	}
+	m_eneShot.push_back(eneShot);
 }

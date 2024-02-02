@@ -24,7 +24,7 @@ void EneShotEffect::Update()
 		m_lineThickNess--;
 		if (m_radius >= 40)
 		{
-			m_shot->OnDestroy();
+			m_isAppear = false;
 		}
 	}
 }

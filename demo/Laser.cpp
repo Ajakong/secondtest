@@ -77,16 +77,22 @@ void Laser::ShotProgram(Vec2 Spos, Vec2 DirVec)
 
 bool Laser::LineCollider(float x1, float y1, float x2, float y2)
 {
-	//考え方は片方の線分の始点(x1,y1)のy1がレーザーの直線.yより大きい時、終点のy座標の関係性が逆になっていた場合交わってる(支店の条件が逆の場合も)
-	if (m_expLine.x * x1 + b < y1)
-	{
-		if (m_expLine.x * x2 + b < y2)//交わることが確定
-		{
-			float b = y1 - ((x1 - x2) / (y1 - y2)) * x1;//切片
+
+	int s = (m_laserHead.x - m_laserTail.x) * (y1 - m_laserTail.y) - (x1 - m_laserTail.x-m_screenMove) * (m_laserHead.y - m_laserTail.y);
+	int t = (m_laserHead.x - m_laserTail.x) * (y2 - m_laserTail.y) - (x2 - m_laserTail.x - m_screenMove) * (m_laserHead.y - m_laserTail.y);
+	if (s * t > 0) return false;
+
+	return true;
+	////考え方は片方の線分の始点(x1,y1)のy1がレーザーの直線.yより大きい時、終点のy座標の関係性が逆になっていた場合交わってる(始点の条件が逆の場合も)
+	//if (m_expLine.x * x1 + b < y1)
+	//{
+	//	if (m_expLine.x * x2 + b < y2)//交わることが確定
+	//	{
+	//		float b = y1 - ((x1 - x2) / (y1 - y2)) * x1;//切片
 
 
-		}
-	}
+	//	}
+	//}
 
 
 
@@ -125,7 +131,6 @@ bool Laser::LineCollider(float x1, float y1, float x2, float y2)
 }
 return true;
 	*/
-	return false;
 }
 
 

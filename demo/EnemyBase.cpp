@@ -26,10 +26,10 @@ EnemyBase::EnemyBase() :
 	m_isShotCollFlag(false),
 	m_attackFrame(0)
 {
-	for (auto& shot : m_shot)
+	/*for (auto& shot : m_shot)
 	{
 		shot = nullptr;
-	}
+	}*/
 	
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + 130;
@@ -74,34 +74,39 @@ void EnemyBase::Update()
 		{
 			m_fireDir = m_velocity;
 			m_fireDir.Normalize();
-			for (int i = 0; i < 10; i++)
+			
 			{
 				if (m_attackFrame >= 60)
 				{
-					if (m_shot[i] == nullptr)
+					m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
+					//for (int i = i < m_shot.size()-1; i < m_shot.size(); i++)
 					{
-						m_shotEffect[i] = std::make_shared<EneShotEffect>();
-						m_shot[i] = std::make_shared<EneShot>();
-						m_pos.x -= m_screenMove;
-						m_shot[i]->ShotProgram(m_pos, m_fireDir, m_shotGraph,m_shotEffect[i],m_shot[i]);
-						m_WorldMana->AddEneShot(m_shot[i]);
-						m_attackFrame = 0;
-						m_pos.x += m_screenMove;
-						break;
+						
+						//if (!m_shotIt)
+						{
+
+							m_pos.x -= m_screenMove;
+							m_shot.back()->ShotProgram();
+							m_WorldMana->AddEneShot(m_shot.back());
+							m_attackFrame = 0;
+							m_pos.x += m_screenMove;
+						
+						
+						}
+
+						
 					}
+					
 				}
 			}
 		}
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < m_shot.size(); i++)
 		{
-			if (m_shot[i] != nullptr)
+			m_shot[i]->Update();
+			if (m_shot[i]->GetIsDestroy())
 			{
-				m_shot[i]->Update();
-				if (m_shot[i]->GetIsDestroy())
-				{
-					m_shotEffect[i] = nullptr;
-					m_shot[i] = nullptr;
-				}
+				m_shot[i].reset();
+				m_shot.erase(m_shot[i]);
 			}
 		}
 
@@ -110,6 +115,7 @@ void EnemyBase::Update()
 			m_EneDeathEffect[i]->Update();
 			if (m_EneDeathEffect[i]->OnDestroy())
 			{
+				m_EneDeathEffect[i].reset();
 				m_EneDeathEffect.erase(m_EneDeathEffect.begin());
 			}
 		}
@@ -122,7 +128,7 @@ void EnemyBase::Draw()
 	{
 		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xff0000, true);
 		DrawPixel(m_pos.x-m_screenMove + 25, m_pos.y + 25, 0x000000);
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < m_shot.size(); i++)
 		{
 			if (m_shot[i] != nullptr)
 				m_shot[i]->Draw(m_screenMove);

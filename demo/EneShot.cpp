@@ -7,18 +7,20 @@
 #include "EneShot.h"
 #include"EneShotEffect.h"
 
-EneShot::EneShot():
+EneShot::EneShot(const Vec2& Spos, const Vec2& DirVec, const int& graph,const Player* p_player):
 	m_handle(-1),
 	m_shotPos(0, 0),
 	m_isVisible(false),
 	m_Velocity(0, 0),
 	m_radius(15),
-	m_isDestroy(false)
+	m_isDestroy(false),
+	m_player(p_player)
 {
-	m_colRect.top = 0;
-	m_colRect.bottom = 0;
-	m_colRect.left = 0;
-	m_colRect.right = 0;
+	m_isVisible = false;
+	m_shotPos = Spos;
+	m_Velocity = DirVec;
+	m_handle = graph;
+	m_Velocity.Normalize();
 }
 
 EneShot::~EneShot()
@@ -28,7 +30,7 @@ EneShot::~EneShot()
 void EneShot::Init()
 {
 	CollisionUpdate();
-	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
+	
 }
 
 void EneShot::Update()
@@ -44,33 +46,21 @@ void EneShot::Update()
 
 	if (m_isVisible == false)
 	{
-		if (m_shotPos.x >= Game::kScreenWidth)
-			m_isVisible = true;
-		if (m_shotPos.x <= 0 - 15)
-			m_isVisible = true;
-		if (m_shotPos.y >= Game::kScreenHeight)
-			m_isVisible = true;
-		if (m_shotPos.y <= 0 - 15)
-			m_isVisible = true;
-
-		/*m_enePos = m_enemy->GetEnePos();
+	/*	m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
 		m_Velocity.y = (m_enePos.y- m_shotPos.y);
 		m_Velocity.Normalize();*/
 
-		m_Velocity.Normalize();
+		
 		m_shotPos += m_Velocity * 10.0f;
 	}
-	if (m_isEffectFlag == true)
+	/*if (m_isEffectFlag == true)
 	{
-		if (m_shotEffect != nullptr)
+		if (m_shotEffect[0] != nullptr)
 		{
-			m_shotEffect->Update();
+			m_shotEffect[0]->Update();
 		}
-	}
-
-	
-	
+	}*/
 }
 
 void EneShot::Draw(int screenMove)
@@ -82,37 +72,40 @@ void EneShot::Draw(int screenMove)
 		DrawBox(m_shotPos.x - m_screenMove, m_shotPos.y, m_shotPos.x + m_radius*2 - m_screenMove, m_shotPos.y + m_radius*2,0xff0000,0);
 		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
 	}
-
-	if (m_isEffectFlag == true)
+	/*for (int i = 0; i < m_shotEffect.size(); i++)
 	{
-		if (m_shotEffect != nullptr)m_shotEffect->Draw();
-	}
-}
-
-void EneShot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect, std::shared_ptr<EneShot>shotPointer)
-{
-	m_isVisible = false;
-	m_shotPos = Spos;
-	m_Velocity = DirVec;
-	m_myPointer = shotPointer;
-	m_handle = graph;
-	m_shotEffect = eneShotEffect;
-}
-
-bool EneShot::GetShotColli(const Rect& rect)
-{
-	if (m_isVisible == false)
-	{
-		if (m_shotPos.x + m_radius * 2 - m_screenMove >= rect.left && m_shotPos.x - m_screenMove <= rect.right)
+		if (m_isEffectFlag == true)
 		{
-			if (m_shotPos.y <= rect.bottom && m_shotPos.y + m_radius * 2 >= rect.top)
+			for (int i = 0; i < m_shotEffect.size(); i++)
 			{
-				m_isVisible = true;
-				m_isEffectFlag = true;
-				m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
-				return true;
+				if (m_shotEffect[i] != nullptr)
+				{
+					m_shotEffect[i]->Draw();
+
+				}
+
 			}
 		}
+	}*/
+	
+}
+
+void EneShot::ShotProgram()
+{
+	
+}
+
+bool EneShot::GetShotColli()
+{
+	
+
+	//プレイヤーと弾(自分)の距離を計算
+	int  del = (int)(m_shotPos - m_player->GetPos()).Length();//弾からプレイヤーへのベクトルを作成し、その大きさ
+	int delr = m_radius + 20;
+	//当たり判定
+	if (del < delr)
+	{
+		return true;
 	}
 	return false;
 }
@@ -121,20 +114,26 @@ void EneShot::OnCollision()
 {
 	m_isVisible = true;
 	m_isEffectFlag = true;
-	m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
+	//m_shotEffect[0]->WantHitPos( m_shotPos);
+}
+
+void EneShot::OnDestroy()
+{
+	/*for(int i=0;i<m_shotEffect.size();i++)
+	{
+		m_shotEffect[i] = nullptr;
+	}*/
+	m_isDestroy = true;
 }
 
 void EneShot::CollisionUpdate()
 {
-	m_colRect.top = m_shotPos.y - m_radius;
-	m_colRect.bottom = m_shotPos.y + m_radius;
-	m_colRect.left = m_shotPos.x - m_radius;
-	m_colRect.right = m_shotPos.x + m_radius;
+	
 }
 
 void EneShot::OnHit()
 {
 	m_isVisible = true;
 	m_isEffectFlag = true;
-	m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
+	//m_shotEffect[0]->WantHitPos( m_shotPos);
 }

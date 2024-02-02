@@ -284,7 +284,7 @@ void Player::DeleteShot()
 			m_laser->Update();
 			if (m_laser->GetVisible() == true)
 			{
-				m_laser = nullptr;
+				m_laser.reset();
 			}
 		}
 	}
@@ -295,7 +295,7 @@ void Player::DeleteShot()
 			m_shot[i]->Update();
 			if (m_shot[i]->GetIsDestroy())
 			{
-				m_shot[i] = nullptr;
+				m_shot[i].reset();
 			}
 		}
 	}
@@ -306,7 +306,7 @@ void Player::DeleteShot()
 			m_circleShot[i]->Update();
 			if (m_circleShot[i]->GetIsDestroy())
 			{
-				m_circleShot[i] = nullptr;
+				m_circleShot[i].reset();
 			}
 		}
 	}
@@ -686,9 +686,9 @@ void Player::NeutralUpdate()
 	m_animFrame.x = 0.0f;
 	m_animFrame.y = 0.0f;
 	m_playerCol.top = m_pos.y - 15;
-	m_playerCol.left = m_pos.x - 30;
-	m_playerCol.right = m_pos.x + 30;
-	m_playerCol.bottom = m_pos.y + 80;
+	m_playerCol.left = m_pos.x - 20;
+	m_playerCol.right = m_pos.x + 20;
+	m_playerCol.bottom = m_pos.y + 50;
 
 	PlayerMove();
 }

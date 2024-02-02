@@ -44,6 +44,8 @@ public:
 
 	void OnClear();
 
+
+
 	//状態別関数(ポインタで呼び出す)
 	void StartUpdate();
 	void IdleUpdate();
@@ -65,6 +67,7 @@ public:
 	Vec2 GetPos()const { return m_pos; }
 	Vec2 GetPos(int move) { m_pos.x -= move; return m_pos; }
 	Rect& GetRect() { return m_playerCol; }
+	
 	
 	//マップ進行
 	void screenAdd() { m_isScreenAdd = true; }
@@ -92,6 +95,8 @@ private:
 	bool m_isDushFlag=false;//ダッシュしているか
 	bool m_isFaceDownFlag=false;//伏せ
 	bool m_isLeftFlag=false;//左を向いてるかフラグ
+
+
 	bool m_isHitFlag=false;//ダメージフラグ
 
 

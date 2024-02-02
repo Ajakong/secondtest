@@ -53,6 +53,8 @@ private:
 	bool m_isShotCollFlag=false;
 	bool m_isDeathFlag=false;
 
+	bool m_shotIt=false;
+
 	Vec2 m_targetPos;
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü
 	Vec2 m_pos;
@@ -65,8 +67,8 @@ private:
 	Player* m_player;
 
 	//////////*ShotŠÖ˜A*///////////
-	std::shared_ptr<EneShot> m_shot[10];
-	std::shared_ptr<EneShotEffect>m_shotEffect[10];
+	std::vector<std::shared_ptr<EneShot>> m_shot;
+	
 	std::vector<std::shared_ptr<EneDeathEffect>> m_EneDeathEffect;
 	//’e‚Ì”­Ëƒtƒ‰ƒO
 	bool shotBulletFlag=false;

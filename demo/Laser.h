@@ -27,6 +27,7 @@ public:
 
     float toEquation(float& pos1X,float& pos1Y, float& pos2X,float& pos2Y);//ˆêŸ•û’ö®‰»‚µ‚ÄØ•Ğ‚ğ•Ô‚·
 
+    void GetScreenMove(int screenMove) { m_screenMove = screenMove; }
 
 private:
     Rect m_rect;
@@ -43,5 +44,7 @@ private:
     bool m_isVisible=false;
 
     int m_limitTime=0;
+
+    int m_screenMove=0;
 };
 

@@ -16,7 +16,9 @@ public:
 	void Update();
 	void Draw();
 
-	void WantHitPos(std::shared_ptr<EneShot> shot, const Vec2& pos) { m_shot = shot; m_pos = pos; m_isAppear = true; }
+	bool GetIsAppear() { return m_isAppear; }
+
+	void WantHitPos( const Vec2& pos) {  m_pos = pos; m_isAppear = true; }
 
 private:
 	Vec2 m_pos;
@@ -27,7 +29,6 @@ private:
 
 	int m_lineThickNess = 5;
 
-	std::shared_ptr<EneShot> m_shot;
 
 };
 

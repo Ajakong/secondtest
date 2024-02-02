@@ -98,7 +98,7 @@ private:
 	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 	Laser* m_pLaser;
 	CircleShot* m_circleShot[SHOT_NUM_LIMIT];
-	EneShot* m_eneShot[ENEMY_NUM*10];
+	std::vector<std::shared_ptr<EneShot>> m_eneShot;
 
 	std::map<int, Vec2> m_enePos;
 	std::map<int, Vec2> m_eneToPlayerPos;

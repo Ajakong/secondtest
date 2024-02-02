@@ -1,12 +1,13 @@
 #pragma once
 #include "Shot.h"
+#include<vector>
 
 class EneShotEffect;
 
 class EneShot 
 {
 public:
-	EneShot();
+	EneShot(const Vec2& Spos, const Vec2& DirVec, const int& graph, const Player* p_player);
 	virtual ~EneShot();
 
 	void Init();
@@ -15,40 +16,36 @@ public:
 
 
 	//Shotのプログラミング統括
-	void ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph, std::shared_ptr<EneShotEffect> eneShotEffect, std::shared_ptr<EneShot>shotPointer);
+	void ShotProgram();
 
 	bool GetIsDestroy()const { return m_isDestroy; }
 
-	bool GetShotColli(const Rect& rect);
+	bool GetShotColli();
 	void OnCollision();
 
 	void setShotBullet() { m_isVisible = false; }
 
-	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
+	void OnDestroy();
 
 	void CollisionUpdate();
 
 	void OnHit();
 
-	Rect GetColRect() { return m_colRect; }
 
 	Vec2 GetPos() { return m_shotPos; }
 
-	Sqhere GetCollSqhere()const { return m_collider; }
 private:
 	//Shotの位置情報
 	Vec2 m_shotPos;
-	//Shotのベクトル
+	//Shotの速度ベクトル
 	Vec2 m_Velocity;
-	//ベクトルの向き
-	Vec2 m_DirVec;
+	
+	Vec2 m_dis;
+
 	//Shotのグラフィックハンドル
 	int m_handle=0;
-	int m_graph=0;
 
-	Sqhere m_collider;
-
-	int m_radius=0;
+	int m_radius=0;//半径
 
 	int m_screenMove = 0;
 
@@ -58,14 +55,8 @@ private:
 
 	bool m_isDestroy=false;
 
-	Rect m_colRect;
+	const Player* m_player;
 
-	Vec2 m_graphSize;
-
-	Player* m_player;
-	EnemyBase* m_enemy;
-	std::shared_ptr<EneShot>m_myPointer;
-
-	std::shared_ptr<EneShotEffect> m_shotEffect;
+	//std::vector<std::shared_ptr<EneShotEffect>> m_shotEffect;
 };
 
