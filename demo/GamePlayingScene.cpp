@@ -86,12 +86,11 @@ void GamePlayingScene::FadeOutUpdate()
 
 void GamePlayingScene::PlayerLightingUpdate()
 {
-	
 	m_lightingFrame++;
 	m_lightRange += 0.5f;
 	if (m_Scene->GetGameOverFlag())
 	{
-		if (500 <= m_lightingFrame)
+		if (200 <= m_lightingFrame)
 		{
 			if (m_isEndRoll)
 			{
@@ -107,6 +106,28 @@ void GamePlayingScene::PlayerLightingUpdate()
 	}
 	
 
+}
+
+void GamePlayingScene::PunishmentUpdate()
+{
+	m_punishmentFrame++;
+	m_punishmentRange += 0.5f;
+	if (m_Scene->GetClearFlag())
+	{
+		if (200 <= m_lightingFrame)
+		{
+			if (m_isEndRoll)
+			{
+				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+				m_selectTitle = true;
+			}
+			if (!m_isEndRoll)
+			{
+				m_isEndRoll = true;
+				m_manager.PushScene(std::make_shared<ClearScene>(m_manager));
+			}
+		}
+	}
 }
 
 void GamePlayingScene::FadeDraw()
@@ -143,6 +164,24 @@ void GamePlayingScene::PlayerLightingDraw()
 	for (int i = 50; i < 2000; i++)
 	{
 		DrawLine(LightingPos - 25 - i / 5, i, LightingPos + 25 + i / 5, i, 0x222222, i / 100);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
+	DrawBox(0, 0, 2000, 2000, 0xffffff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void GamePlayingScene::PunishmentDraw()
+{
+	int alpha = 255; //static_cast<int>(255 * (static_cast<float>(m_lightingFrame) / 60.0f));
+
+	for (int i = 0; i < 200; i++)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha -= 1);
+	}
+
+	for (int i = 50; i < 2000; i++)
+	{
+		DrawLine(m_punishmentPos - 25 - i / 5, i, m_punishmentPos + 25 + i / 5, i, 0xffffff, m_punishmentRange);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
 	DrawBox(0, 0, 2000, 2000, 0xffffff, true);

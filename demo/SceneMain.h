@@ -9,8 +9,8 @@
 
 namespace
 {
-	constexpr int ENEMY_NUM = 10;
-	constexpr int ENEMY_TO_PLAYER_NUM = 20;
+	constexpr int ENEMY_NUM = 1;
+	constexpr int ENEMY_TO_PLAYER_NUM = 30;
 }
 
 using namespace std;
@@ -72,6 +72,7 @@ private:
 
 	int m_screenMove=0;
 	int m_bgHandle=0;
+	int m_enemyToPlayerHandle = 0;
 
 	int m_score = 0;
 
@@ -81,6 +82,8 @@ private:
 	bool m_isClear = false;
 	bool bossZone=false;
 	bool m_isPlayerDie=false;
+
+	bool m_isEnemyCreate[10];
 	// プレイヤー
 	Player* m_pPlayer;
 	//マップ
@@ -95,7 +98,7 @@ private:
 	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 	Laser* m_pLaser;
 	CircleShot* m_circleShot[SHOT_NUM_LIMIT];
-	EneShot* m_eneShot[ENEMY_NUM];
+	EneShot* m_eneShot[ENEMY_NUM*10];
 
 	std::map<int, Vec2> m_enePos;
 	std::map<int, Vec2> m_eneToPlayerPos;

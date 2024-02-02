@@ -27,8 +27,6 @@ void EneShotEffect::Update()
 			m_shot->OnDestroy();
 		}
 	}
-
-	
 }
 
 void EneShotEffect::Draw()

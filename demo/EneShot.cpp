@@ -27,11 +27,14 @@ EneShot::~EneShot()
 
 void EneShot::Init()
 {
+	CollisionUpdate();
 	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
 }
 
 void EneShot::Update()
 {
+	
+	CollisionUpdate();
 	if (m_screenMove > 0)
 	{
 		int b = 0;
@@ -66,15 +69,13 @@ void EneShot::Update()
 		}
 	}
 
-	m_colRect.top = m_shotPos.y - m_radius;
-	m_colRect.bottom = m_shotPos.y + m_radius;
-	m_colRect.left = m_shotPos.x - m_radius;
-	m_colRect.right = m_shotPos.x + m_radius;
+	
 	
 }
 
-void EneShot::Draw()
+void EneShot::Draw(int screenMove)
 {
+	m_screenMove = screenMove;
 	if (m_isVisible == false)
 	{
 		DrawGraph(m_shotPos.x-m_screenMove, m_shotPos.y, m_handle, true);
@@ -98,17 +99,17 @@ void EneShot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph
 	m_shotEffect = eneShotEffect;
 }
 
-
-
 bool EneShot::GetShotColli(const Rect& rect)
 {
 	if (m_isVisible == false)
 	{
-		if (m_shotPos.y <= rect.bottom && m_shotPos.y + m_radius*2 >= rect.top)
+		if (m_shotPos.x + m_radius * 2 - m_screenMove >= rect.left && m_shotPos.x - m_screenMove <= rect.right)
 		{
-			if (m_shotPos.x + m_radius*2 >= rect.left && m_shotPos.x <= rect.right)
+			if (m_shotPos.y <= rect.bottom && m_shotPos.y + m_radius * 2 >= rect.top)
 			{
-				
+				m_isVisible = true;
+				m_isEffectFlag = true;
+				m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
 				return true;
 			}
 		}
@@ -121,6 +122,14 @@ void EneShot::OnCollision()
 	m_isVisible = true;
 	m_isEffectFlag = true;
 	m_shotEffect->WantHitPos(m_myPointer, m_shotPos);
+}
+
+void EneShot::CollisionUpdate()
+{
+	m_colRect.top = m_shotPos.y - m_radius;
+	m_colRect.bottom = m_shotPos.y + m_radius;
+	m_colRect.left = m_shotPos.x - m_radius;
+	m_colRect.right = m_shotPos.x + m_radius;
 }
 
 void EneShot::OnHit()

@@ -38,8 +38,11 @@ public:
 	void Draw();
 	void VelocityToZero();
 	bool OnDamage();
+	bool OnDamage(float hitDir);
 
 	void ToDie();
+
+	void OnClear();
 
 	//状態別関数(ポインタで呼び出す)
 	void StartUpdate();
@@ -50,6 +53,7 @@ public:
 	void JumpingUpdate();
 	void FlyingUpdate();
 	void DieUpdate();
+	void ClearUpdate();
 	
 	//当たり判定関数
 	void OnMapCollision();
@@ -90,6 +94,7 @@ private:
 	bool m_isLeftFlag=false;//左を向いてるかフラグ
 	bool m_isHitFlag=false;//ダメージフラグ
 
+
 	int m_animInterval=0;
 	int m_animXlimit=0;
 	int m_visibleLimitTime=0;//無敵時間
@@ -100,6 +105,7 @@ private:
 	bool m_isEndroll;
 	int m_rollCount;
 
+	bool m_isClear=false;
 
 	bool flyFlag=false;
 	Vec2 flySpeed;//飛行時速度

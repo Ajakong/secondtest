@@ -25,7 +25,7 @@ void ShotEffect::Update(int screenmove)
 		m_pos.x -= screenmove;
 		m_radius++;
 		m_lineThickNess--;
-		if (m_radius >= 40)
+		if (m_radius >= 20)
 		{
 			m_shot->OnDestroy();
 		}

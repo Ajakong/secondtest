@@ -14,9 +14,6 @@ void Laser::Update()
 {
 	if (m_isVisible == false)
 	{
-
-		
-
 		m_laserHead += m_dirVec * 20;
 
 		if (m_laserTail.x >= Game::kScreenWidth)
@@ -33,20 +30,15 @@ void Laser::Update()
 		}
 	}
 	m_limitTime++;
-	/*if (sqrtf((m_laserHead.x-m_startPos.x)* (m_laserHead.x-m_startPos.x)+ (m_laserHead.y - m_startPos.y) * (m_laserHead.y - m_startPos.y))>500)
-	{
-		m_isVisible = true;
-	}*/
+	
 }
 
 void Laser::Draw()
 {
 	if(!m_isVisible)
 	{
-		
 		DrawLine(m_laserTail.x, m_laserTail.y,
 					 m_laserHead.x, m_laserHead.y, 0xff0000,7);
-			
 	}
 	
 }

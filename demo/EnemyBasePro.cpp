@@ -175,11 +175,11 @@ void EnemyBasePro::Draw()
 	{
 		DrawBox(m_pos.x, m_pos.y, m_pos.x + 50, m_pos.y + 50, 0xff0000, true);
 		DrawPixel(m_pos.x + 25, m_pos.y + 25, 0x000000);
-		for (int i = 0; i < 10; i++)
+		/*for (int i = 0; i < 10; i++)
 		{
 			if (m_shot[i] != nullptr)
 				m_shot[i]->Draw();
-		}
+		}*/
 		DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
 	}
 

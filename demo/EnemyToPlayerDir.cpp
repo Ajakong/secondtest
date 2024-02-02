@@ -14,7 +14,7 @@ namespace
 	constexpr int animDisX = 288;
 	constexpr int animDisY = 162;
 
-	constexpr int collisionSizeX = 75;
+	constexpr int collisionSizeX = 45;
 	constexpr int collisionSizeY = 80;
 }
 
@@ -38,9 +38,9 @@ EnemyToPlayerDir::~EnemyToPlayerDir()
 {
 }
 
-void EnemyToPlayerDir::Init(Player* player)
+void EnemyToPlayerDir::Init(Player* player,int handle)
 {
-	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
+	m_handle = handle;
 	
 	m_player = player;
 	m_velocity.y = 0;
@@ -50,13 +50,21 @@ void EnemyToPlayerDir::CollisionUpdate()
 {
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + collisionSizeY;
-	m_colRect.left = m_pos.x-m_screenMove;
-	m_colRect.right = m_pos.x +collisionSizeX-m_screenMove;
+	m_colRect.left = m_pos.x-m_screenMove-20;
+	m_colRect.right = m_pos.x +collisionSizeX-m_screenMove-20;
 }
 
 void EnemyToPlayerDir::Update()
 {
+	if (m_isRight)
+	{
+		m_dirX = -1;
 
+	}
+	else
+	{
+		m_dirX = 1;
+	}
 	(this->*m_enemyUpdate)();//èÛë‘ëJà⁄
 
 	if (m_Hp <= 0)
@@ -70,12 +78,14 @@ void EnemyToPlayerDir::Draw()
 {
 	if (m_isDeathFlag == false)
 	{
-		DrawRectRotaGraphF(m_pos.x - m_screenMove, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, m_isRight, m_handle, true);
+		DrawRectRotaGraphF(m_pos.x - m_screenMove,m_pos.y, 30 + animDisX * animFrameMana.x,animDisY * animFrameMana.y, 220, 170, 1,0, m_handle, true, m_isRight,false);
 	}
 	for (int i = 0; i < m_HitEffect.size(); i++)
 	{
 		m_HitEffect[i]->Draw();
 	}
+
+	//DrawBox(m_colRect.left, m_colRect.bottom, m_colRect.right, m_colRect.top,0x00ff00,false);
 }
 
 void EnemyToPlayerDir::WantPlayerPoint(Player* player)
@@ -108,16 +118,20 @@ void EnemyToPlayerDir::IdleUpdate()
 {
 	m_velocity.y = 0.0f;
 	m_velocity.y += 9.8f;
-	m_playerPosX = m_player->GetPos().x+m_screenMove;
+	m_playerPos.x = m_player->GetPos().x + m_screenMove;
+	m_playerPos.y = m_player->GetPos().y;
+
+	m_dis = sqrt((m_playerPos.x - m_pos.x) * (m_playerPos.x - m_pos.x) + (m_playerPos.y - m_pos.y) * (m_playerPos.y - m_pos.y));
+
 	CollisionUpdate();
 	
 	if (m_player != nullptr)
 	{
-		if (abs(m_playerPosX - m_pos.x) < 600)
+		if (abs(m_dis) < 600&& (m_playerPos.y - m_pos.y)<300)
 		{
 			if (m_isDesitionMyWay == false)
 			{
-				m_velocity.x = m_player->GetPos().x - m_pos.x;
+				m_velocity.x = m_player->GetPos().x + m_screenMove - m_pos.x;
 				m_velocity.Normalize();
 				m_isDesitionMyWay = true;
 			}
@@ -126,7 +140,7 @@ void EnemyToPlayerDir::IdleUpdate()
 		if (m_isDesitionMyWay)
 		{
 			m_isAttack = true;
-			if ((m_player->GetPos().x - m_pos.x) < 0)
+			if ((m_player->GetPos().x + m_screenMove - m_pos.x) < 0)
 			{
 				m_isRight = false;
 			}
@@ -155,20 +169,15 @@ void EnemyToPlayerDir::NeutralUpdate()
 	m_velocity.y = 0.0f;
 	m_velocity.y += 9.8f;
 	CollisionUpdate();
-	m_playerPosX = m_player->GetPos().x + m_screenMove;
+	m_playerPos.x = m_player->GetPos().x + m_screenMove;
+	m_playerPos.y = m_player->GetPos().y;
+
+	m_dis = sqrt((m_playerPos.x - m_pos.x) * (m_playerPos.x - m_pos.x) + (m_playerPos.y - m_pos.y) * (m_playerPos.y - m_pos.y));
 	
-	if (abs(m_playerPosX - m_pos.x) < 30)
+	if (abs(m_dis) < 30)
 	{
-		if (m_animInterval > 6)
-		{
-			animFrameMana.y = 2;
-			animFrameMana.x++;
-			m_animInterval = 0;
-			if (animFrameMana.x > 14)
-			{
-				animFrameMana.x = 0;
-			}
-		}
+		animFrameMana.x = 8;
+		m_enemyUpdate = &EnemyToPlayerDir::AttackUpdate;
 	}
 	else
 	{
@@ -200,6 +209,44 @@ void EnemyToPlayerDir::NeutralUpdate()
 		}
 	}
 	
+	m_animInterval++;
+}
+
+void EnemyToPlayerDir::AttackUpdate()
+{
+	m_playerPos.x = m_player->GetPos().x + m_screenMove;
+	m_playerPos.y = m_player->GetPos().y;
+
+	m_dis = sqrt((m_playerPos.x - m_pos.x) * (m_playerPos.x - m_pos.x) + (m_playerPos.y - m_pos.y) * (m_playerPos.y - m_pos.y));
+
+
+	if (abs(m_dis) < 30)
+	{
+		if (m_animInterval > 6)
+		{
+			animFrameMana.y = 2;
+			animFrameMana.x++;
+			m_animInterval = 0;
+			if (animFrameMana.x > 14)
+			{
+				animFrameMana.x = 0;
+			}
+		}
+	}
+	else
+	{
+		m_enemyUpdate = &EnemyToPlayerDir::NeutralUpdate;
+	}
+
+	for (int i = 0; i < m_HitEffect.size(); i++)
+	{
+		m_HitEffect[i]->Update();
+		if (m_HitEffect[i]->OnDestroy())
+		{
+			m_HitEffect.erase(m_HitEffect.begin());
+		}
+	}
+
 	m_animInterval++;
 }
 

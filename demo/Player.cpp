@@ -21,7 +21,7 @@ namespace
 Player::Player(SceneMain* main) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(20),
+	m_Hp(30),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
@@ -183,6 +183,7 @@ void Player::ShotIt()
 						m_dir = m_fireDir;
 						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
 						m_WorldMana->AddShot(m_shot[i]);
+						m_shotBulletInterval = 0;
 						if (m_shot[i]->GetIsDestroy() == true) {
 							m_shot[i] = nullptr;
 						}
@@ -241,12 +242,16 @@ void Player::ShotIt()
 		{
 			if (m_laser == nullptr)
 			{
-				m_laser = std::make_shared<Laser>();
-				m_dir.y = m_fireDir.y;
-				m_laser->ShotProgram(m_pos, m_dir);
-				m_WorldMana->AddLaser(m_laser);
-				m_shotBulletInterval = 0;
-				break;
+				if (m_shotBulletInterval > 50)
+				{
+					m_laser = std::make_shared<Laser>();
+					m_dir.y = m_fireDir.y;
+					m_laser->ShotProgram(m_pos, m_dir);
+					m_WorldMana->AddLaser(m_laser);
+					m_shotBulletInterval = 0;
+					break;
+				}
+				
 			}
 		}
 		break;
@@ -318,6 +323,7 @@ void Player::DeleteShot()
 
 void Player::Update()
 {
+
 	m_velocity.y += 2;//d—Í
 
 	//ƒ‹[ƒvŽž‚Ì‰Šú‰»ˆ—
@@ -327,7 +333,7 @@ void Player::Update()
 	
 	(this->*m_playerUpdate)();//ó‘Ô‘JˆÚ
 
-	if (m_pos.y > Game::kScreenHeight - 45)
+	/*if (m_pos.y > Game::kScreenHeight - 45)
 	{
 		m_pos.y = Game::kScreenHeight - 45;
 		m_isGroundFlag = true;
@@ -344,10 +350,20 @@ void Player::Update()
 	if (m_pos.x < 0)
 	{
 		m_pos.x = 0.0f;
+	}*/
+	if (m_pos.y >= 1080)
+	{
+		
+		m_playerUpdate = &Player::DieUpdate;
+		
 	}
+
 	m_visibleLimitTime++;//–³“GŽžŠÔ§ŒÀ‚Íí‚É‰ÁŽZ‚µ‚Ä‚¨‚­
 
-	
+	if (!m_isGroundFlag)
+	{
+		m_playerUpdate = &Player::JumpingUpdate;
+	}
 
 	DeleteShot();
 	VelocityToZero();
@@ -387,7 +403,7 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-
+	DrawFormatString(100, 300,0xffffff,"Hp:%d", m_Hp);
 	
 	DrawBox(m_playerCol.left, m_playerCol.top, m_playerCol.right, m_playerCol.bottom, 0xff00ff, false);
 }
@@ -421,19 +437,73 @@ void Player::VelocityToZero()
 
 bool Player::OnDamage()
 {
+	
 	if (m_visibleLimitTime < 70)
 	{
 		return false;
 	}
+	m_velocity.x -= m_dir.x*10;
+
+	m_velocity.y = -35.0f;
+	m_isGroundFlag = false;
+	m_isJumpFlag = true;
+	m_angle += 1.0f;
+	m_playerUpdate = &Player::JumpingUpdate;
+	
+	m_pos += m_velocity;
 	m_visibleLimitTime = 0;
 	m_isHitFlag = true;
 	m_Hp -= 10;
 	return true;
 }
 
+bool Player::OnDamage(float hitDir)
+{
+	if (m_visibleLimitTime < 70)
+	{
+		return false;
+	}
+	m_velocity.x -=hitDir * 10;
+
+	m_velocity.y = -35.0f;
+	m_isGroundFlag = false;
+	m_isJumpFlag = true;
+	m_angle += 1.0f;
+	m_playerUpdate = &Player::JumpingUpdate;
+
+	m_pos += m_velocity;
+	m_visibleLimitTime = 0;
+	m_isHitFlag = true;
+	m_Hp -= 10;
+	return true;
+	return false;
+}
+
 void Player::ToDie()
 {
-	if (m_Hp < 0)
+	if (m_Hp <= 0)
+	{
+		if (m_isGroundFlag == true)
+		{
+			m_WorldMana->EnemyDelete();
+
+			m_visibleLimitTime = 100;//‚ ‚½‚Á‚½Û‚Ì–³“GŽžŠÔ‚ð’×‚·
+
+			m_playerCol.top = -500;
+			m_playerCol.left = -500;
+			m_playerCol.right = -500;
+			m_playerCol.bottom = -500;
+
+			m_angle = 0;
+			m_animFrame.x = 0;
+			m_playerUpdate = &Player::DieUpdate;
+		}
+	}
+}
+
+void Player::OnClear()
+{
+	if(!m_isClear)
 	{
 		if (m_isGroundFlag == true)
 		{
@@ -448,11 +518,12 @@ void Player::ToDie()
 			m_angle = 0;
 
 			m_animFrame.x = 0;
-
-			m_playerUpdate = &Player::DieUpdate;
+			m_animFrame.y = 3;
+			m_isClear = true;
+			m_playerUpdate = &Player::ClearUpdate;
 		}
-
 	}
+	
 }
 
 void Player::StartUpdate()
@@ -579,7 +650,7 @@ void Player::WalkingUpdate()
 	{
 		m_playerUpdate = &Player::IdleUpdate;
 	}
-	if (Pad::IsPress(PAD_INPUT_2))
+	if (Pad::IsTrigger(PAD_INPUT_2))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
 		m_velocity.y = -35.0f;
@@ -643,6 +714,7 @@ void Player::FaceDownUpdate()
 
 void Player::JumpingUpdate()
 {
+
 	CollisionUpdate();
 	
 	m_fireDir.y += shotAngle / 8;
@@ -715,6 +787,32 @@ void Player::DieUpdate()
 	m_animInterval++;
 }
 
+void Player::ClearUpdate()
+{
+	if (m_animInterval >= 6)
+	{
+		m_animFrame.x++;
+		if(m_animFrame.y==3)
+		{
+			if (m_animFrame.x >= 5)
+			{
+				m_animFrame.x = 0;
+				m_animFrame.y = 4;
+			}
+		}
+		else if (m_animFrame.y == 4)
+		{
+			if (m_animFrame.x >= 8)
+			{
+				m_WorldMana->GameOver();
+			}
+		}
+		m_animInterval = 0;
+	}
+	
+	m_animInterval++;
+}
+
 void Player::OnMapCollision()
 {
 	if(m_velocity.y>0)
@@ -739,9 +837,9 @@ void Player::OnMapCollision()
 
 bool Player::OnCollision(Rect rect)
 {
-	if (m_playerCol.top <= rect.bottom && m_playerCol.bottom >= rect.top)
+	if (m_playerCol.right >= rect.left && m_playerCol.left <= rect.right)
 	{
-		if (m_playerCol.right >= rect.left && m_playerCol.left <= rect.right)
+		if (m_playerCol.top <= rect.bottom && m_playerCol.bottom >= rect.top)
 		{
 			
 			return true;

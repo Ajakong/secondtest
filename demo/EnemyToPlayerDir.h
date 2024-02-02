@@ -10,7 +10,7 @@ public:
     EnemyToPlayerDir(Vec2 pos);
     virtual ~EnemyToPlayerDir();
 
-    virtual void Init( Player* player) ;
+    virtual void Init( Player* player,int handle) ;
 	void CollisionUpdate();
     virtual void Update();
     virtual void Draw();
@@ -29,7 +29,10 @@ public:
 
 	void IdleUpdate();
 	void NeutralUpdate();
+	void AttackUpdate();
 	void DyingUpdate();
+
+	float GetDirX() { return m_dirX; }
 
 	using EnemyState_t = void(EnemyToPlayerDir::*)();
 	EnemyState_t m_enemyUpdate;
@@ -51,7 +54,9 @@ private:
     int m_attackFrame=0;
 	int m_shotGraph=0;
 
-	int m_playerPosX;
+	Vec2 m_playerPos;
+
+	int m_dis=0;
 
 	int m_animInterval=0;
 
@@ -87,6 +92,8 @@ private:
 
 
 	Player* m_player;
+
+	float m_dirX;
 
 	std::vector<std::shared_ptr<HitEffect>> m_HitEffect;
 

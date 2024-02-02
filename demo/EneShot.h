@@ -11,7 +11,7 @@ public:
 
 	void Init();
 	void Update();
-	void Draw();
+	void Draw(int screenMove);
 
 
 	//Shotのプログラミング統括
@@ -26,7 +26,7 @@ public:
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 
-	void GetScreenMove(int screenmove) { m_screenMove = screenmove; }
+	void CollisionUpdate();
 
 	void OnHit();
 

@@ -22,8 +22,12 @@ private:
     float m_fps = 0.0f;
 
     float m_lightRange = 5;
-
     float LightingPos = 0;
+
+    float m_punishmentRange = 0;
+    float m_punishmentFrame = 0;
+    float m_punishmentPos = 0;
+
 
     bool m_isEndRoll=false;
    
@@ -43,10 +47,12 @@ private:
     void FadeOutUpdate();
 
     void PlayerLightingUpdate();
+    void PunishmentUpdate();
 
     // ï`âÊä÷êî
     void FadeDraw();
     void NormalDraw();
     void PlayerLightingDraw();
+    void PunishmentDraw();
 };
 

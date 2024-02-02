@@ -125,7 +125,7 @@ void EnemyBase::Draw()
 		for (int i = 0; i < 10; i++)
 		{
 			if (m_shot[i] != nullptr)
-				m_shot[i]->Draw();
+				m_shot[i]->Draw(m_screenMove);
 		}
 	}
 
@@ -141,7 +141,7 @@ void EnemyBase::OnHitShot()
 	if(m_Hp<0)
 	{
 		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove, m_pos.y));
-		m_WorldMana->AddScore(20000);
+		m_WorldMana->AddScore(10000000);
 		m_isDeathFlag = true;
 	}
 }
