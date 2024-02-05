@@ -99,11 +99,8 @@ void EnemyBase::Update()
  			m_shot[i]->Update();
 			if (m_shot[i]->GetIsDestroy())
 			{
-				for (int i = 0; i < m_shot[i].use_count(); i++)
-				{
-					m_shot[i].reset();
-				}
-				//m_shot.erase(m_shot.begin() + i);
+				m_shot.erase(m_shot.begin() + i);
+			
 			}
 		}
 
@@ -113,7 +110,7 @@ void EnemyBase::Update()
 			if (m_EneDeathEffect[i]->OnDestroy())
 			{
 				m_EneDeathEffect[i].reset();
-				m_EneDeathEffect.erase(m_EneDeathEffect.begin());
+				m_EneDeathEffect.erase(m_EneDeathEffect.begin()+i);
 			}
 		}
 	}
