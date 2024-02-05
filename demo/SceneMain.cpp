@@ -432,7 +432,6 @@ void SceneMain::CollisionUpdate()
 		}
 	}
 
-	
 	//toPlayer‚ÌCollision
 	if (m_pPlayer != nullptr)
 	{

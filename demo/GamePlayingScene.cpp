@@ -194,17 +194,17 @@ void GamePlayingScene::PlayerLightingDraw()
 
 void GamePlayingScene::PunishmentDraw()
 {
-	int alpha = 255; //static_cast<int>(255 * (static_cast<float>(m_lightingFrame) / 60.0f));
+	//int alpha = 255; //static_cast<int>(255 * (static_cast<float>(m_lightingFrame) / 60.0f));
 
-	for (int i = 0; i < 200; i++)
-	{
-		SetDrawBlendMode(DX_BLENDMODE_ADD, alpha -= 1);
-	}
+	//for (int i = 0; i < 200; i++)
+	//{
+	//	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha -= 1);
+	//}
 
-	for (int i = 50; i < 2000; i++)
-	{
-		DrawLine(m_punishmentPos, 0, m_punishmentPos, 2000, 0xffffff, m_punishmentRange);
-	}
-	
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	//for (int i = 50; i < 2000; i++)
+	//{
+	//	DrawLine(m_punishmentPos, 0, m_punishmentPos, 2000, 0xffffff, m_punishmentRange);
+	//}
+	//
+	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

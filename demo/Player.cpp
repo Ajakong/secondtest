@@ -726,9 +726,6 @@ void Player::FaceDownUpdate()
 
 void Player::JumpingUpdate()
 {
-	
-
-
 	CollisionUpdate();
 	
 	m_fireDir.y += shotAngle / 8;

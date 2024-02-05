@@ -65,7 +65,7 @@ void EnemyBase::Update()
 	if (m_player != nullptr)
 	{
 		m_targetPos.x = m_player->GetRect().right+20;
-		m_targetPos.y = m_player->GetRect().top + 50;
+		m_targetPos.y = m_player->GetRect().top;
 		m_velocity.x = (m_targetPos.x+40 - m_pos.x)* (m_targetPos.x+40 - m_pos.x);
 		m_velocity.y = (m_targetPos.y - m_pos.y)* (m_targetPos.y - m_pos.y);
 		m_distance = sqrt(m_velocity.x + m_velocity.y);

@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\MapGraph">
-      <UniqueIdentifier>{33eb3de8-fb4d-4987-85e3-1db63a5e5083}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{b642166e-8a89-4a6d-bd9d-2c7aa48e6e31}</UniqueIdentifier>
     </Filter>
@@ -61,6 +58,9 @@
     <Filter Include="ヘッダー ファイル\Boss">
       <UniqueIdentifier>{1f02cc0f-900a-4cfb-b066-0f4f60597451}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\MapGraph">
+      <UniqueIdentifier>{33eb3de8-fb4d-4987-85e3-1db63a5e5083}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -73,16 +73,16 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Bg.cpp">
-      <Filter>ソース ファイル\MapGraph</Filter>
+      <Filter>ソース ファイル\Scene\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="ForeGround.cpp">
-      <Filter>ソース ファイル\MapGraph</Filter>
+      <Filter>ソース ファイル\Scene\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="ImageGroundManager.cpp">
-      <Filter>ソース ファイル\MapGraph</Filter>
+      <Filter>ソース ファイル\Scene\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>ソース ファイル\MapGraph</Filter>
+      <Filter>ソース ファイル\Scene\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
       <Filter>ソース ファイル\Enemy</Filter>

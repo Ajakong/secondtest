@@ -23,6 +23,7 @@ EneShot::EneShot(const Vec2& Spos, const Vec2& DirVec, const int& graph,const Pl
 	m_Velocity.Normalize();
 
 	delr = m_radius + m_player->GetColRadius();
+
 }
 
 EneShot::~EneShot()
