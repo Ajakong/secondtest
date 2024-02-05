@@ -102,7 +102,6 @@ void EnemyBase::Update()
 				for (int i = 0; i < m_shot[i].use_count(); i++)
 				{
 					m_shot[i].reset();
-
 				}
 				//m_shot.erase(m_shot.begin() + i);
 			}
