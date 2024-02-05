@@ -25,6 +25,7 @@ void EneShotEffect::Update()
 		if (m_radius >= 40)
 		{
 			m_isAppear = false;
+
 		}
 	}
 }

@@ -49,6 +49,8 @@ private:
 
 	int m_screenMove = 0;
 
+	int delr = 0;
+
 	bool m_isInVisible = true;
 
 	bool m_isEffectFlag = false;
@@ -57,6 +59,6 @@ private:
 
 	const Player* m_player;
 
-	//std::vector<std::shared_ptr<EneShotEffect>> m_shotEffect;
+	std::shared_ptr<EneShotEffect>m_shotEffect;
 };
 

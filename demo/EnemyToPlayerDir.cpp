@@ -86,14 +86,14 @@ void EnemyToPlayerDir::Draw()
 		m_HitEffect[i]->Draw();
 	}
 
-	if (m_hole)
-	{
-		DrawCircle(m_firstPos.x, m_firstPos.y,50, 0xaa1100,false);
-		DrawCircle(m_firstPos.x, m_firstPos.y,40, 0xffbb00, false);
-		DrawCircle(m_firstPos.x, m_firstPos.y,30, 0xffeeaa, false);
-		DrawCircle(m_firstPos.x, m_firstPos.y,20, 0xffffaa, false);
-		DrawCircle(m_firstPos.x, m_firstPos.y,10, 0xffffff, false);
-	}
+	//if (m_hole)
+	
+	DrawCircle(m_firstPos.x, m_firstPos.y-500,50, 0xaa1100,false,5);
+	DrawCircle(m_firstPos.x, m_firstPos.y-500,40, 0xffbb00, false,5);
+	DrawCircle(m_firstPos.x, m_firstPos.y-500,30, 0xffeeaa, false,5);
+	DrawCircle(m_firstPos.x, m_firstPos.y-500,20, 0xffffaa, false,5);
+	DrawCircle(m_firstPos.x, m_firstPos.y-500,10, 0xffffff, false,5);
+	
 	//DrawBox(m_colRect.left, m_colRect.bottom, m_colRect.right, m_colRect.top,0x00ff00,false);
 }
 

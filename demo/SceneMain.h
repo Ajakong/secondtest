@@ -9,7 +9,7 @@
 
 namespace
 {
-	constexpr int ENEMY_NUM = 1;
+	constexpr int ENEMY_NUM = 10;
 	constexpr int ENEMY_TO_PLAYER_NUM = 30;
 }
 
@@ -79,7 +79,7 @@ private:
 	int m_score = 0;
 
 	bool m_isGameOver = false;
-	bool m_isCreateEnemyFlag;//  ToDo:特定の場所にプレイヤーが来たときtrueにし、敵を生成後すぐにfalse
+	
 	bool m_toBoss = false;
 	bool m_isClear = false;
 	bool bossZone=false;

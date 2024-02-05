@@ -13,11 +13,12 @@
 
 
 GamePlayingScene::GamePlayingScene(SceneManager& manager) :
-	Scene(manager)
+	Scene(manager),
+	m_punishmentRange(1.0f),
+	m_frame(60)
 {
 	m_Scene = new SceneMain;
 	m_Scene->Init();
-	m_frame = 60;
 	m_updateFunc = &GamePlayingScene::FadeInUpdate;
 	m_drawFunc = &GamePlayingScene::FadeDraw;	
 	m_holySoundHandle = LoadSoundMem("SE/HolyLight.mp3");
@@ -32,7 +33,7 @@ GamePlayingScene::~GamePlayingScene()
 void GamePlayingScene::Update()
 {
 	m_backBlack++;
-	if (m_backBlack > 100)
+	if (m_backBlack > 120)
 	{
 		m_Scene->Update();
 		m_fps = GetFPS();
@@ -63,13 +64,24 @@ void GamePlayingScene::FadeInUpdate()
 
 void GamePlayingScene::NormalUpdate()
 {
-	if(m_Scene->GetGameOverFlag()||m_Scene->GetClearFlag())
+	if(m_Scene->GetGameOverFlag())
 	{
 		LightingPos = m_Scene->GetPlayerPos();
+		m_punishmentPos=LightingPos;
+		StopSoundMem(m_stageBgm);
 		PlaySoundMem(m_holySoundHandle, DX_PLAYTYPE_BACK);
 		
 		m_updateFunc = &GamePlayingScene::PlayerLightingUpdate;
 		m_drawFunc = &GamePlayingScene::PlayerLightingDraw;
+	}
+	if (m_Scene->GetClearFlag())
+	{
+		m_punishmentPos = m_Scene->GetPlayerPos();
+		StopSoundMem(m_stageBgm);
+		PlaySoundMem(m_holySoundHandle, DX_PLAYTYPE_BACK);
+
+		m_updateFunc = &GamePlayingScene::PunishmentUpdate;
+		m_drawFunc = &GamePlayingScene::PunishmentDraw;
 	}
 	m_fps = GetFPS();
 	m_btnFrame++;
@@ -121,10 +133,10 @@ void GamePlayingScene::PlayerLightingUpdate()
 void GamePlayingScene::PunishmentUpdate()
 {
 	m_punishmentFrame++;
-	m_punishmentRange += 0.5f;
+	m_punishmentRange *= 1.1f;
 	if (m_Scene->GetClearFlag())
 	{
-		if (200 <= m_lightingFrame)
+		if (200 <= m_punishmentFrame)
 		{
 			if (m_isEndRoll)
 			{
@@ -191,9 +203,8 @@ void GamePlayingScene::PunishmentDraw()
 
 	for (int i = 50; i < 2000; i++)
 	{
-		DrawLine(m_punishmentPos - 25 - i / 5, i, m_punishmentPos + 25 + i / 5, i, 0xffffff, m_punishmentRange);
+		DrawLine(m_punishmentPos, 0, m_punishmentPos, 2000, 0xffffff, m_punishmentRange);
 	}
-	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
-	DrawBox(0, 0, 2000, 2000, 0xffffff, true);
+	
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

@@ -17,7 +17,10 @@ private:
 	int a = -1;
 	int m_stringColorPlusA=0;
 	int m_fadeFrame = 60;
+	int m_fadeSoundFrame = 0;
 	int m_handle;
+
+	int m_bgmHandle = 0;
 
 	Particle* m_particle;
 

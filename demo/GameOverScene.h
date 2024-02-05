@@ -14,6 +14,8 @@ private:
    
     int m_btnFrame = 0;
     int m_frame; 
+    int m_fadeSoundFrame = 0;
+
     int m_DyingSound = 0;
 
     // メンバ関数ポインタの宣言

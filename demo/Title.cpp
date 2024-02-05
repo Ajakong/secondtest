@@ -33,6 +33,9 @@ Title::Title(SceneManager& manager) :
 		" , FPS=" << std::fixed << std::setprecision(2) << GetFPS() << std::endl;
 	OutputDebugStringA(oss.str().c_str());
 
+	m_bgmHandle = LoadSoundMem("BGM/titleBgm.mp3");
+	PlaySoundMem(m_bgmHandle,DX_PLAYTYPE_BACK);
+
 	m_particle = new Particle;
 }
 
@@ -57,6 +60,8 @@ void Title::Draw()
 void Title::FadeInUpdate()
 {
 	m_fadeFrame--;
+	m_fadeSoundFrame++;
+	ChangeVolumeSoundMem(m_fadeSoundFrame*2, m_bgmHandle);
 	if (m_fadeFrame <= 0) // ëJà⁄èåè
 	{
 		// éüÇÃëJà⁄êÊ
@@ -81,8 +86,11 @@ void Title::NormalUpdate()
 void Title::FadeOutUpdate()
 {
 	m_fadeFrame++;
+	m_fadeSoundFrame--;
+	ChangeVolumeSoundMem(m_fadeSoundFrame*2, m_bgmHandle);
 	if (60 <= m_fadeFrame)
 	{
+		StopSoundMem(m_bgmHandle);
 		m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 	}
 }
@@ -95,6 +103,7 @@ void Title::FadeDraw()
 	DrawRotaString(drawStringPosX, drawStringPosY+m_fadeFrame,3,3,0,0,0, 0xffffbb,0,0, "Press any button");
 	// ÉtÉFÅ[Éhà√ñã
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
+	
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(0, 0, 2000, 2000, 0x000000, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

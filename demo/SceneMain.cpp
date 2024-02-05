@@ -185,8 +185,9 @@ void SceneMain::Update()
 			{
 				if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
 				{
-					m_screenMove = m_pMap->GetScreenMove();
 					m_pMap->GetScreenMove(6500);
+					m_screenMove = m_pMap->GetScreenMove();
+					
 					m_pPlayer->OnClear();
 					m_isClear = true;
 				}
@@ -431,16 +432,7 @@ void SceneMain::CollisionUpdate()
 		}
 	}
 
-	int SIZE = m_eneShot.size();
-	for (int i=0;i < SIZE;i++)
-	{
-		bool hitFlag = m_eneShot[i]->GetShotColli();
-		if (hitFlag == true)
-		{
-			m_pPlayer->OnDamage(0);
-		}
-	}
-
+	
 	//toPlayer‚ÌCollision
 	if (m_pPlayer != nullptr)
 	{

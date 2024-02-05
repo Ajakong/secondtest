@@ -39,7 +39,7 @@ Player::Player(SceneMain* main) :
 	flyFlag(false),
 	shotBulletFlag(false),
 	m_angle(0),
-	m_collisionRadius(20),
+	m_collisionRadius(30),
 	m_handle(0),
 	m_kindOfBullet(0),
 	m_rotateAngle(0),
@@ -385,7 +385,7 @@ void Player::CollisionUpdate()
 
 void Player::Draw()
 {
-	if(m_visibleLimitTime<60)
+	if(m_visibleLimitTime<110)
 	{
 		if (m_visibleLimitTime % 5 == 1)
 		{
@@ -409,7 +409,7 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	DrawFormatString(100, 300,0xffffff,"Hp:%d", m_Hp);
+	DrawFormatString(100, 300,0xffffff,"InVisibleTime:%d", m_visibleLimitTime);
 	
 	DrawBox(m_playerCol.left, m_playerCol.top, m_playerCol.right, m_playerCol.bottom, 0xff00ff, false);
 }
@@ -444,10 +444,11 @@ void Player::VelocityToZero()
 bool Player::OnDamage()
 {
 	
-	if (m_visibleLimitTime < 70)
+	if (m_visibleLimitTime < 120||m_Hp<=0)
 	{
 		return false;
 	}
+	m_visibleLimitTime = 0;
 	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -= m_dir.x*10;
 
@@ -466,10 +467,11 @@ bool Player::OnDamage()
 
 bool Player::OnDamage(float hitDir)
 {
-	if (m_visibleLimitTime < 70)
+	if (m_visibleLimitTime < 120 || m_Hp <= 0)
 	{
 		return false;
 	}
+	m_visibleLimitTime = 0;
 	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -=hitDir * 10;
 
@@ -480,7 +482,7 @@ bool Player::OnDamage(float hitDir)
 	m_playerUpdate = &Player::JumpingUpdate;
 
 	m_pos += m_velocity;
-	m_visibleLimitTime = 0;
+	
 	m_isHitFlag = true;
 	m_Hp -= 10;
 	return true;
@@ -724,6 +726,8 @@ void Player::FaceDownUpdate()
 
 void Player::JumpingUpdate()
 {
+	
+
 
 	CollisionUpdate();
 	

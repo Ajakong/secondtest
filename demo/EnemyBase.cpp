@@ -72,41 +72,39 @@ void EnemyBase::Update()
 
 		if (m_distance < 1000)
 		{
-			m_fireDir = m_velocity;
+			m_fireDir.x = m_velocity.x/ (m_targetPos.x + 40 - m_pos.x);
+			m_fireDir.y = m_velocity.y / (m_targetPos.y - m_pos.y);
 			m_fireDir.Normalize();
 			
 			{
 				if (m_attackFrame >= 60)
 				{
 					m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
-					//for (int i = i < m_shot.size()-1; i < m_shot.size(); i++)
+					for (int i = m_shot.size()-1; i < m_shot.size(); i++)
 					{
-						
 						//if (!m_shotIt)
 						{
-
 							m_pos.x -= m_screenMove;
 							m_shot.back()->ShotProgram();
 							m_WorldMana->AddEneShot(m_shot.back());
 							m_attackFrame = 0;
 							m_pos.x += m_screenMove;
-						
-						
 						}
-
-						
 					}
-					
 				}
 			}
 		}
 		for (int i = 0; i < m_shot.size(); i++)
 		{
-			m_shot[i]->Update();
+ 			m_shot[i]->Update();
 			if (m_shot[i]->GetIsDestroy())
 			{
-				m_shot[i].reset();
-				
+				for (int i = 0; i < m_shot[i].use_count(); i++)
+				{
+					m_shot[i].reset();
+
+				}
+				//m_shot.erase(m_shot.begin() + i);
 			}
 		}
 
@@ -147,7 +145,7 @@ void EnemyBase::OnHitShot()
 	if(m_Hp<0)
 	{
 		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove, m_pos.y));
-		m_WorldMana->AddScore(10000000);
+		m_WorldMana->AddScore(2000000);
 		m_isDeathFlag = true;
 	}
 }

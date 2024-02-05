@@ -34,6 +34,7 @@ void GameOverScene::Draw()
 void GameOverScene::FadeInUpdate()
 {
 	m_frame--;
+	m_fadeSoundFrame++;
 	if (m_frame <= 0)
 	{
 		m_updateFunc = &GameOverScene::NormalUpdate;
@@ -54,6 +55,8 @@ void GameOverScene::NormalUpdate()
 void GameOverScene::FadeOutUpdate()
 {
 	m_frame++;
+	m_fadeSoundFrame--;
+	ChangeVolumeSoundMem(m_fadeSoundFrame * 2, m_DyingSound);
 	if (60 <= m_frame)
 	{
 		StopSoundMem(m_DyingSound);
