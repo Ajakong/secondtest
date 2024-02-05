@@ -55,6 +55,9 @@ Player::Player(SceneMain* main) :
 	m_playerCol.bottom = m_pos.y + 80;
 
 	m_playerUpdate = &Player::StartUpdate;
+	m_shotSoundHandle = LoadSoundMem("SE/shot.mp3");
+	
+	m_damageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 }
 
 Player::~Player()
@@ -182,6 +185,7 @@ void Player::ShotIt()
 						m_shot[i] = std::make_shared<Shot>();
 						m_dir = m_fireDir;
 						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 						m_WorldMana->AddShot(m_shot[i]);
 						m_shotBulletInterval = 0;
 						if (m_shot[i]->GetIsDestroy() == true) {
@@ -204,6 +208,7 @@ void Player::ShotIt()
 						m_shot[i] = std::make_shared<Shot>();
 						m_dir.y = m_fireDir.y;
 						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 						m_WorldMana->AddShot(m_shot[i]);
 						m_shotBulletInterval = 0;
 						break;
@@ -228,6 +233,7 @@ void Player::ShotIt()
 							m_shot[i] = std::make_shared<Shot>();
 							m_dir.y = m_dir.y + (a - 1) * 0.5f;
 							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+							PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 							m_WorldMana->AddShot(m_shot[i]);
 							m_shotBulletInterval = 0;
 							break;
@@ -442,6 +448,7 @@ bool Player::OnDamage()
 	{
 		return false;
 	}
+	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -= m_dir.x*10;
 
 	m_velocity.y = -35.0f;
@@ -463,6 +470,7 @@ bool Player::OnDamage(float hitDir)
 	{
 		return false;
 	}
+	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -=hitDir * 10;
 
 	m_velocity.y = -35.0f;
@@ -483,6 +491,7 @@ void Player::ToDie()
 {
 	if (m_Hp <= 0)
 	{
+		
 		if (m_isGroundFlag == true)
 		{
 			m_WorldMana->EnemyDelete();
@@ -496,6 +505,7 @@ void Player::ToDie()
 
 			m_angle = 0;
 			m_animFrame.x = 0;
+			
 			m_playerUpdate = &Player::DieUpdate;
 		}
 	}

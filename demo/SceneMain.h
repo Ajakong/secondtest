@@ -74,6 +74,8 @@ private:
 	int m_bgHandle=0;
 	int m_enemyToPlayerHandle = 0;
 
+	int m_enemyBornSound = 0;
+
 	int m_score = 0;
 
 	bool m_isGameOver = false;

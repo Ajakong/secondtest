@@ -131,6 +131,7 @@ private:
 
 	
 
+	int m_damageSound = 0;
 
 /////////////////////////////////	
 	
@@ -139,7 +140,7 @@ private:
 	//Shot* m_shot[SHOT_NUM_LIMIT];
 	//Shot m_shot[SHOT_NUM_LIMIT];
 	std::shared_ptr<Shot> m_shot[SHOT_NUM_LIMIT] ;
-
+	int m_shotSoundHandle = 0;
 	
 	std::shared_ptr<Laser> m_laser;
 	std::shared_ptr<CircleShot> m_circleShot[SHOT_NUM_LIMIT];

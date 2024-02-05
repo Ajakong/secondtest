@@ -13,6 +13,8 @@ GameOverScene::GameOverScene(SceneManager& mgr) :
 	m_frame = 60;
 	m_updateFunc = &GameOverScene::FadeInUpdate;
 	m_drawFunc = &GameOverScene::FadeDraw;
+	m_DyingSound = LoadSoundMem("BGM/Patrasche.mp3");
+	PlaySoundMem(m_DyingSound, DX_PLAYTYPE_BACK);
 }
 
 GameOverScene::~GameOverScene()
@@ -54,6 +56,7 @@ void GameOverScene::FadeOutUpdate()
 	m_frame++;
 	if (60 <= m_frame)
 	{
+		StopSoundMem(m_DyingSound);
 		m_manager.PopScene();
 	}
 }

@@ -26,7 +26,7 @@ public:
 	bool GetShotColli(const Rect& rect);
 
 
-	void setShotBullet() { m_isVisible = false; }
+	void setShotBullet() { m_isInVisible = false; }
 
 	Vec2 GetPos() { return m_shotPos; }
 
@@ -58,7 +58,7 @@ private:
 
 	int m_lockOnFrame=0;
 
-	bool m_isVisible = true;
+	bool m_isInVisible = true;
 
 	bool m_isDestroy = false;
 

@@ -96,6 +96,7 @@ SceneMain::SceneMain():
 	}
 
 	m_enemyToPlayerHandle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
+	m_enemyBornSound = LoadSoundMem("SE/enemyBorn.mp3");
 }
 
 SceneMain::~SceneMain()
@@ -331,7 +332,6 @@ void SceneMain::Update()
 						m_pShot[i] = nullptr;
 					}
 				}
-				
 			}
 		}
 	}
@@ -387,7 +387,7 @@ void SceneMain::CollisionUpdate()
 			{
 				for (int e = 0; e < ENEMY_NUM; e++)
 				{
-					if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+					if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect(), m_pMap->GetScreenMove()))
 					{
 						int d = 0;
 					}
@@ -561,7 +561,7 @@ void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos};
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer,m_enemyToPlayerHandle);
-
+	PlaySoundMem(m_enemyBornSound, DX_PLAYTYPE_BACK);
 }
 
 void SceneMain::EnemyDelete()

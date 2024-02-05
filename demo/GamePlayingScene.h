@@ -19,6 +19,13 @@ private:
     int m_btnFrame = 0;
     int m_frame = 0;
     int m_lightingFrame=0;
+
+    int m_holySoundHandle = 0;
+    int m_stageBgm = 0;
+
+    int m_backBlack = 0;
+    
+
     float m_fps = 0.0f;
 
     float m_lightRange = 5;

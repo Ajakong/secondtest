@@ -31,7 +31,9 @@ EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos):
 	m_isDesitionMyWay(false)
 {
 	m_enemyUpdate = &EnemyToPlayerDir::IdleUpdate;
+	m_hole = true;
 	m_pos = pos;
+	m_firstPos = pos;
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
@@ -59,7 +61,6 @@ void EnemyToPlayerDir::Update()
 	if (m_isRight)
 	{
 		m_dirX = -1;
-
 	}
 	else
 	{
@@ -85,6 +86,14 @@ void EnemyToPlayerDir::Draw()
 		m_HitEffect[i]->Draw();
 	}
 
+	if (m_hole)
+	{
+		DrawCircle(m_firstPos.x, m_firstPos.y,50, 0xaa1100,false);
+		DrawCircle(m_firstPos.x, m_firstPos.y,40, 0xffbb00, false);
+		DrawCircle(m_firstPos.x, m_firstPos.y,30, 0xffeeaa, false);
+		DrawCircle(m_firstPos.x, m_firstPos.y,20, 0xffffaa, false);
+		DrawCircle(m_firstPos.x, m_firstPos.y,10, 0xffffff, false);
+	}
 	//DrawBox(m_colRect.left, m_colRect.bottom, m_colRect.right, m_colRect.top,0x00ff00,false);
 }
 
@@ -148,6 +157,7 @@ void EnemyToPlayerDir::IdleUpdate()
 			{
 				m_isRight = true;
 			}
+			
 			m_enemyUpdate = &EnemyToPlayerDir::NeutralUpdate;
 		}
 	}

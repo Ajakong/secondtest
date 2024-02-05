@@ -76,6 +76,10 @@ private:
 
 	bool m_isRight = false;
 
+	bool m_hole = false;
+
+	Vec2 m_firstPos;
+
 	Vec2 m_targetPos;
 
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü

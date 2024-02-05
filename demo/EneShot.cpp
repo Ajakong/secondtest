@@ -10,13 +10,13 @@
 EneShot::EneShot(const Vec2& Spos, const Vec2& DirVec, const int& graph,const Player* p_player):
 	m_handle(-1),
 	m_shotPos(0, 0),
-	m_isVisible(false),
+	m_isInVisible(false),
 	m_Velocity(0, 0),
 	m_radius(15),
 	m_isDestroy(false),
 	m_player(p_player)
 {
-	m_isVisible = false;
+	m_isInVisible = false;
 	m_shotPos = Spos;
 	m_Velocity = DirVec;
 	m_handle = graph;
@@ -44,7 +44,7 @@ void EneShot::Update()
 	////collision‚ÌXV
 	//m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 	/*	m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
@@ -66,7 +66,7 @@ void EneShot::Update()
 void EneShot::Draw(int screenMove)
 {
 	m_screenMove = screenMove;
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		DrawGraph(m_shotPos.x-m_screenMove, m_shotPos.y, m_handle, true);
 		DrawBox(m_shotPos.x - m_screenMove, m_shotPos.y, m_shotPos.x + m_radius*2 - m_screenMove, m_shotPos.y + m_radius*2,0xff0000,0);
@@ -112,7 +112,7 @@ bool EneShot::GetShotColli()
 
 void EneShot::OnCollision()
 {
-	m_isVisible = true;
+	m_isInVisible = true;
 	m_isEffectFlag = true;
 	//m_shotEffect[0]->WantHitPos( m_shotPos);
 }
@@ -133,7 +133,7 @@ void EneShot::CollisionUpdate()
 
 void EneShot::OnHit()
 {
-	m_isVisible = true;
+	m_isInVisible = true;
 	m_isEffectFlag = true;
 	//m_shotEffect[0]->WantHitPos( m_shotPos);
 }

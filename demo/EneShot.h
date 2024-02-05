@@ -23,7 +23,7 @@ public:
 	bool GetShotColli();
 	void OnCollision();
 
-	void setShotBullet() { m_isVisible = false; }
+	void setShotBullet() { m_isInVisible = false; }
 
 	void OnDestroy();
 
@@ -49,7 +49,7 @@ private:
 
 	int m_screenMove = 0;
 
-	bool m_isVisible = true;
+	bool m_isInVisible = true;
 
 	bool m_isEffectFlag = false;
 

@@ -32,16 +32,16 @@ void CircleShot::Update()
 	//collision‚ÌXV
 	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		if (m_shotPos.x >= Game::kScreenWidth)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_shotPos.x <= 0 - m_graphSize.x)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_shotPos.y >= Game::kScreenHeight)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_shotPos.y <= 0 - m_graphSize.y)
-			m_isVisible = true;
+			m_isInVisible = true;
 
 
 
@@ -75,7 +75,7 @@ void CircleShot::Update()
 
 void CircleShot::Draw()
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
@@ -85,7 +85,7 @@ void CircleShot::Draw()
 void CircleShot::ShotProgram(const Vec2& Spos,const Vec2& DirVec,const int& graph)
 {
 	
-	m_isVisible = false;
+	m_isInVisible = false;
 	m_rotateCenter = Spos;
 	m_Velocity = DirVec;
 	m_shotPos.x = Spos.x + 5;
@@ -95,7 +95,7 @@ void CircleShot::ShotProgram(const Vec2& Spos,const Vec2& DirVec,const int& grap
 
 bool CircleShot::GetShotColli(const Rect rect)
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 
 		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
@@ -104,7 +104,7 @@ bool CircleShot::GetShotColli(const Rect rect)
 			{
 				m_effect->WantHitPos(this, m_shotPos);
 
-				m_isVisible = true;
+				m_isInVisible = true;
 				return true;
 			}
 		}

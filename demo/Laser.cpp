@@ -12,18 +12,18 @@ Laser::~Laser()
 
 void Laser::Update()
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		m_laserHead += m_dirVec * 20;
 
 		if (m_laserTail.x >= Game::kScreenWidth)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_laserTail.x <= 0)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_laserTail.y >= Game::kScreenHeight)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (m_laserTail.y <= 0)
-			m_isVisible = true;
+			m_isInVisible = true;
 		if (sqrtf((m_laserHead.x - m_startPos.x) * (m_laserHead.x - m_startPos.x) + (m_laserHead.y - m_startPos.y) * (m_laserHead.y - m_startPos.y)) > 200)
 		{
 			m_laserTail += m_dirVec * 20;
@@ -35,7 +35,7 @@ void Laser::Update()
 
 void Laser::Draw()
 {
-	if(!m_isVisible)
+	if(!m_isInVisible)
 	{
 		DrawLine(m_laserTail.x, m_laserTail.y,
 					 m_laserHead.x, m_laserHead.y, 0xff0000,7);
@@ -72,15 +72,25 @@ void Laser::ShotProgram(Vec2 Spos, Vec2 DirVec)
 	m_dirVec.Normalize();
 	m_laserTail = m_startPos;
 	m_laserHead = m_startPos;
-	m_isVisible = false;
+	m_isInVisible = false;
 }
 
-bool Laser::LineCollider(float x1, float y1, float x2, float y2)
+bool Laser::LineCollider(float x1, float y1, float x2, float y2,int screenmove)
 {
 
-	int s = (m_laserHead.x - m_laserTail.x) * (y1 - m_laserTail.y) - (x1 - m_laserTail.x-m_screenMove) * (m_laserHead.y - m_laserTail.y);
-	int t = (m_laserHead.x - m_laserTail.x) * (y2 - m_laserTail.y) - (x2 - m_laserTail.x - m_screenMove) * (m_laserHead.y - m_laserTail.y);
-	if (s * t > 0) return false;
+	int s = ((m_laserHead.x - m_laserTail.x) * (y1 - m_laserTail.y)) - ((x1 - m_laserTail.x) * (m_laserHead.y - m_laserTail.y));
+	int t = ((m_laserHead.x - m_laserTail.x) * (y2 - m_laserTail.y)) - ((x2 - m_laserTail.x) * (m_laserHead.y - m_laserTail.y));
+	if (s * t > 0.0f)
+	{
+		return false;
+	}
+
+	int d1 = ((x2 - x1) * (m_laserTail.y - y1)) - ((m_laserTail.x - x1) * (y2 - y1));
+	int d2 = ((x2 - x1) * (m_laserHead.y - y1)) - ((m_laserHead.x - x1) * (y2 - y1));
+	if (d1 * d2 > 0.0f)
+	{
+		return false;
+	}
 
 	return true;
 	////考え方は片方の線分の始点(x1,y1)のy1がレーザーの直線.yより大きい時、終点のy座標の関係性が逆になっていた場合交わってる(始点の条件が逆の場合も)
@@ -135,13 +145,24 @@ return true;
 
 
 
-bool Laser::OnLaserCollision(Rect rect)
+bool Laser::OnLaserCollision(Rect rect,int screenMove)
 {
-	if (LineCollider(rect.left, rect.top, rect.right, rect.top))return true;
-	if (LineCollider(rect.right, rect.top, rect.right, rect.bottom))return true;
-	if (LineCollider(rect.right, rect.bottom, rect.left, rect.bottom))return true;
-	if (LineCollider(rect.left, rect.bottom, rect.left, rect.top))return true;
-
+	if (LineCollider(rect.left - screenMove, rect.top, rect.right - screenMove, rect.top, screenMove))
+	{
+		return true;
+	}
+	if (LineCollider(rect.right - screenMove, rect.top, rect.right - screenMove, rect.bottom, screenMove))
+	{
+		return true;
+	}
+	if (LineCollider(rect.right - screenMove, rect.bottom, rect.left - screenMove, rect.bottom, screenMove))
+	{
+		return true;
+	}
+	if (LineCollider(rect.left - screenMove, rect.bottom, rect.left - screenMove, rect.top, screenMove))
+	{
+		return true;
+	}
 	return false;
 }
 

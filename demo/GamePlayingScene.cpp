@@ -20,6 +20,9 @@ GamePlayingScene::GamePlayingScene(SceneManager& manager) :
 	m_frame = 60;
 	m_updateFunc = &GamePlayingScene::FadeInUpdate;
 	m_drawFunc = &GamePlayingScene::FadeDraw;	
+	m_holySoundHandle = LoadSoundMem("SE/HolyLight.mp3");
+	m_stageBgm = LoadSoundMem("BGM/stageBgm.mp3");
+	PlaySoundMem(m_stageBgm,DX_PLAYTYPE_BACK);
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -28,9 +31,14 @@ GamePlayingScene::~GamePlayingScene()
 
 void GamePlayingScene::Update()
 {
-	m_Scene->Update();
-	m_fps = GetFPS();
-	(this->*m_updateFunc)();
+	m_backBlack++;
+	if (m_backBlack > 100)
+	{
+		m_Scene->Update();
+		m_fps = GetFPS();
+		(this->*m_updateFunc)();
+	}
+	
 }
 
 void GamePlayingScene::Draw()
@@ -58,6 +66,8 @@ void GamePlayingScene::NormalUpdate()
 	if(m_Scene->GetGameOverFlag()||m_Scene->GetClearFlag())
 	{
 		LightingPos = m_Scene->GetPlayerPos();
+		PlaySoundMem(m_holySoundHandle, DX_PLAYTYPE_BACK);
+		
 		m_updateFunc = &GamePlayingScene::PlayerLightingUpdate;
 		m_drawFunc = &GamePlayingScene::PlayerLightingDraw;
 	}

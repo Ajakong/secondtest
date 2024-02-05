@@ -12,11 +12,11 @@ Shot::Shot() :
 	m_shotPos(0, 0),
 	m_Velocity(0, 0),
 	m_radius(15),
-	m_isVisible(false),
+	m_isInVisible(false),
 	m_isDestroy(false),
 	effectFlag(false)
 {
-	m_shotEffect = nullptr;
+	
 }
 
 Shot::~Shot()
@@ -33,7 +33,7 @@ void Shot::Update()
 	//collision‚ÌXV
 	m_collider.pos = m_shotPos; m_collider.radius = m_radius;
 
-	if (!m_isVisible)
+	if (!m_isInVisible)
 	{
 		if (m_shotPos.x >= Game::kScreenWidth)
 		{
@@ -71,7 +71,7 @@ void Shot::Update()
 
 void Shot::Draw()
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
 	}
@@ -94,7 +94,7 @@ void Shot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph)
 
 bool Shot::GetShotColli(const Rect& rect)
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
 		{
@@ -103,7 +103,7 @@ bool Shot::GetShotColli(const Rect& rect)
 				m_shotEffect = make_shared<ShotEffect>();
 				m_shotEffect->WantHitPos(this, m_shotPos);
 				effectFlag = true;
-				m_isVisible = true;
+				m_isInVisible = true;
 				return true;
 			}
 		}
@@ -113,12 +113,12 @@ bool Shot::GetShotColli(const Rect& rect)
 
 void Shot::OnMapCol()
 {
-	if (m_isVisible == false)
+	if (m_isInVisible == false)
 	{
 		m_shotEffect = make_shared<ShotEffect>();
 		m_shotEffect->WantHitPos(this, m_shotPos);
 		effectFlag = true;
-		m_isVisible = true;
+		m_isInVisible = true;
 	}
 	
 	
