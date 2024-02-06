@@ -35,6 +35,8 @@ EnemyBase::EnemyBase() :
 	m_colRect.bottom = m_pos.y + 130;
 	m_colRect.left = m_pos.x;
 	m_colRect.right = m_pos.x + 75;
+
+	m_deathSoundHandle = LoadSoundMem("SE/enemyDestroy.mp3");
 }
 
 EnemyBase::~EnemyBase()
@@ -139,6 +141,7 @@ void EnemyBase::OnHitShot()
 	m_Hp -= 10;
 	if(m_Hp<0)
 	{
+		PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
 		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove, m_pos.y));
 		m_WorldMana->AddScore(2000000);
 		m_isDeathFlag = true;
@@ -156,6 +159,7 @@ void EnemyBase::GetScreenMove(float veloX)
 
 bool EnemyBase::OnDie()
 {
+	
 	for (int i = 0; i < m_EneDeathEffect.size(); i++)
 	{
 		if (m_EneDeathEffect[i]->GetOnDestroy())

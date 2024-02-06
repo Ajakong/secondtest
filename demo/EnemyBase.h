@@ -50,6 +50,8 @@ private:
 	int m_distance=0;
 	int m_screenMove=0;
 
+	int m_deathSoundHandle = 0;
+
 	bool m_isShotCollFlag=false;
 	bool m_isDeathFlag=false;
 
