@@ -29,6 +29,8 @@ public:
 	bool IsCollision(Rect& rect, Vec2 velo);
 	bool IsCollision(Vec2 pos, int radius);
 
+	bool ObjectCollision(const Rect& rect);
+
 	Vec2 GetCollisionVelocity(){ return m_collisionVelocity; }
 	
 	//Vec2 GetEnePos() { return m_enemyPos; }
@@ -37,7 +39,7 @@ public:
 	int GetScreenMove(int move) { screenMove = move; return screenMove; }
 
 	void OnScreenMoveAdd(float veloX) { m_isScreenMoveAddFlag = true; screenMove += veloX;}
-
+	Vec2 GetCollisionPos() { return m_collisionPos; }
 	
 
 
@@ -56,7 +58,7 @@ private:
 
 	Vec2 m_collisionVelocity;
 
-
+	Vec2 m_collisionPos;
 
 	
 };

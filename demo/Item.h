@@ -17,6 +17,8 @@ public:
 	void CollisionUpdate();
 	void OnCollision();
 
+	virtual int GetWeaponNum() = 0;
+
 	void OnMapCol(Vec2 colRange);
 
 	Vec2 GetVelocity() { return m_velocity; }
@@ -27,6 +29,8 @@ protected:
 	Vec2 m_pos;
 	Vec2 m_velocity;
 	Rect m_rect;
+
+	Vec2 m_excessVec;
 
 	int m_handle = 0;
 	int m_screenMove = 0;

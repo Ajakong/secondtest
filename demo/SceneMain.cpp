@@ -49,7 +49,7 @@ SceneMain::SceneMain():
 	m_pLaser = nullptr;
 
 	m_enePos[0] = Vec2(100, 50);
-	m_enePos[1] = Vec2(850, 700);
+	//m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 800);
 	m_enePos[3] = Vec2(2400, 800);
 	m_enePos[4] = Vec2(3200, 0);
@@ -144,10 +144,10 @@ void SceneMain::Init()
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	for (int e = 0; e < 4; e++)
+	/*for (int e = 0; e < 4; e++)
 	{
 		CreateEnemy(m_eneToPlayerPos[e],e);
-	}
+	}*/
 	
 }
 
@@ -476,6 +476,15 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 		}
+		for (int i = 0; i < m_item.size(); i++)
+		{
+			if(m_pPlayer->OnCollision(m_item[i]->GetColRect()))
+			{
+				m_item[i]->OnCollision();
+				m_pPlayer->GetNewWeapon(m_item[i]->GetWeaponNum());
+			}
+		}
+
 		//ƒ}ƒbƒv‚Æ‚Ì“–‚½‚è”»’è
 		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
 		{
@@ -529,9 +538,9 @@ void SceneMain::CollisionUpdate()
 
 			for (int i = 0; i < m_item.size(); i++)
 			{
-				if (m_pMap->IsPlayerCollision(m_item[i]->GetColRect(), 20, m_item[i]->GetVelocity()))
+				if (m_pMap->ObjectCollision(m_item[i]->GetColRect()))
 				{
-					m_item[i]->OnMapCol(m_pMap->GetCollisionVelocity());
+					m_item[i]->OnMapCol(m_pMap->GetCollisionPos());
 				}
 			}
 		}

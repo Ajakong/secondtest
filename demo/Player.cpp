@@ -540,6 +540,11 @@ void Player::OnClear()
 	
 }
 
+void Player::GetNewWeapon(int weaponNum)
+{
+	m_kindOfBullet = weaponNum;
+}
+
 void Player::StartUpdate()
 {
 	CollisionUpdate();

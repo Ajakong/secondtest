@@ -22,12 +22,13 @@ void Item::Update()
 {
 	CollisionUpdate();
 	m_velocity.y += 9.8f / 60.0f;
-	m_pos += m_velocity;
 	if (m_isCollision)
 	{
 		m_velocity.y = 0;
 		m_velocity.x = 0;
 	}
+	m_pos += m_velocity;
+	
 }
 
 void Item::Draw(int screenMove)
@@ -52,7 +53,6 @@ void Item::OnCollision()
 
 void Item::OnMapCol(Vec2 colRange)
 {
+	m_pos.y = colRange.y-50;
 	m_isCollision = true;
-	m_pos.y = m_rect.bottom + 25;
-	m_pos += colRange;
 }

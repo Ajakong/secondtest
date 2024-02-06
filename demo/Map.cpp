@@ -235,3 +235,28 @@ bool Map::IsCollision(Vec2 pos, int radius)
 	}
 	
 }
+
+bool Map::ObjectCollision(const Rect& rect)
+{
+	for (int h = 0; h < kChipNumY; h++)
+	{
+		for (int w = 0; w < kChipNumX; w++)
+		{
+			if (m_chipData[h][w] == 1)
+			{
+				if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
+				{
+					if (w * kChipWidth + kChipWidth - screenMove >= rect.left && w * kChipWidth - screenMove <= rect.right)
+					{
+						m_collisionPos.x = h * kChipHeight;
+						m_collisionPos.y = w * kChipWidth - screenMove;
+						
+						return true;
+					}
+
+				}
+			}
+		}
+	}
+	return false;
+}

@@ -44,7 +44,7 @@ public:
 
 	void OnClear();
 
-
+	void GetNewWeapon(int weaponNum);
 
 	//状態別関数(ポインタで呼び出す)
 	void StartUpdate();
