@@ -49,8 +49,6 @@ bool Application::Init()
     
     SetGraphMode(1600, 900, 32);
     SetWindowSize(1600, 900);
-    
-   
 
     void* CallBack();
 
@@ -66,9 +64,6 @@ bool Application::Init()
 
 
     SetDrawScreen(DX_SCREEN_BACK);
- 
-    
-
     return true;
 }
 

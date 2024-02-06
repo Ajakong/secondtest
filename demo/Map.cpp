@@ -248,8 +248,8 @@ bool Map::ObjectCollision(const Rect& rect)
 				{
 					if (w * kChipWidth + kChipWidth - screenMove >= rect.left && w * kChipWidth - screenMove <= rect.right)
 					{
-						m_collisionPos.x = h * kChipHeight;
-						m_collisionPos.y = w * kChipWidth - screenMove;
+						m_collisionPos.x =  w* kChipWidth - screenMove;
+						m_collisionPos.y = h * kChipHeight;
 						
 						return true;
 					}

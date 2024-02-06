@@ -49,7 +49,7 @@ SceneMain::SceneMain():
 	m_pLaser = nullptr;
 
 	m_enePos[0] = Vec2(100, 50);
-	//m_enePos[1] = Vec2(850, 700);
+	m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 800);
 	m_enePos[3] = Vec2(2400, 800);
 	m_enePos[4] = Vec2(3200, 0);
@@ -144,10 +144,10 @@ void SceneMain::Init()
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	/*for (int e = 0; e < 4; e++)
+	for (int e = 0; e < 4; e++)
 	{
 		CreateEnemy(m_eneToPlayerPos[e],e);
-	}*/
+	}
 	
 }
 

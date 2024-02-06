@@ -8,13 +8,15 @@
 
 
 GameOverScene::GameOverScene(SceneManager& mgr) :
-	Scene(mgr)
+	Scene(mgr),
+	m_fadeSoundFrame(100)
 {
 	m_frame = 60;
 	m_updateFunc = &GameOverScene::FadeInUpdate;
 	m_drawFunc = &GameOverScene::FadeDraw;
 	m_DyingSound = LoadSoundMem("BGM/Patrasche.mp3");
 	PlaySoundMem(m_DyingSound, DX_PLAYTYPE_BACK);
+	ChangeVolumeSoundMem(m_fadeSoundFrame, m_DyingSound);
 }
 
 GameOverScene::~GameOverScene()
@@ -34,7 +36,7 @@ void GameOverScene::Draw()
 void GameOverScene::FadeInUpdate()
 {
 	m_frame--;
-	m_fadeSoundFrame++;
+	
 	if (m_frame <= 0)
 	{
 		m_updateFunc = &GameOverScene::NormalUpdate;
@@ -55,8 +57,8 @@ void GameOverScene::NormalUpdate()
 void GameOverScene::FadeOutUpdate()
 {
 	m_frame++;
-	/*m_fadeSoundFrame-=3;
-	ChangeVolumeSoundMem(m_fadeSoundFrame, m_DyingSound);*/
+	m_fadeSoundFrame-=3;
+	ChangeVolumeSoundMem(m_fadeSoundFrame, m_DyingSound);
 	StopSoundMem(m_DyingSound);
 	if (60 <= m_frame)
 	{

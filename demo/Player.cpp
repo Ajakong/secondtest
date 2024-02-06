@@ -42,6 +42,7 @@ Player::Player(SceneMain* main) :
 	m_collisionRadius(30),
 	m_handle(0),
 	m_kindOfBullet(0),
+	m_havingweaponNumber(0),
 	m_rotateAngle(0),
 	m_ShotGraph(false)
 {
@@ -318,8 +319,12 @@ void Player::DeleteShot()
 	}
 	if (Pad::IsTrigger(PAD_INPUT_3))
 	{
-		m_kindOfBullet++;
-		if (m_kindOfBullet > 4)
+		
+		if (m_kindOfBullet==0)
+		{
+			m_kindOfBullet = m_kindOfBullet;
+		}
+		else
 		{
 			m_kindOfBullet = 0;
 		}
@@ -542,7 +547,7 @@ void Player::OnClear()
 
 void Player::GetNewWeapon(int weaponNum)
 {
-	m_kindOfBullet = weaponNum;
+	m_havingweaponNumber = weaponNum;
 }
 
 void Player::StartUpdate()

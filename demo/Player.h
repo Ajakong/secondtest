@@ -120,6 +120,7 @@ private:
 	int m_handle=0;//プレイヤーのgraphHandle;
 	int m_ShotGraph=0;//弾のグラフィックハンドル
 	int m_kindOfBullet=0;
+	int m_havingweaponNumber = 0;
 	int m_Hp=0;
 
 	float m_angle=0.0f;

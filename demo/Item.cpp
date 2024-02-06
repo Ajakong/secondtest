@@ -21,13 +21,18 @@ void Item::Init()
 void Item::Update()
 {
 	CollisionUpdate();
-	m_velocity.y += 9.8f / 60.0f;
 	if (m_isCollision)
 	{
 		m_velocity.y = 0;
 		m_velocity.x = 0;
 	}
-	m_pos += m_velocity;
+	else
+	{
+		m_velocity.y += 9.8f / 60.0f;
+
+		m_pos += m_velocity;
+
+	}
 	
 }
 
@@ -35,7 +40,7 @@ void Item::Draw(int screenMove)
 {
 	m_screenMove = screenMove;
 	DrawGraph(m_pos.x-screenMove, m_pos.y, m_handle, true);
-	DrawBox(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,0x00ff00,false);
+	//DrawBox(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,0x00ff00,false);
 }
 
 void Item::CollisionUpdate()
