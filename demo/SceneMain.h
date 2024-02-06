@@ -31,6 +31,8 @@ class ShotEffect;
 
 class Map;
 
+class Item;
+
 class SceneMain
 {
 public:
@@ -61,6 +63,7 @@ public:
 	void AddLaser(std::shared_ptr<Laser> laser);
 	void AddCircleShot(std::shared_ptr<CircleShot> circleShot);
 	void AddEneShot(std::shared_ptr<EneShot> eneShot);
+	void AddItem(std::shared_ptr<Item> item);
 
 	void AddScore(int score) { m_score += score; }
 	
@@ -69,6 +72,14 @@ private:
 	int m_gameScreenhandle=0;//ÉQÅ[ÉÄâÊñ 
 	int m_frame=0;
 	int m_gameScreenHandle=0;
+	int m_eneShotHandle = 0;
+
+	int m_itenNumber0Graph = 0;
+	int m_itemNumber1Graph = 0;
+	int m_itemNumber2Graph = 0;
+	int m_itemNumber3Graph = 0;
+
+	int m_eneDestroySound = 0;
 
 	int m_screenMove=0;
 	int m_bgHandle=0;
@@ -100,10 +111,14 @@ private:
 	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 	Laser* m_pLaser;
 	CircleShot* m_circleShot[SHOT_NUM_LIMIT];
+	
+
 	std::vector<std::shared_ptr<EneShot>> m_eneShot;
 
 	std::map<int, Vec2> m_enePos;
 	std::map<int, Vec2> m_eneToPlayerPos;
+
+	std::vector < std::shared_ptr<Item>>m_item;
 
 	//âÊñ ÉèÉCÉvèàóù
 	int m_wipeFrame;

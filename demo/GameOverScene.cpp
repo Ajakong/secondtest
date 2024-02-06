@@ -55,11 +55,12 @@ void GameOverScene::NormalUpdate()
 void GameOverScene::FadeOutUpdate()
 {
 	m_frame++;
-	m_fadeSoundFrame--;
-	ChangeVolumeSoundMem(m_fadeSoundFrame * 2, m_DyingSound);
+	/*m_fadeSoundFrame-=3;
+	ChangeVolumeSoundMem(m_fadeSoundFrame, m_DyingSound);*/
+	StopSoundMem(m_DyingSound);
 	if (60 <= m_frame)
 	{
-		StopSoundMem(m_DyingSound);
+		
 		m_manager.PopScene();
 	}
 }

@@ -17,14 +17,22 @@ class SceneMain;
 class EneShotEffect;
 class EneDeathEffect;
 
+class Item;
+
+class FullAutoGun;
+class Spread;
+class LaserItem;
+class CircleItem;
+
+
 class EnemyBase
 {
 public:
-	EnemyBase();
+	EnemyBase(int sound, int fullAutoGunGraph, int spreadGraph, int laserItem, int CircleBulletItem);
 	//EnemyBase(Vec2 pos);マップが指定した位置に敵を誕生
 	~EnemyBase();
 
-	void Init(Vec2 pos);
+	void Init(Vec2 pos,int shotgraph);
 	void CollisionUpdate();
 	virtual void Update();
 	void Draw();
@@ -52,6 +60,14 @@ private:
 
 	int m_deathSoundHandle = 0;
 
+	int m_itemNumber = 0;
+
+	int m_fullAutoGunGraph = 0;
+	int m_spreadGraph = 0;
+	int m_laserItemGraph = 0;
+	int m_CircleItemGraph = 0;
+
+
 	bool m_isShotCollFlag=false;
 	bool m_isDeathFlag=false;
 
@@ -62,6 +78,7 @@ private:
 	Vec2 m_pos;
 	Vec2 m_graphSize;
 	Vec2 m_velocity;
+	Vec2 m_ItemThrowVel;
 
 	//アニメーションの管理
 	Vec2 animFrameMana;
@@ -72,6 +89,9 @@ private:
 	std::vector<std::shared_ptr<EneShot>> m_shot;
 	
 	std::vector<std::shared_ptr<EneDeathEffect>> m_EneDeathEffect;
+
+	std::shared_ptr<Item> m_item;
+
 	//弾の発射フラグ
 	bool shotBulletFlag=false;
 

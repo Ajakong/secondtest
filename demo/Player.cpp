@@ -449,6 +449,7 @@ bool Player::OnDamage()
 		return false;
 	}
 	m_visibleLimitTime = 0;
+	StartJoypadVibration(DX_INPUT_PAD1, 200, 500);
 	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -= m_dir.x*10;
 
@@ -472,6 +473,7 @@ bool Player::OnDamage(float hitDir)
 		return false;
 	}
 	m_visibleLimitTime = 0;
+	StartJoypadVibration(DX_INPUT_PAD1, 200,500);
 	PlaySoundMem(m_damageSound, DX_PLAYTYPE_BACK);
 	m_velocity.x -=hitDir * 10;
 

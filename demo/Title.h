@@ -14,13 +14,22 @@ private:
 	
 	int m_bottonFrame = 0;
 	int m_frame = 0;
+	int m_jammingFrame = 0;
+	int m_onJammingFrame = 0;
 	int a = -1;
 	int m_stringColorPlusA=0;
 	int m_fadeFrame = 60;
 	int m_fadeSoundFrame = 0;
 	int m_handle;
+	int m_screenHandle = 0;
+
+	
 
 	int m_bgmHandle = 0;
+
+	int m_jammingPosY = 0;
+
+	int m_windowHandle = 0;
 
 	Particle* m_particle;
 
@@ -34,9 +43,11 @@ private:
 	void FadeInUpdate();	// フェードイン状態
 	void NormalUpdate();	// 通常状態
 	void FadeOutUpdate();	// フェードアウト状態
+	void JammingUpdate();
 
 	// 描画関数
 	void FadeDraw();	// フェード中描画
 	void NormalDraw();	// 非フェード描画
+	void JammingDraw();
 };
 

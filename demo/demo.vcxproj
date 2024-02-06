@@ -143,6 +143,7 @@
     <ClCompile Include="Bg.cpp" />
     <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BossSphere.cpp" />
+    <ClCompile Include="CircleBulletItem.cpp" />
     <ClCompile Include="CircleShot.cpp" />
     <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="CollisionMaster.cpp" />
@@ -157,11 +158,14 @@
     <ClCompile Include="EneShotEffect.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="ForeGround.cpp" />
+    <ClCompile Include="FullAutoGun.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GamePlayingScene.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="ImageGroundManager.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Laser.cpp" />
+    <ClCompile Include="LaserItem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Missile.cpp" />
@@ -177,6 +181,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shot.cpp" />
     <ClCompile Include="ShotEffect.cpp" />
+    <ClCompile Include="Spread.cpp" />
     <ClCompile Include="Sqhere.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="tutoBorad.cpp" />
@@ -189,6 +194,7 @@
     <ClInclude Include="Bg.h" />
     <ClInclude Include="Boss.h" />
     <ClInclude Include="BossSphere.h" />
+    <ClInclude Include="CircleBulletItem.h" />
     <ClInclude Include="CircleShot.h" />
     <ClInclude Include="ClearScene.h" />
     <ClInclude Include="CollisionMaster.h" />
@@ -203,12 +209,15 @@
     <ClInclude Include="EneShotEffect.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="ForeGround.h" />
+    <ClInclude Include="FullAutoGun.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GamePlayingScene.h" />
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="ImageGroundManager.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Laser.h" />
+    <ClInclude Include="LaserItem.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Object.h" />
@@ -223,6 +232,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shot.h" />
     <ClInclude Include="ShotEffect.h" />
+    <ClInclude Include="Spread.h" />
     <ClInclude Include="Sqhere.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="tutoBorad.h" />

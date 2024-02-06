@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Title.h"
 #include "FileManager.h"
+#include"Game.h"
 #include <DxLib.h>
 #include <cassert>
 
@@ -28,6 +29,11 @@ void Application::Terminate()
     DxLib_End();
 }
 
+int Application::GetScreenHandle()
+{
+    return m_screenHandle;
+}
+
 float Application::GetGravity() const
 {
     return 0.5f;
@@ -36,13 +42,16 @@ float Application::GetGravity() const
 bool Application::Init()
 {
     ChangeWindowMode(true); // ウィンドウモードにします
-    SetGraphMode(m_windowSize.w, m_windowSize.h, 1);
+    //SetGraphMode(m_windowSize.w, m_windowSize.h, 1);
     SetWindowSizeChangeEnableFlag(TRUE, TRUE);
     SetChangeScreenModeGraphicsSystemResetFlag(false);
 
+    
     SetGraphMode(1600, 900, 32);
     SetWindowSize(1600, 900);
-    //SetWindowSizeExtendRate(1.2f,1.2f);
+    
+   
+
     void* CallBack();
 
     DxLib_Init();
@@ -54,7 +63,11 @@ bool Application::Init()
     {
         return false;
     }
+
+
     SetDrawScreen(DX_SCREEN_BACK);
+ 
+    
 
     return true;
 }
@@ -67,6 +80,8 @@ void Application::Run()
         sceneManager.ChangeScene(std::make_shared<Title>(sceneManager));
         
 
+        m_screenHandle=MakeScreen(Game::kScreenWidth, Game::kScreenHeight, true);
+        
         LONGLONG time;
         while (ProcessMessage() != -1)
         {
@@ -88,6 +103,8 @@ void Application::Run()
     }
     //Terminate();
 }
+
+
 
 const Size& Application::GetWindowSize() const
 {

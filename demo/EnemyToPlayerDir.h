@@ -61,6 +61,8 @@ private:
 	int m_animInterval=0;
 
 	int m_screenMove=0;
+	
+
 
 	Vec2 m_colRange;
 

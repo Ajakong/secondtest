@@ -137,14 +137,7 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 				{
 					if (w * kChipWidth + kChipWidth-screenMove > rect.left && w * kChipWidth-screenMove < rect.right)
 					{
-						if (m_chipData[h + 1][w] == 1)
-						{
-							
-						}
-						else
-						{
-							
-						}
+						
 						if (rect.top >= (h + 1) * kChipHeight)
 						{
 							rect.bottom = (h + 1) * kChipHeight + 45;

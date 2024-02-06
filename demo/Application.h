@@ -25,6 +25,9 @@ private:
 	/// </summary>
 	void Terminate();
 
+	
+
+	int m_screenHandle = 0;
 
 public:
 	/// <summary>
@@ -41,6 +44,8 @@ public:
 	void Run();
 
 	float GetGravity() const;
+
+	int GetScreenHandle();
 
 	const Size& GetWindowSize() const;
 

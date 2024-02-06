@@ -10,13 +10,19 @@
 #include"Player.h"
 #include"SceneMain.h"
 
+#include"FullAutoGun.h"
+#include"Spread.h"
+#include"LaserItem.h"
+#include"CircleBulletItem.h"
+
+
 namespace
 {
 	constexpr int animDisX = 288;
 	constexpr int animDisY = 112;
 }
 
-EnemyBase::EnemyBase() :
+EnemyBase::EnemyBase(int sound,int fullAutoGunGraph,int spreadGraph,int laserItem,int CircleBulletItem) :
 	m_isDeathFlag(false),
 	m_Hp(50),
 	m_pos(500.0f,200.0f),
@@ -24,7 +30,11 @@ EnemyBase::EnemyBase() :
 	animFrameMana(0,0),
 	m_fireDir(1.0f,0.0f),
 	m_isShotCollFlag(false),
-	m_attackFrame(0)
+	m_attackFrame(0),
+	m_fullAutoGunGraph(fullAutoGunGraph),
+	m_spreadGraph(spreadGraph),
+	m_laserItemGraph(laserItem),
+	m_CircleItemGraph(CircleBulletItem)
 {
 	/*for (auto& shot : m_shot)
 	{
@@ -36,18 +46,20 @@ EnemyBase::EnemyBase() :
 	m_colRect.left = m_pos.x;
 	m_colRect.right = m_pos.x + 75;
 
-	m_deathSoundHandle = LoadSoundMem("SE/enemyDestroy.mp3");
+	m_deathSoundHandle = sound;
+
+	m_itemNumber = GetRand(4) % 4;
+	
 }
 
 EnemyBase::~EnemyBase()
 {
 }
 
-void EnemyBase::Init(Vec2 pos)
+void EnemyBase::Init(Vec2 pos,int shotgraph)
 {
-	m_handle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
-	m_shotGraph = LoadGraph("data/image/eneShot.png");
+	m_shotGraph = shotgraph;
 	m_pos = pos;
 }
 
@@ -77,24 +89,21 @@ void EnemyBase::Update()
 			m_fireDir.x = m_velocity.x/ (m_targetPos.x + 40 - m_pos.x);
 			m_fireDir.y = m_velocity.y / (m_targetPos.y - m_pos.y);
 			m_fireDir.Normalize();
-			
+			if (m_attackFrame >= 60)
 			{
-				if (m_attackFrame >= 60)
+				m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
+				for (int i = m_shot.size()-1; i < m_shot.size(); i++)
 				{
-					m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
-					for (int i = m_shot.size()-1; i < m_shot.size(); i++)
-					{
-						//if (!m_shotIt)
-						{
-							m_pos.x -= m_screenMove;
-							m_shot.back()->ShotProgram();
-							m_WorldMana->AddEneShot(m_shot.back());
-							m_attackFrame = 0;
-							m_pos.x += m_screenMove;
-						}
-					}
+					
+					m_pos.x -= m_screenMove;
+					m_shot.back()->ShotProgram();
+					m_WorldMana->AddEneShot(m_shot.back());
+					m_attackFrame = 0;
+					m_pos.x += m_screenMove;
+					
 				}
 			}
+			
 		}
 		for (int i = 0; i < m_shot.size(); i++)
 		{
@@ -110,7 +119,6 @@ void EnemyBase::Update()
 			m_EneDeathEffect[i]->Update();
 			if (m_EneDeathEffect[i]->OnDestroy())
 			{
-				m_EneDeathEffect[i].reset();
 				m_EneDeathEffect.erase(m_EneDeathEffect.begin()+i);
 			}
 		}
@@ -141,9 +149,29 @@ void EnemyBase::OnHitShot()
 	m_Hp -= 10;
 	if(m_Hp<0)
 	{
+		m_ItemThrowVel.x = 4;
+		m_ItemThrowVel.y = -5;
+		if (m_itemNumber == 0)
+		{
+			m_item = make_shared<FullAutoGun>(m_pos,m_ItemThrowVel,m_fullAutoGunGraph);
+		}
+		if (m_itemNumber == 1)
+		{
+			m_item = make_shared<Spread>(m_pos, m_ItemThrowVel,m_spreadGraph );
+		}
+		if (m_itemNumber == 2)
+		{
+			m_item = make_shared<LaserItem>(m_pos, m_ItemThrowVel,m_laserItemGraph );
+		}
+		if (m_itemNumber == 3)
+		{
+			m_item = make_shared<CircleBulletItem>(m_pos, m_ItemThrowVel,m_CircleItemGraph );
+		}
+
 		PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
-		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove, m_pos.y));
+		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove+50, m_pos.y+25));
 		m_WorldMana->AddScore(2000000);
+		m_WorldMana->AddItem(m_item);
 		m_isDeathFlag = true;
 	}
 }

@@ -13,6 +13,7 @@
 #include"Shot.h"
 #include"Laser.h"
 #include"CircleShot.h"
+#include"Item.h"
 #include"ImageGroundManager.h"
 #include"Pad.h"
 
@@ -44,7 +45,6 @@ SceneMain::SceneMain():
 	m_pBgManager = new ImageGroundManager;
 	m_pBoss = new Boss{this};
 	
-	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase;
 	
 	m_pLaser = nullptr;
 
@@ -97,6 +97,16 @@ SceneMain::SceneMain():
 
 	m_enemyToPlayerHandle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	m_enemyBornSound = LoadSoundMem("SE/enemyBorn.mp3");
+	m_eneShotHandle= LoadGraph("data/image/eneShot.png");
+	m_eneDestroySound = LoadSoundMem("SE/enemyDestroy.mp3");
+
+	m_itenNumber0Graph = LoadGraph("data/image/Item/rapidFire.png");
+	m_itemNumber1Graph = LoadGraph("data/image/Item/spread.png");;
+	m_itemNumber2Graph = LoadGraph("data/image/Item/laser.png");;
+	m_itemNumber3Graph = LoadGraph("data/image/Item/CircleShot.png");;
+
+	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph };
+
 }
 
 SceneMain::~SceneMain()
@@ -130,11 +140,11 @@ void SceneMain::Init()
 	m_pBoss->GetSceneMain(this);
 	for(int e=0;e<ENEMY_NUM;e++)
 	{
-		m_pEnemy[e]->Init(m_enePos[e]);
+		m_pEnemy[e]->Init(m_enePos[e],m_eneShotHandle);
 		m_pEnemy[e]->GetSceneMain(this);
 		m_pEnemy[e]->WantPlayerPoint(m_pPlayer);
 	}
-	for (int e = 0; e < 3; e++)
+	for (int e = 0; e < 4; e++)
 	{
 		CreateEnemy(m_eneToPlayerPos[e],e);
 	}
@@ -197,7 +207,7 @@ void SceneMain::Update()
 		//エネミー出現管理
 		if (m_isEnemyCreate[1]==false && m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 800)
 		{
-			CreateEnemy(m_eneToPlayerPos[3], 3);
+			
 			CreateEnemy(m_eneToPlayerPos[4], 4);
 			CreateEnemy(m_eneToPlayerPos[5], 5);
 			m_isEnemyCreate[1] = true;
@@ -334,6 +344,15 @@ void SceneMain::Update()
 					}
 				}
 			}
+		}
+	}
+
+	for (int i = 0; i < m_item.size(); i++)
+	{
+		m_item[i]->Update();
+		if (m_item[i]->GetDestroy())
+		{
+			m_item.erase(m_item.begin() + i);
 		}
 	}
 
@@ -491,6 +510,8 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 
+			
+
 			for (int e = 0; e < m_eneShot.size(); e++)
 			{
 				if (m_eneShot[e] != nullptr)
@@ -503,6 +524,14 @@ void SceneMain::CollisionUpdate()
 					{
 						m_eneShot.erase(m_eneShot.begin() + e);
 					}
+				}
+			}
+
+			for (int i = 0; i < m_item.size(); i++)
+			{
+				if (m_pMap->IsPlayerCollision(m_item[i]->GetColRect(), 20, m_item[i]->GetVelocity()))
+				{
+					m_item[i]->OnMapCol(m_pMap->GetCollisionVelocity());
 				}
 			}
 		}
@@ -538,6 +567,11 @@ void SceneMain::Draw() const
 			SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 			DrawBox(0, 0, 2000, 1000, 0xffffff, true);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
+		}
+
+		for (int i = 0; i < m_item.size(); i++)
+		{
+			m_item[i]->Draw(m_pMap->GetScreenMove());
 		}
 
 		if (m_pBoss != nullptr)
@@ -629,4 +663,10 @@ void SceneMain::AddCircleShot(std::shared_ptr<CircleShot> circleShot)
 void SceneMain::AddEneShot(std::shared_ptr<EneShot> eneShot)
 {
 	m_eneShot.push_back(eneShot);
+}
+
+void SceneMain::AddItem(std::shared_ptr<Item> item)
+{
+	m_item.push_back(item);
+	m_item.back()->Init();
 }
