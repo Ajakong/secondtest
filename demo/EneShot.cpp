@@ -69,7 +69,7 @@ void EneShot::Draw(int screenMove)
 	if (m_isInVisible == false)
 	{
 		DrawGraph(m_shotPos.x-m_screenMove, m_shotPos.y, m_handle, true);
-		//DrawBox(m_shotPos.x - m_screenMove, m_shotPos.y, m_shotPos.x + m_radius*2 - m_screenMove, m_shotPos.y + m_radius*2,0xff0000,0);
+		DrawBox(m_shotPos.x - m_screenMove, m_shotPos.y, m_shotPos.x + m_radius - m_screenMove, m_shotPos.y + m_radius,0xff0000,0);
 		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
 	}
 	if (m_isEffectFlag == true)
@@ -79,6 +79,7 @@ void EneShot::Draw(int screenMove)
 			m_shotEffect->Draw();
 		}
 	}
+
 }
 
 void EneShot::ShotProgram()
@@ -105,13 +106,14 @@ bool EneShot::GetShotColli()
 
 void EneShot::OnCollision()
 {
-	
+	/*m_isDestroy = true;
+	m_isEffectFlag = true;*/
 	
 }
 
 void EneShot::OnDestroy()
 {
-	m_isDestroy = true;
+	//m_isDestroy = true;
 }
 
 void EneShot::CollisionUpdate()

@@ -499,6 +499,10 @@ void SceneMain::CollisionUpdate()
 					{
 						m_eneShot[e]->OnCollision();
 					}
+					if (m_eneShot[e]->GetIsDestroy())
+					{
+						m_eneShot.erase(m_eneShot.begin() + e);
+					}
 				}
 			}
 		}

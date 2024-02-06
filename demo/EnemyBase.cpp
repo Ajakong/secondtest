@@ -100,7 +100,6 @@ void EnemyBase::Update()
 			if (m_shot[i]->GetIsDestroy())
 			{
 				m_shot.erase(m_shot.begin() + i);
-			
 			}
 		}
 

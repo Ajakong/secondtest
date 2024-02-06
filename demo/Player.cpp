@@ -411,7 +411,7 @@ void Player::Draw()
 	}
 	DrawFormatString(100, 300,0xffffff,"InVisibleTime:%d", m_visibleLimitTime);
 	
-	DrawBox(m_playerCol.left, m_playerCol.top, m_playerCol.right, m_playerCol.bottom, 0xff00ff, false);
+	DrawBox(m_pos.x-m_collisionRadius, m_pos.y-m_collisionRadius, m_pos.x+m_collisionRadius, m_pos.y+m_collisionRadius, 0xff00ff, false);
 }
 
 void Player::VelocityToZero()
