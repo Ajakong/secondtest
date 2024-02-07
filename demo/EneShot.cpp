@@ -70,7 +70,7 @@ void EneShot::Draw(int screenMove)
 	{
 		DrawGraph(m_shotPos.x-m_screenMove-m_radius, m_shotPos.y-m_radius, m_handle, true);
 		DrawBox(m_shotPos.x - m_screenMove-m_radius, m_shotPos.y-m_radius, m_shotPos.x + m_radius - m_screenMove, m_shotPos.y + m_radius,0xff0000,0);
-		DrawFormatString(50, 50, 0xffffff, "%d", m_screenMove);
+		
 	}
 	if (m_isEffectFlag == true)
 	{

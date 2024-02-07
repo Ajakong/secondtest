@@ -79,7 +79,7 @@ void Laser::ShotProgram(Vec2 Spos, Vec2 DirVec)
 
 bool Laser::LineCollider(float x1, float y1, float x2, float y2)
 {
-	Vec2 one(x1, x2);
+	Vec2 one(x1, y1);
 	Vec2 two(x2, y2);
 
 	Vec2 ab = m_laserHead - m_laserTail;

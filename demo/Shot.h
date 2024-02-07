@@ -43,6 +43,9 @@ public:
 	int GetRadius() { return m_radius; }
 
 	Sqhere GetCollSqhere()const { return m_collider; }
+
+
+	int m_screenMove = 0;
 private:
 	//Shot‚ÌˆÊ’uî•ñ
 	Vec2 m_shotPos;
@@ -58,7 +61,7 @@ private:
 
 	int m_radius=0;
 
-	int m_screenMove=0;
+	
 
 	bool m_isInVisible = true;
 

@@ -68,7 +68,13 @@ void CircleShot::Update()
 
 	}
 
-
+	if (effectFlag == true)
+	{
+		if (m_shotEffect != nullptr)
+		{
+			m_shotEffect->Update(m_screenMove);
+		}
+	}
 
 
 }
@@ -79,6 +85,10 @@ void CircleShot::Draw()
 	{
 
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
+	}
+	if (effectFlag == true)
+	{
+		if (m_shotEffect != nullptr)m_shotEffect->Draw();
 	}
 }
 
@@ -101,8 +111,11 @@ bool CircleShot::GetShotColli(const Rect rect)
 		{
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
 			{
-				m_effect->WantHitPos(this, m_shotPos);
+				m_shotEffect->WantHitPos(this, m_shotPos);
 
+				m_shotEffect = make_shared<ShotEffect>();
+				m_shotEffect->WantHitPos(this, m_shotPos);
+				effectFlag = true;
 				m_isInVisible = true;
 				return true;
 			}

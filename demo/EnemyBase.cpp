@@ -80,14 +80,22 @@ void EnemyBase::Update()
 	{
 		m_targetPos.x = m_player->GetRect().right+20;
 		m_targetPos.y = m_player->GetRect().top;
+		/*
 		m_velocity.x = (m_targetPos.x+40 - m_pos.x)* (m_targetPos.x+40 - m_pos.x);
 		m_velocity.y = (m_targetPos.y - m_pos.y)* (m_targetPos.y - m_pos.y);
-		m_distance = sqrt(m_velocity.x + m_velocity.y);
+		m_distance = sqrt(m_velocity.x + m_velocity.y);*/
 
-		if (m_distance < 1000)
+		float  delx = m_player->GetPos().x-(m_pos.x - m_screenMove) ;
+		m_velocity.x = delx;
+		float dely = m_player->GetPos().y-m_pos.y ;
+		m_velocity.y = dely;
+		float del = sqrt((delx * delx) + (dely * dely));
+
+		m_distance = del;
+		if (m_distance < 710)
 		{
-			m_fireDir.x = m_velocity.x/ (m_targetPos.x + 40 - m_pos.x);
-			m_fireDir.y = m_velocity.y / (m_targetPos.y - m_pos.y);
+			m_fireDir.x = m_velocity.x;
+			m_fireDir.y = m_velocity.y;
 			m_fireDir.Normalize();
 			if (m_attackFrame >= 60)
 			{

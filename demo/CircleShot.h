@@ -53,12 +53,14 @@ private:
 
 	bool m_isInVisible = true;
 
+	bool effectFlag = false;
+
 	Vec2 m_graphSize;
 
 	Player* m_player;
 	EnemyBase* m_enemy;
 	CollisionMaster* m_collosionMaster;
 
-	std::shared_ptr<ShotEffect> m_effect;
+	std::shared_ptr<ShotEffect> m_shotEffect;
 };
 

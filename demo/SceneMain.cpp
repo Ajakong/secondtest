@@ -70,13 +70,13 @@ SceneMain::SceneMain():
 
 	m_enePos[0] = Vec2(100, 50);
 	m_enePos[1] = Vec2(850, 700);
-	m_enePos[2] = Vec2(1500, 800);
-	m_enePos[3] = Vec2(2400, 800);
-	m_enePos[4] = Vec2(3200, 0);
-	m_enePos[5] = Vec2(6000, 800);
-	m_enePos[6] = Vec2(6500, 800);
-	m_enePos[7] = Vec2(7100, 0);
-	m_enePos[8] = Vec2(5000, 0);
+	m_enePos[2] = Vec2(1500, 50);
+	m_enePos[3] = Vec2(2400, 50);
+	m_enePos[4] = Vec2(3200, 50);
+	m_enePos[5] = Vec2(6000, 50);
+	m_enePos[6] = Vec2(6500, 50);
+	m_enePos[7] = Vec2(7100, 50);
+	m_enePos[8] = Vec2(5000, 50);
 	m_enePos[9] = Vec2(5500, 800);
 
 	m_eneToPlayerPos[0] = Vec2(800, -50);
