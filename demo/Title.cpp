@@ -35,7 +35,9 @@ Title::Title(SceneManager& manager) :
 	OutputDebugStringA(oss.str().c_str());
 
 	m_bgmHandle = LoadSoundMem("BGM/titleBgm.mp3");
-	PlaySoundMem(m_bgmHandle,DX_PLAYTYPE_BACK);
+	m_jammingSound = LoadSoundMem("SE/jamming.mp3");
+	ChangeVolumeSoundMem(150, m_jammingSound);
+	PlaySoundMem(m_bgmHandle,DX_PLAYTYPE_LOOP);
 
 	m_particle = new Particle;
 }
@@ -55,7 +57,9 @@ void Title::Update()
 
 void Title::Draw()
 {
+	m_particle->Draw();
 	(this->*m_drawFunc)();
+	
 }
 
 void Title::FadeInUpdate()
@@ -75,10 +79,11 @@ void Title::FadeInUpdate()
 void Title::NormalUpdate()
 {
 	m_jammingFrame ++;
-	if (m_jammingFrame % 200 == 0)
+	if (m_jammingFrame % 800 == 0)
 	{
 		m_screenHandle = Application::GetInstance().GetScreenHandle();
-		m_windowHandle = GetDrawScreenGraph(0, 0, Game::kScreenWidth, Game::kScreenHeight,m_handle, true);
+		
+		PlaySoundMem(m_jammingSound, DX_PLAYTYPE_BACK);
 		m_updateFunc = &Title::JammingUpdate;
 		m_drawFunc = &Title::JammingDraw;
 	}
@@ -110,11 +115,11 @@ void Title::JammingUpdate()
 	a++;
 	m_jammingPosY+=5+a;
 	
-	if (m_jammingPosY > 2400)
+	if (m_jammingPosY > 400)
 	{
-		DeleteGraph(m_screenHandle);
 		a = 0;
 		m_jammingPosY = 0;
+		StopSoundMem(m_jammingSound);
 		m_updateFunc = &Title::NormalUpdate;
 		m_drawFunc = &Title::NormalDraw;
 	}
@@ -184,7 +189,13 @@ void Title::NormalDraw()
 
 void Title::JammingDraw()
 {
-	m_particle->Draw();
+	
+
+
+	SetDrawScreen(m_screenHandle);//レンダーターゲットの変更
+
+
+	
 	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 	m_fadeFrame += a;
 	if (m_fadeFrame > 60)
@@ -201,29 +212,34 @@ void Title::JammingDraw()
 	DrawRotaString(drawStringPosX, drawStringPosY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	/*SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(drawStringPosX, drawStringPosY - 45 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);
 	DrawBox(drawStringPosX, drawStringPosY - 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 15 + m_stringColorPlusA, 0xddffff, true);
 	DrawBox(drawStringPosX, drawStringPosY - 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 0 + m_stringColorPlusA, 0xffddff, true);
 	DrawBox(drawStringPosX, drawStringPosY + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 15 + m_stringColorPlusA, 0xffdddd, true);
 	DrawBox(drawStringPosX, drawStringPosY + 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 30 + m_stringColorPlusA, 0xddffdd, true);
 	DrawBox(drawStringPosX, drawStringPosY + 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 45 + m_stringColorPlusA, 0xddddff, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	////ジャミング処理
-	//SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
-	//DrawBox(0, m_jammingPosY-1350, 2000, m_jammingPosY-1400, 0x111111, true);
-	//DrawBox(0, m_jammingPosY-850, 2000, m_jammingPosY-1300, 0x111111, true);
-	//DrawBox(0, m_jammingPosY-800, 2000, m_jammingPosY - 830, 0x110000, true);
-	//DrawBox(0, m_jammingPosY-450, 2000, m_jammingPosY-500, 0x110000, true);
-	//DrawBox(0, m_jammingPosY-200, 2000, m_jammingPosY-400, 0x110000, true);
-	//DrawBox(0, m_jammingPosY-50, 2000, m_jammingPosY-100, 0x110000, true);
-	//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
+	
 	m_stringColorPlusA++;
 	if (m_stringColorPlusA > 50)
 	{
 		m_stringColorPlusA = 0;
 	}
 
-	//DrawRectRotaGraph(0, 0, 0, 0, 2000, 1080, 1, 0, m_screenHandle, 0);
+	SetDrawScreen(DX_SCREEN_BACK);//BACKに書き込まないと画面に表示されないので描画先を戻す
+	
+
+	int a = GetRand(Game::kScreenHeight);//一個目のy分割
+	int b = GetRand(Game::kScreenWidth);//一個目のx分割
+	int c = a+GetRand(Game::kScreenHeight-a);//一個目のy分割終点
+
+	DrawRectRotaGraph(Game::kScreenWidth / 2 ,a / 2, 0, 0, Game::kScreenWidth, a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
+
+	DrawRectRotaGraph(Game::kScreenWidth / 2 - b, (a + c) / 2, 0, a, b, c-a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
+
+	DrawRectRotaGraph(Game::kScreenWidth / 2 + b, (a + c) / 2 , b, a, Game::kScreenWidth, c-a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
+
+	DrawRectRotaGraph(Game::kScreenWidth / 2, (c+Game::kScreenHeight) / 2, 0, c, Game::kScreenWidth, Game::kScreenHeight-c, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
+
 }

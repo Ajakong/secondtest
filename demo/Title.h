@@ -23,14 +23,12 @@ private:
 	int m_handle;
 	int m_screenHandle = 0;
 
-	
-
-	int m_bgmHandle = 0;
-
 	int m_jammingPosY = 0;
-
 	int m_windowHandle = 0;
 
+
+	int m_bgmHandle = 0;
+	int m_jammingSound = 0;
 	Particle* m_particle;
 
 	// 更新メンバ関数ポインタ

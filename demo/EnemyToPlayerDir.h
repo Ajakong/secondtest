@@ -7,7 +7,7 @@ class HitEffect;
 class EnemyToPlayerDir
 {
 public:
-    EnemyToPlayerDir(Vec2 pos);
+    EnemyToPlayerDir(Vec2 pos,int deathSound);
     virtual ~EnemyToPlayerDir();
 
     virtual void Init( Player* player,int handle) ;
@@ -61,7 +61,7 @@ private:
 	int m_animInterval=0;
 
 	int m_screenMove=0;
-	
+	int m_deathSound = 0;
 
 
 	Vec2 m_colRange;

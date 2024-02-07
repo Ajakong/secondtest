@@ -27,6 +27,27 @@ SceneMain::SceneMain():
 	m_gameScreenHandle(0),
 	bossZone (false)
 {
+	m_enemyToPlayerHandle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
+	m_eneShotHandle = LoadGraph("data/image/eneShot.png");
+
+	m_itenNumber0Graph = LoadGraph("data/image/Item/rapidFire.png");
+	m_itemNumber1Graph = LoadGraph("data/image/Item/spread.png");;
+	m_itemNumber2Graph = LoadGraph("data/image/Item/laser.png");;
+	m_itemNumber3Graph = LoadGraph("data/image/Item/CircleShot.png");
+
+	m_enemyBornSound = LoadSoundMem("SE/enemyBorn.mp3");
+	m_eneDestroySound = LoadSoundMem("SE/enemyDestroy.mp3");
+	m_enemyDeathSound = LoadSoundMem("SE/enemyDeath.mp3");
+
+	
+
+	m_playerShotSound = LoadSoundMem("SE/shot.mp3");
+	m_playerDamageSound = LoadSoundMem("SE/PlayerDamage.mp3");
+	m_laserSound = LoadSoundMem("SE/laser.mp3");
+
+
+	
+
 	for (auto& shot : m_pShot)
 	{
 		shot = nullptr;
@@ -40,7 +61,7 @@ SceneMain::SceneMain():
 	{
 		shot = nullptr;
 	}
-	m_pPlayer = new Player{this};
+	m_pPlayer = new Player{this,m_playerShotSound,m_playerDamageSound,m_laserSound };
 	m_pMap = new Map{m_pPlayer};
 	m_pBgManager = new ImageGroundManager;
 	m_pBoss = new Boss{this};
@@ -95,15 +116,8 @@ SceneMain::SceneMain():
 		m_isEnemyCreate[i]=false;
 	}
 
-	m_enemyToPlayerHandle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
-	m_enemyBornSound = LoadSoundMem("SE/enemyBorn.mp3");
-	m_eneShotHandle= LoadGraph("data/image/eneShot.png");
-	m_eneDestroySound = LoadSoundMem("SE/enemyDestroy.mp3");
-
-	m_itenNumber0Graph = LoadGraph("data/image/Item/rapidFire.png");
-	m_itemNumber1Graph = LoadGraph("data/image/Item/spread.png");;
-	m_itemNumber2Graph = LoadGraph("data/image/Item/laser.png");;
-	m_itemNumber3Graph = LoadGraph("data/image/Item/CircleShot.png");;
+	
+	
 
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph };
 
@@ -126,6 +140,7 @@ SceneMain::~SceneMain()
 	delete m_pBgManager ;
 	for (int i = 0; i < ENEMY_NUM; i++)delete m_pEnemy[i] ;
 	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)delete m_pEnemyToPlayer[e];
+	delete m_bossMain;
 	delete m_pBoss;
 	delete m_pLaser;
 }
@@ -407,9 +422,12 @@ void SceneMain::CollisionUpdate()
 			{
 				for (int e = 0; e < ENEMY_NUM; e++)
 				{
-					if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect(), m_pMap->GetScreenMove()))
+					if(m_pEnemyToPlayer[e]!=nullptr)
 					{
-						int d = 0;
+						if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+						{
+							m_pEnemyToPlayer[e]->OnDamage(5);
+						}
 					}
 				}
 				if (m_pLaser->GetVisible())
@@ -519,8 +537,6 @@ void SceneMain::CollisionUpdate()
 				}
 			}
 
-			
-
 			for (int e = 0; e < m_eneShot.size(); e++)
 			{
 				if (m_eneShot[e] != nullptr)
@@ -596,10 +612,11 @@ void SceneMain::Draw() const
 void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 {
 	
-	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos};
+	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos,m_enemyDeathSound};
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer,m_enemyToPlayerHandle);
 	PlaySoundMem(m_enemyBornSound, DX_PLAYTYPE_BACK);
+	ChangeVolumeSoundMem(200, m_enemyBornSound);
 }
 
 void SceneMain::EnemyDelete()

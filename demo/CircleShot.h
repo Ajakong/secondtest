@@ -26,6 +26,9 @@ public:
 
 	float GetPosX() { return m_shotPos.x; }
 
+	virtual void OnMapCol() { Shot::OnMapCol(); }
+
+
 	Sqhere GetCollSqhere()const { return m_collider; }
 private:
 	//Shot‚ÌˆÊ’uî•ñ

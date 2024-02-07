@@ -36,7 +36,6 @@ Boss::Boss(SceneMain* mana) :
 	/*m_shotGraph =  LoadGraph("data/image/eneShot.png") ;*/
 
 	m_WorldMana = mana;
-	m_player = new Player{ m_WorldMana };
 	//m_shot = nullptr;
 }
 
@@ -60,12 +59,12 @@ void Boss::Update()
 	MissilePoint.y = m_pos.y + 420;
 
 	m_attackFrame++;
-	if (m_player != nullptr)
-	{
-		m_targetPos = m_player->GetPos();
-		m_velocity.x = (m_targetPos.x - m_pos.x) * (m_targetPos.x - m_pos.x);
-		m_velocity.y = (m_targetPos.y - m_pos.y) * (m_targetPos.y - m_pos.y);
-		m_distance = sqrt(m_velocity.x + m_velocity.y);
+	
+	m_velocity.x = (m_targetPos.x - m_pos.x) * (m_targetPos.x - m_pos.x);
+	m_velocity.y = (m_targetPos.y - m_pos.y) * (m_targetPos.y - m_pos.y);
+	m_distance = sqrt(m_velocity.x + m_velocity.y);
+
+	m_bossSphere->Update();
 		if (m_distance < 1000)
 		{
 			m_fireDir = m_velocity;
@@ -87,21 +86,6 @@ void Boss::Update()
 				}
 			}
 		}
-		/*for (int i = 0; i < 10; i++)
-		{
-			if (m_shot[i] != nullptr)
-			{
-				m_shot[i]->Update();
-				if (m_shot[i]->GetIsDestroy())
-				{
-					m_shot[i] = nullptr;
-				}
-			}
-		}*/
-	}
-
-	//////////
-	m_bossSphere->Update();
 }
 
 void Boss::Draw()

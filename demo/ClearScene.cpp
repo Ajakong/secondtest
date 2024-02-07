@@ -4,6 +4,8 @@
 #include "SceneManager.h"
 #include "ClearScene.h"
 #include "Title.h"
+#include "Player.h"
+#include"EndRoll.h"
 
 
 ClearScene::ClearScene(SceneManager& mgr) :
@@ -12,20 +14,31 @@ ClearScene::ClearScene(SceneManager& mgr) :
 	m_frame = 60;
 	m_updateFunc = &ClearScene::FadeInUpdate;
 	m_drawFunc = &ClearScene::FadeDraw;
+	m_player = new Player();
+	m_endRoll = new EndRoll();
+
+	m_player->Init();
+	m_endRoll->Init();
 }
 
 ClearScene::~ClearScene()
 {
+	delete m_player;
+	delete m_endRoll;
 }
 
 void ClearScene::Update()
 {
 	(this->*m_updateFunc)();
+	m_player->Update();
+	m_endRoll->Update();
 }
 
 void ClearScene::Draw()
 {
 	(this->*m_drawFunc)();
+	m_player->Draw();
+	m_endRoll->Draw();
 }
 
 void ClearScene::FadeInUpdate()

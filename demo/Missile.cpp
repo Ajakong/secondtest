@@ -32,24 +32,18 @@ void Missile::Update()
 	{
 		if(m_lockOnFrame>120)
 		{
-			
-
 			m_Velocity.x = (m_targetPos.x - m_shotPos.x) * (m_targetPos.x - m_shotPos.x);
 			m_Velocity.y = (m_targetPos.y - m_shotPos.y) * (m_targetPos.y - m_shotPos.y);
 			m_Velocity.Normalize();
 		}
 		else
 		{
-			m_Velocity.y = 1*5;
+			m_Velocity.y = 1*-5;
 			m_Velocity.x= m_player->GetPos().x;
 		}
 		
-
-
-
 		m_shotPos += m_Velocity;
-		
-		
+	
 	}
 
 }

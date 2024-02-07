@@ -19,11 +19,11 @@ public:
 
     bool GetVisible()const { return m_isInVisible; }
 
-    bool LineCollider(float x1,float y1,float x2,float y2, int screenmove);
+    bool LineCollider(float x1,float y1,float x2,float y2);
 
     Vec2 GetLaserPos() { return m_laserHead; };
     
-    bool OnLaserCollision(Rect rect, int screenMove);
+    bool OnLaserCollision(Rect rect);
 
     float toEquation(float& pos1X,float& pos1Y, float& pos2X,float& pos2Y);//ˆêŸ•û’ö®‰»‚µ‚ÄØ•Ğ‚ğ•Ô‚·
 
@@ -46,5 +46,7 @@ private:
     int m_limitTime=0;
 
     int m_screenMove=0;
+
+    int m_laserSound = 0;
 };
 

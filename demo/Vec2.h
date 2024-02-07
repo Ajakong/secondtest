@@ -136,4 +136,6 @@ public:
 
 		return Vec2{ x / len, y / len };
 	}
+
+	float ToCross(Vec2 a) { return x * a.y - y * a.x; }
 };

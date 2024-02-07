@@ -19,7 +19,7 @@ namespace
 }
 
 
-EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos):
+EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos, int deathSound):
 	m_isDeathFlag(false),
 	m_Hp(50),
 	m_pos(0.0f, 0.0f),
@@ -34,6 +34,7 @@ EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos):
 	m_hole = true;
 	m_pos = pos;
 	m_firstPos = pos;
+	m_deathSound = deathSound;
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
@@ -70,6 +71,7 @@ void EnemyToPlayerDir::Update()
 
 	if (m_Hp <= 0)
 	{
+		PlaySoundMem(m_deathSound, DX_PLAYTYPE_BACK);
 		m_WorldMana->AddScore(20000);
 		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
 	}

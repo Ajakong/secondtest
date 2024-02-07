@@ -18,15 +18,58 @@ namespace
 	constexpr float dushSpeed=6.0f;
 }
 
-Player::Player(SceneMain* main) :
+Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(30),
+	m_Hp(80),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
 	m_size(80.0f,112.0f),
 	m_animFrame(0,0),
+	toZeroSpeed(0.5f),
+	flyingFrame(),
+	m_isGroundFlag(false),
+	m_isJumpFlag(true),
+	m_isDushFlag(false),
+	m_isFaceDownFlag(false),
+	m_isLeftFlag(false),
+	m_isScreenAdd(false),
+	m_isScreenSub(false),
+	flyFlag(false),
+	shotBulletFlag(false),
+	m_angle(0),
+	m_collisionRadius(30),
+	m_handle(0),
+	m_kindOfBullet(3),
+	m_havingweaponNumber(0),
+	m_rotateAngle(0),
+	m_ShotGraph(false)
+{
+	for (auto& shot : m_shot)
+	{
+		shot = nullptr;
+	}
+	m_playerCol.top = m_pos.y - 15;
+	m_playerCol.left = m_pos.x - 30;
+	m_playerCol.right = m_pos.x + 30;
+	m_playerCol.bottom = m_pos.y + 80;
+
+	m_playerUpdate = &Player::EndingUpdate;
+	m_shotSoundHandle =shotSound;
+	m_laserSound = lasersound;
+
+	m_damageSound =damageSound;
+}
+
+Player::Player()://クリアシーン用のコンストラクタ
+	m_pos(0, 50),
+	m_Hp(30),
+	m_velocity(0.0f, 0.0f),
+	m_fireDir(0.0f, 0.0f),
+	m_dir(1.0f, 0.0f),
+	m_size(80.0f, 112.0f),
+	m_animFrame(0, 0),
 	toZeroSpeed(0.5f),
 	flyingFrame(),
 	m_isGroundFlag(false),
@@ -57,8 +100,10 @@ Player::Player(SceneMain* main) :
 
 	m_playerUpdate = &Player::StartUpdate;
 	m_shotSoundHandle = LoadSoundMem("SE/shot.mp3");
-	
+
 	m_damageSound = LoadSoundMem("SE/PlayerDamage.mp3");
+
+	m_animFrame.y = 1;
 }
 
 Player::~Player()
@@ -254,6 +299,7 @@ void Player::ShotIt()
 					m_laser = std::make_shared<Laser>();
 					m_dir.y = m_fireDir.y;
 					m_laser->ShotProgram(m_pos, m_dir);
+					PlaySoundMem(m_laserSound,DX_PLAYTYPE_BACK);
 					m_WorldMana->AddLaser(m_laser);
 					m_shotBulletInterval = 0;
 					break;
@@ -322,7 +368,7 @@ void Player::DeleteShot()
 		
 		if (m_kindOfBullet==0)
 		{
-			m_kindOfBullet = m_kindOfBullet;
+			m_kindOfBullet = m_havingweaponNumber;
 		}
 		else
 		{
@@ -421,21 +467,21 @@ void Player::Draw()
 
 void Player::VelocityToZero()
 {
-		if (m_isGroundFlag == true)
+	if (m_isGroundFlag == true)
+	{
+		if (m_velocity.x > 0)
 		{
-			if (m_velocity.x > 0)
-			{
-				m_velocity.x -= 0.5f;
-			}
-			if (m_velocity.x < 0)
-			{
-				m_velocity.x += 0.5f;
-			}
-			if (m_isDushFlag == false)
-			{
-				m_velocity.x = 0.0f;
-			}
+			m_velocity.x -= 0.5f;
 		}
+		if (m_velocity.x < 0)
+		{
+			m_velocity.x += 0.5f;
+		}
+		if (m_isDushFlag == false)
+		{
+			m_velocity.x = 0.0f;
+		}
+	}
 	if (m_velocity.y > 0)
 	{
 		m_velocity.y -= 0.5f;
@@ -548,6 +594,7 @@ void Player::OnClear()
 void Player::GetNewWeapon(int weaponNum)
 {
 	m_havingweaponNumber = weaponNum;
+	m_kindOfBullet = weaponNum;
 }
 
 void Player::StartUpdate()
@@ -834,6 +881,62 @@ void Player::ClearUpdate()
 	}
 	
 	m_animInterval++;
+}
+
+void Player::EndingStartUpdate()
+{
+	CollisionUpdate();
+
+	m_pos.x += 2;
+	m_velocity.y += 0.5f;
+	m_angle += 1.0f;
+	m_pos.y += m_velocity.y;
+	if (m_isGroundFlag == true)
+	{
+		m_playerUpdate = &Player::EndingUpdate;
+	}
+}
+
+void Player::EndingUpdate()
+{
+	CollisionUpdate();
+
+	//ループ時の初期化処理
+	m_isDushFlag = false;
+	shotBulletFlag = false;
+	m_fireDir.y = 0;
+	m_velocity.y += 2;
+	//if(Pad::IsRepeat(PAD_INPUT_UP,))
+	m_pos += m_velocity;
+	//伏せ判定は使ったのでfalseにする
+	m_isFaceDownFlag = false;
+	m_animInterval++;
+
+	if (m_isGroundFlag == true)
+	{
+		m_velocity.x += 3.0f;
+		m_isDushFlag = true;
+
+		m_dir.x = 1.0f;
+		m_dir.y = 0.0f;
+		m_isLeftFlag = false;
+	}
+	
+	m_animFrame.y = 1;
+	if (m_animInterval >= 6)
+	{
+		m_animFrame.x++;
+		if (m_animFrame.x >= 11)
+		{
+			m_animFrame.x = 0;
+		}
+		m_animInterval = 0;
+	}
+
+	ShotIt();
+	//Die
+	ToDie();
+
 }
 
 void Player::OnMapCollision()

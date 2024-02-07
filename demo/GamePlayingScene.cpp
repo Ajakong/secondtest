@@ -24,7 +24,7 @@ GamePlayingScene::GamePlayingScene(SceneManager& manager) :
 	m_holySoundHandle = LoadSoundMem("SE/HolyLight.mp3");
 	m_stageBgm = LoadSoundMem("BGM/stageBgm.mp3");
 	PlaySoundMem(m_stageBgm,DX_PLAYTYPE_BACK);
-	ChangeVolumeSoundMem(100, m_stageBgm);
+	ChangeVolumeSoundMem(250, m_stageBgm);
 }
 
 GamePlayingScene::~GamePlayingScene()
@@ -81,8 +81,8 @@ void GamePlayingScene::NormalUpdate()
 		StopSoundMem(m_stageBgm);
 		PlaySoundMem(m_holySoundHandle, DX_PLAYTYPE_BACK);
 
-		m_updateFunc = &GamePlayingScene::PlayerLightingUpdate;
-		m_drawFunc = &GamePlayingScene::PlayerLightingDraw;
+		m_updateFunc = &GamePlayingScene::PunishmentUpdate;
+		m_drawFunc = &GamePlayingScene::PunishmentDraw;
 	}
 	m_fps = GetFPS();
 	m_btnFrame++;

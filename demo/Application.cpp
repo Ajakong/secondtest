@@ -76,7 +76,7 @@ void Application::Run()
         
 
         m_screenHandle=MakeScreen(Game::kScreenWidth, Game::kScreenHeight, true);
-        
+
         LONGLONG time;
         while (ProcessMessage() != -1)
         {

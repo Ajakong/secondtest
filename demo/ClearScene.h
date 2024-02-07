@@ -1,10 +1,16 @@
 #pragma once
 #include "Scene.h"
+
+class Player;
+
+class EndRoll;
+
 class ClearScene : public Scene
 {
 public:
     ClearScene(SceneManager& mgr);
     ~ClearScene();
+    
     virtual void Update();
     virtual void Draw();
 
@@ -12,6 +18,9 @@ private:
 
     int m_btnFrame = 0;
     int m_frame;
+
+    Player* m_player;
+    EndRoll* m_endRoll;
 
     // メンバ関数ポインタの宣言
     using UpdateFunc_t = void (ClearScene::*)();

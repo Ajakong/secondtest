@@ -11,14 +11,10 @@ namespace
 	constexpr int SHOT_NUM_LIMIT = 100;
 };
 
-
-
 class SceneMain;
 class Shot;
 class Laser;
 class CircleShot;
-
-
 
 class Player : public Object
 {
@@ -26,7 +22,8 @@ class Player : public Object
 public:
 	//using Shot = std::shared_ptr<Shot>;
 
-	Player(SceneMain* main);
+	Player(SceneMain* main, int shotSound, int damageSound, int lasersound);
+	Player();
 	~Player();
 
 	void Init();
@@ -44,6 +41,7 @@ public:
 
 	void OnClear();
 
+
 	void GetNewWeapon(int weaponNum);
 
 	//状態別関数(ポインタで呼び出す)
@@ -56,6 +54,9 @@ public:
 	void FlyingUpdate();
 	void DieUpdate();
 	void ClearUpdate();
+
+	void EndingStartUpdate();
+	void EndingUpdate();
 	
 	//当たり判定関数
 	void OnMapCollision();
@@ -134,6 +135,8 @@ private:
 
 	int m_damageSound = 0;
 
+
+
 /////////////////////////////////	
 	
 
@@ -144,6 +147,8 @@ private:
 	int m_shotSoundHandle = 0;
 	
 	std::shared_ptr<Laser> m_laser;
+	int m_laserSound = 0;
+
 	std::shared_ptr<CircleShot> m_circleShot[SHOT_NUM_LIMIT];
 	
 

@@ -142,6 +142,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Bg.cpp" />
     <ClCompile Include="Boss.cpp" />
+    <ClCompile Include="BossMain.cpp" />
     <ClCompile Include="BossSphere.cpp" />
     <ClCompile Include="CircleBulletItem.cpp" />
     <ClCompile Include="CircleShot.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="CollisionMaster.cpp" />
     <ClCompile Include="DieEnemyEffect.cpp" />
     <ClCompile Include="Effect.cpp" />
+    <ClCompile Include="EndRoll.cpp" />
     <ClCompile Include="EneDeathEffect.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyBasePro.cpp" />
@@ -170,6 +172,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Missile.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Option.cpp" />
     <ClCompile Include="Pad.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="PauseScene.cpp" />
@@ -193,6 +196,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Bg.h" />
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossMain.h" />
     <ClInclude Include="BossSphere.h" />
     <ClInclude Include="CircleBulletItem.h" />
     <ClInclude Include="CircleShot.h" />
@@ -200,6 +204,7 @@
     <ClInclude Include="CollisionMaster.h" />
     <ClInclude Include="DieEnemyEffect.h" />
     <ClInclude Include="Effect.h" />
+    <ClInclude Include="EndRoll.h" />
     <ClInclude Include="EneDeathEffect.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyBasePro.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Option.h" />
     <ClInclude Include="Pad.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="PauseScene.h" />

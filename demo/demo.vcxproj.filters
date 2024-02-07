@@ -13,85 +13,94 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\Enemy">
-      <UniqueIdentifier>{b642166e-8a89-4a6d-bd9d-2c7aa48e6e31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{62c95d01-4b43-45d0-8bce-c27785434989}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\UI">
-      <UniqueIdentifier>{e6944530-b35b-4c3f-a318-fecb25a4ac6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shot">
-      <UniqueIdentifier>{cd1cfcdf-cf39-4318-aef0-5336702bb618}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\utl">
       <UniqueIdentifier>{c51090dd-f478-4ed1-b0fd-5cd52bb0bbd4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Enemy">
-      <UniqueIdentifier>{62c4245b-84dc-4059-b02f-d66bb2647693}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\MapGraph">
-      <UniqueIdentifier>{f18aa732-596b-4179-a735-4afa428c1521}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Scene">
       <UniqueIdentifier>{e1483bad-f67a-4d44-8e9c-573b6b9b420d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Shot">
-      <UniqueIdentifier>{042d4aec-9f76-43b4-9a88-d915d835aed0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\UI">
-      <UniqueIdentifier>{a631fbac-f2e7-4173-a26c-6be29a068dbc}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\utl">
       <UniqueIdentifier>{b5e9105b-f0bd-470e-b17f-95d5ce78272c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Effect">
-      <UniqueIdentifier>{9f9e9d75-d3c6-4d4d-aa5c-314ca2a0bc81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Effect">
       <UniqueIdentifier>{e1b47027-abba-44a8-8a0c-9eac593475e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Boss">
+    <Filter Include="ソース ファイル\GamePlaying">
+      <UniqueIdentifier>{f995a082-cb16-4ff7-8c6a-9aade865231a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GamePlaying\Boss">
       <UniqueIdentifier>{783bda3a-837d-4d2e-ae54-9bf1fe33eb09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Boss">
-      <UniqueIdentifier>{1f02cc0f-900a-4cfb-b066-0f4f60597451}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\GamePlaying\Effect">
+      <UniqueIdentifier>{9f9e9d75-d3c6-4d4d-aa5c-314ca2a0bc81}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scene\MapGraph">
-      <UniqueIdentifier>{33eb3de8-fb4d-4987-85e3-1db63a5e5083}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\GamePlaying\Enemy">
+      <UniqueIdentifier>{b642166e-8a89-4a6d-bd9d-2c7aa48e6e31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Item">
+    <Filter Include="ソース ファイル\GamePlaying\Shot">
+      <UniqueIdentifier>{cd1cfcdf-cf39-4318-aef0-5336702bb618}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GamePlaying\Item">
       <UniqueIdentifier>{b79acfbf-8748-40bd-9e2e-1018f7fcf91c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Item">
+    <Filter Include="ソース ファイル\GamePlaying\UI">
+      <UniqueIdentifier>{e6944530-b35b-4c3f-a318-fecb25a4ac6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Clear">
+      <UniqueIdentifier>{1311db5c-635a-4aed-a2fd-a010891cbcf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying">
+      <UniqueIdentifier>{39343082-90c2-4114-8247-225eb1a137d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\Boss">
+      <UniqueIdentifier>{1f02cc0f-900a-4cfb-b066-0f4f60597451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\Enemy">
+      <UniqueIdentifier>{62c4245b-84dc-4059-b02f-d66bb2647693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\Item">
       <UniqueIdentifier>{764bc6bc-3018-4966-b06c-1e42e2b1c5ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\MapGraph">
+      <UniqueIdentifier>{f18aa732-596b-4179-a735-4afa428c1521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\Shot">
+      <UniqueIdentifier>{042d4aec-9f76-43b4-9a88-d915d835aed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\GamePlaying\UI">
+      <UniqueIdentifier>{a631fbac-f2e7-4173-a26c-6be29a068dbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Clear">
+      <UniqueIdentifier>{b0d2bd63-e502-48fc-8e55-3c3be9f42bdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\MapGraph">
+      <UniqueIdentifier>{33eb3de8-fb4d-4987-85e3-1db63a5e5083}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Bg.cpp">
-      <Filter>ソース ファイル\Scene\MapGraph</Filter>
+      <Filter>ソース ファイル\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="ForeGround.cpp">
-      <Filter>ソース ファイル\Scene\MapGraph</Filter>
+      <Filter>ソース ファイル\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="ImageGroundManager.cpp">
-      <Filter>ソース ファイル\Scene\MapGraph</Filter>
+      <Filter>ソース ファイル\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
-      <Filter>ソース ファイル\Scene\MapGraph</Filter>
+      <Filter>ソース ファイル\MapGraph</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBase.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -106,28 +115,28 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="EnemyToPlayerDir.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="UI.cpp">
-      <Filter>ソース ファイル\UI</Filter>
+      <Filter>ソース ファイル\GamePlaying\UI</Filter>
     </ClCompile>
     <ClCompile Include="EnemyManager.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBasePro.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Sqhere.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Laser.cpp">
-      <Filter>ソース ファイル\Shot</Filter>
+      <Filter>ソース ファイル\GamePlaying\Shot</Filter>
     </ClCompile>
     <ClCompile Include="Shot.cpp">
-      <Filter>ソース ファイル\Shot</Filter>
+      <Filter>ソース ファイル\GamePlaying\Shot</Filter>
     </ClCompile>
     <ClCompile Include="CircleShot.cpp">
-      <Filter>ソース ファイル\Shot</Filter>
+      <Filter>ソース ファイル\GamePlaying\Shot</Filter>
     </ClCompile>
     <ClCompile Include="Rect.cpp">
       <Filter>ソース ファイル\utl</Filter>
@@ -142,7 +151,7 @@
       <Filter>ソース ファイル\utl</Filter>
     </ClCompile>
     <ClCompile Include="EneShot.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Pad.cpp">
       <Filter>ソース ファイル\utl</Filter>
@@ -154,13 +163,13 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ShotEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
     </ClCompile>
     <ClCompile Include="DieEnemyEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Missile.cpp">
-      <Filter>ソース ファイル\Shot</Filter>
+      <Filter>ソース ファイル\GamePlaying\Shot</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>ソース ファイル</Filter>
@@ -175,53 +184,62 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="EneShotEffect.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
+      <Filter>ソース ファイル\GamePlaying\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="ClearScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Boss.cpp">
-      <Filter>ソース ファイル\Boss</Filter>
+      <Filter>ソース ファイル\GamePlaying\Boss</Filter>
     </ClCompile>
     <ClCompile Include="BossSphere.cpp">
-      <Filter>ソース ファイル\Boss</Filter>
+      <Filter>ソース ファイル\GamePlaying\Boss</Filter>
     </ClCompile>
     <ClCompile Include="PauseScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="WeapomItem.cpp">
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EneDeathEffect.cpp">
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル\GamePlaying\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FullAutoGun.cpp">
+      <Filter>ソース ファイル\GamePlaying\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Spread.cpp">
+      <Filter>ソース ファイル\GamePlaying\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserItem.cpp">
+      <Filter>ソース ファイル\GamePlaying\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleBulletItem.cpp">
+      <Filter>ソース ファイル\GamePlaying\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="tutoBorad.cpp">
+      <Filter>ソース ファイル\GamePlaying</Filter>
+    </ClCompile>
+    <ClCompile Include="WeapomItem.cpp">
+      <Filter>ソース ファイル\GamePlaying</Filter>
+    </ClCompile>
+    <ClCompile Include="EndRoll.cpp">
+      <Filter>ソース ファイル\Clear</Filter>
+    </ClCompile>
+    <ClCompile Include="Option.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="HitEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="EneDeathEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="FullAutoGun.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Spread.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="LaserItem.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleBulletItem.cpp">
-      <Filter>ソース ファイル\Item</Filter>
+    <ClCompile Include="BossMain.cpp">
+      <Filter>ソース ファイル\GamePlaying\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldRule.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
@@ -231,28 +249,28 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBase.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBasePro.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyManager.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="EnemyToPlayerDir.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Bg.h">
-      <Filter>ヘッダー ファイル\MapGraph</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\MapGraph</Filter>
     </ClInclude>
     <ClInclude Include="ForeGround.h">
-      <Filter>ヘッダー ファイル\MapGraph</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\MapGraph</Filter>
     </ClInclude>
     <ClInclude Include="ImageGroundManager.h">
-      <Filter>ヘッダー ファイル\MapGraph</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\MapGraph</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
-      <Filter>ヘッダー ファイル\MapGraph</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\MapGraph</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
@@ -267,13 +285,13 @@
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="CircleShot.h">
-      <Filter>ヘッダー ファイル\Shot</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Shot</Filter>
     </ClInclude>
     <ClInclude Include="Laser.h">
-      <Filter>ヘッダー ファイル\Shot</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Shot</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
-      <Filter>ヘッダー ファイル\UI</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\UI</Filter>
     </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>ヘッダー ファイル\utl</Filter>
@@ -291,10 +309,10 @@
       <Filter>ヘッダー ファイル\utl</Filter>
     </ClInclude>
     <ClInclude Include="Shot.h">
-      <Filter>ヘッダー ファイル\Shot</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Shot</Filter>
     </ClInclude>
     <ClInclude Include="EneShot.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Pad.h">
       <Filter>ヘッダー ファイル\utl</Filter>
@@ -312,7 +330,7 @@
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Missile.h">
-      <Filter>ヘッダー ファイル\Shot</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Shot</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -327,25 +345,19 @@
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="EneShotEffect.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="ClearScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
-      <Filter>ヘッダー ファイル\Boss</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Boss</Filter>
     </ClInclude>
     <ClInclude Include="BossSphere.h">
-      <Filter>ヘッダー ファイル\Boss</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Boss</Filter>
     </ClInclude>
     <ClInclude Include="PauseScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="WeapomItem.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="tutoBorad.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
@@ -354,19 +366,37 @@
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Item</Filter>
     </ClInclude>
     <ClInclude Include="FullAutoGun.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Item</Filter>
     </ClInclude>
     <ClInclude Include="Spread.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Item</Filter>
     </ClInclude>
     <ClInclude Include="LaserItem.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Item</Filter>
     </ClInclude>
     <ClInclude Include="CircleBulletItem.h">
-      <Filter>ヘッダー ファイル\Item</Filter>
+      <Filter>ヘッダー ファイル\GamePlaying\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="tutoBorad.h">
+      <Filter>ヘッダー ファイル\GamePlaying</Filter>
+    </ClInclude>
+    <ClInclude Include="WeapomItem.h">
+      <Filter>ヘッダー ファイル\GamePlaying</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldRule.h">
+      <Filter>ヘッダー ファイル\GamePlaying</Filter>
+    </ClInclude>
+    <ClInclude Include="EndRoll.h">
+      <Filter>ヘッダー ファイル\Clear</Filter>
+    </ClInclude>
+    <ClInclude Include="Option.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BossMain.h">
+      <Filter>ヘッダー ファイル\GamePlaying\Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

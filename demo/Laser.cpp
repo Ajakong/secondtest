@@ -4,6 +4,7 @@
 
 Laser::Laser()
 {
+	
 }
 
 Laser::~Laser()
@@ -41,6 +42,7 @@ void Laser::Draw()
 					 m_laserHead.x, m_laserHead.y, 0xff0000,7);
 	}
 	
+	
 }
 
 void Laser::ShotProgram(Vec2 Spos, Vec2 DirVec)
@@ -75,10 +77,26 @@ void Laser::ShotProgram(Vec2 Spos, Vec2 DirVec)
 	m_isInVisible = false;
 }
 
-bool Laser::LineCollider(float x1, float y1, float x2, float y2,int screenmove)
+bool Laser::LineCollider(float x1, float y1, float x2, float y2)
 {
+	Vec2 one(x1, x2);
+	Vec2 two(x2, y2);
 
-	int s = ((m_laserHead.x - m_laserTail.x) * (y1 - m_laserTail.y)) - ((x1 - m_laserTail.x) * (m_laserHead.y - m_laserTail.y));
+	Vec2 ab = m_laserHead - m_laserTail;
+	Vec2 aone = one - m_laserTail;
+	Vec2 atwo = two - m_laserTail;
+
+	Vec2 onetwo = two - one;
+	Vec2 onea = m_laserTail - one;
+	Vec2 oneb = m_laserHead - one;
+
+	if (aone.ToCross(ab) * atwo.ToCross(ab) < 0 && onea.ToCross(onetwo) * oneb.ToCross(onetwo)<0)
+	{
+		return true;
+	}
+
+	return false;
+	/*int s = ((m_laserHead.x - m_laserTail.x) * (y1 - m_laserTail.y)) - ((x1 - m_laserTail.x) * (m_laserHead.y - m_laserTail.y));
 	int t = ((m_laserHead.x - m_laserTail.x) * (y2 - m_laserTail.y)) - ((x2 - m_laserTail.x) * (m_laserHead.y - m_laserTail.y));
 	if (s * t > 0.0f)
 	{
@@ -92,7 +110,7 @@ bool Laser::LineCollider(float x1, float y1, float x2, float y2,int screenmove)
 		return false;
 	}
 
-	return true;
+	return true;*/
 	////考え方は片方の線分の始点(x1,y1)のy1がレーザーの直線.yより大きい時、終点のy座標の関係性が逆になっていた場合交わってる(始点の条件が逆の場合も)
 	//if (m_expLine.x * x1 + b < y1)
 	//{
@@ -103,10 +121,6 @@ bool Laser::LineCollider(float x1, float y1, float x2, float y2,int screenmove)
 
 	//	}
 	//}
-
-
-
-
 
 
 	/*{
@@ -145,21 +159,21 @@ return true;
 
 
 
-bool Laser::OnLaserCollision(Rect rect,int screenMove)
+bool Laser::OnLaserCollision(Rect rect)
 {
-	if (LineCollider(rect.left - screenMove, rect.top, rect.right - screenMove, rect.top, screenMove))
+	if (LineCollider(rect.left, rect.top, rect.right , rect.top))
 	{
 		return true;
 	}
-	if (LineCollider(rect.right - screenMove, rect.top, rect.right - screenMove, rect.bottom, screenMove))
+	if (LineCollider(rect.right , rect.top, rect.right, rect.bottom))
 	{
 		return true;
 	}
-	if (LineCollider(rect.right - screenMove, rect.bottom, rect.left - screenMove, rect.bottom, screenMove))
+	if (LineCollider(rect.right , rect.bottom, rect.left , rect.bottom))
 	{
 		return true;
 	}
-	if (LineCollider(rect.left - screenMove, rect.bottom, rect.left - screenMove, rect.top, screenMove))
+	if (LineCollider(rect.left, rect.bottom, rect.left , rect.top))
 	{
 		return true;
 	}

@@ -20,7 +20,10 @@ class ImageGroundManager;
 class EnemyBase;
 class EnemyBasePro;
 class EnemyToPlayerDir;
+
 class Boss;
+class BossMain;
+
 class EneShot;
 class Shot;
 class Laser;
@@ -79,7 +82,14 @@ private:
 	int m_itemNumber2Graph = 0;
 	int m_itemNumber3Graph = 0;
 
+
+	int m_playerShotSound = 0;
+	int m_playerDamageSound = 0;
+	int m_laserSound = 0;
+
 	int m_eneDestroySound = 0;
+	int m_enemyDeathSound = 0;
+
 
 	int m_screenMove=0;
 	int m_bgHandle=0;
@@ -107,6 +117,7 @@ private:
 	EnemyBase* m_pEnemy[ENEMY_NUM];
 	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_TO_PLAYER_NUM];
 	Boss* m_pBoss;
+	BossMain* m_bossMain;
 	Shot* m_pShot[SHOT_NUM_LIMIT];
 	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 	Laser* m_pLaser;
