@@ -9,7 +9,7 @@
 
 GameOverScene::GameOverScene(SceneManager& mgr) :
 	Scene(mgr),
-	m_fadeSoundFrame(100)
+	m_fadeSoundFrame(200)
 {
 	m_frame = 60;
 	m_updateFunc = &GameOverScene::FadeInUpdate;

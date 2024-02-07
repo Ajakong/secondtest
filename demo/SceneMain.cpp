@@ -416,13 +416,23 @@ void SceneMain::CollisionUpdate()
 
 			if (m_pLaser != nullptr)
 			{
-				for (int e = 0; e < ENEMY_NUM; e++)
+				for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 				{
 					if(m_pEnemyToPlayer[e]!=nullptr)
 					{
 						if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 						{
 							m_pEnemyToPlayer[e]->OnDamage(5);
+						}
+					}
+				}
+				for (int e = 0; e < ENEMY_NUM; e++)
+				{
+					if (m_pEnemy[e] != nullptr)
+					{
+						if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
+						{
+							m_pEnemy[e]->OnDamage(5);
 						}
 					}
 				}

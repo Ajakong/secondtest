@@ -108,7 +108,6 @@ void EnemyBase::Update()
 					m_WorldMana->AddEneShot(m_shot.back());
 					m_attackFrame = 0;
 					m_pos.x += m_screenMove;
-					
 				}
 			}
 			
@@ -159,6 +158,12 @@ void EnemyBase::OnHitShot()
 	{
 		m_ItemThrowVel.x = 4;
 		m_ItemThrowVel.y = -5;
+
+		m_colRect.top = -500;
+		m_colRect.bottom = -500;
+		m_colRect.left = -500;
+		m_colRect.right = -500;
+
 		if (m_itemNumber == 0)
 		{
 			m_item = make_shared<FullAutoGun>(m_pos,m_ItemThrowVel,m_fullAutoGunGraph);
@@ -177,7 +182,7 @@ void EnemyBase::OnHitShot()
 		}
 
 		PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
-		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove+50, m_pos.y+25));
+		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove+20, m_pos.y+25));
 		m_WorldMana->AddScore(2000000);
 		m_WorldMana->AddItem(m_item);
 		m_isDeathFlag = true;

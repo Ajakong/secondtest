@@ -31,6 +31,7 @@ public:
 	void NeutralUpdate();
 	void AttackUpdate();
 	void DyingUpdate();
+	void WanderingUpdate();
 
 	float GetDirX() { return m_dirX; }
 
@@ -63,6 +64,11 @@ private:
 	int m_screenMove=0;
 	int m_deathSound = 0;
 
+	int m_idleMoveFrame = 0;
+	int m_wanderingInterval = 0;
+
+
+	int m_moveNumber = 0;
 
 	Vec2 m_colRange;
 

@@ -21,7 +21,7 @@ namespace
 
 EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos, int deathSound):
 	m_isDeathFlag(false),
-	m_Hp(50),
+	m_Hp(24),
 	m_pos(0.0f, 0.0f),
 	m_velocity(0.0f, 0.0f),
 	animFrameMana(0, 0),
@@ -122,6 +122,7 @@ void EnemyToPlayerDir::OnPlayerHit()
 
 void EnemyToPlayerDir::IdleUpdate()
 {
+	m_velocity.x = 0;
 	m_velocity.y = 0.0f;
 	m_velocity.y += 9.8f;
 	m_playerPos.x = m_player->GetPos().x + m_screenMove;
@@ -131,6 +132,21 @@ void EnemyToPlayerDir::IdleUpdate()
 
 	CollisionUpdate();
 	
+	if(m_idleMoveFrame>200)
+	{
+		m_moveNumber= GetRand(1);//0‚Ì‚ÉœpœjA1‚Ì‘Ò‹@
+	}
+
+	if (m_moveNumber == 0)
+	{
+		
+		//m_enemyUpdate = &EnemyToPlayerDir::WanderingUpdate;
+	}
+	
+	
+	
+
+
 	if (m_player != nullptr)
 	{
 		if (abs(m_dis) < 600&& (m_playerPos.y - m_pos.y)<300)
@@ -178,6 +194,7 @@ void EnemyToPlayerDir::IdleUpdate()
 		m_WorldMana->AddScore(20000);
 		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
 	}
+	m_idleMoveFrame++;
 }
 
 void EnemyToPlayerDir::NeutralUpdate()
@@ -302,6 +319,39 @@ void EnemyToPlayerDir::DyingUpdate()
 		}
 	}
 	
+	m_animInterval++;
+}
+
+void EnemyToPlayerDir::WanderingUpdate()
+{
+	m_velocity.y = 0.0f;
+	m_velocity.y += 9.8f;
+	CollisionUpdate();
+	
+	if (m_wanderingInterval > 500)
+	{
+		m_moveNumber=GetRand(2);
+	}
+
+	
+	if (m_player != nullptr)
+	{
+		m_isMapCol = false;
+	}
+	if (m_animInterval > 6)
+	{
+		animFrameMana.y = 1;
+		animFrameMana.x++;
+		m_animInterval = 0;
+		if (animFrameMana.x > 11)
+		{
+			animFrameMana.x = 0;
+		}
+	}
+	m_pos += m_velocity;
+
+
+	m_wanderingInterval++;
 	m_animInterval++;
 }
 
