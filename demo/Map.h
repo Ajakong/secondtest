@@ -26,8 +26,10 @@ public:
 	int GetScreenVelocity() { return screenVelocityX; }
 
 	bool IsPlayerCollision(Rect& rect,int colRadius, Vec2 velo);
+	bool IsPlayerCollision(Rect& rect,Rect& bottomRay,Rect& topRay, int colRadius, Vec2 velo);
 	bool IsCollision(Rect& rect, Vec2 velo);
 	bool IsCollision(Vec2 pos, int radius);
+	bool RectCollision(Rect& rect);
 
 	bool ObjectCollision(const Rect& rect);
 

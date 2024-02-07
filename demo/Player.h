@@ -68,7 +68,8 @@ public:
 	Vec2 GetPos()const { return m_pos; }
 	Vec2 GetPos(int move) { m_pos.x -= move; return m_pos; }
 	Rect& GetRect() { return m_playerCol; }
-	
+	Rect& GetTopRay() { return m_topRay; }
+	Rect& GetBottomRay() { return m_bottomRay; }
 	
 	//マップ進行
 	void screenAdd() { m_isScreenAdd = true; }
@@ -87,6 +88,8 @@ private:
 	Vec2 m_dir;//向き
 	Vec2 m_animFrame;//アニメーションフレーム
 	Rect m_playerCol;
+	Rect m_topRay;
+	Rect m_bottomRay;
 	//攻撃
 	Vec2 m_fireDir;//照準の方向
 	Vec2 m_bulletStartPos;//弾の生成位置

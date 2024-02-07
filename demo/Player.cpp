@@ -432,6 +432,12 @@ void Player::CollisionUpdate()
 	m_playerCol.left = m_pos.x - 30;
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 45;
+
+	m_bottomRay = m_playerCol;
+	m_bottomRay.top = m_bottomRay.bottom - 5;
+
+	m_topRay = m_playerCol;
+	m_topRay.bottom = m_topRay.top + 5;
 }
 
 void Player::Draw()

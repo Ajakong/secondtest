@@ -510,7 +510,7 @@ void SceneMain::CollisionUpdate()
 		}
 
 		//ƒ}ƒbƒv‚Æ‚Ì“–‚½‚è”»’è
-		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
+		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(),m_pPlayer->GetBottomRay(),m_pPlayer->GetTopRay(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
 		{
 			m_pPlayer->OnMapCollision();
 		}
