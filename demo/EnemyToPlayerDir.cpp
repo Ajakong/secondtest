@@ -69,12 +69,7 @@ void EnemyToPlayerDir::Update()
 	}
 	(this->*m_enemyUpdate)();//èÛë‘ëJà⁄
 
-	if (m_Hp <= 0)
-	{
-		PlaySoundMem(m_deathSound, DX_PLAYTYPE_BACK);
-		m_WorldMana->AddScore(20000);
-		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
-	}
+	
 }
 
 void EnemyToPlayerDir::Draw()
@@ -172,8 +167,17 @@ void EnemyToPlayerDir::IdleUpdate()
 			animFrameMana.x = 0;
 		}
 	}
+
+
 	m_pos += m_velocity;
 	m_animInterval++;
+
+	if (m_Hp <= 0)
+	{
+		PlaySoundMem(m_deathSound, DX_PLAYTYPE_BACK);
+		m_WorldMana->AddScore(20000);
+		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
+	}
 }
 
 void EnemyToPlayerDir::NeutralUpdate()
@@ -222,6 +226,13 @@ void EnemyToPlayerDir::NeutralUpdate()
 	}
 	
 	m_animInterval++;
+
+	if (m_Hp <= 0)
+	{
+		PlaySoundMem(m_deathSound, DX_PLAYTYPE_BACK);
+		m_WorldMana->AddScore(20000);
+		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
+	}
 }
 
 void EnemyToPlayerDir::AttackUpdate()
@@ -260,6 +271,13 @@ void EnemyToPlayerDir::AttackUpdate()
 	}
 
 	m_animInterval++;
+
+	if (m_Hp <= 0)
+	{
+		PlaySoundMem(m_deathSound, DX_PLAYTYPE_BACK);
+		m_WorldMana->AddScore(20000);
+		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
+	}
 }
 
 void EnemyToPlayerDir::DyingUpdate()

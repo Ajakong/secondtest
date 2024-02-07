@@ -40,7 +40,6 @@ SceneMain::SceneMain():
 	m_enemyDeathSound = LoadSoundMem("SE/enemyDeath.mp3");
 
 	
-
 	m_playerShotSound = LoadSoundMem("SE/shot.mp3");
 	m_playerDamageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 	m_laserSound = LoadSoundMem("SE/laser.mp3");
@@ -115,9 +114,6 @@ SceneMain::SceneMain():
 	{
 		m_isEnemyCreate[i]=false;
 	}
-
-	
-	
 
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph };
 
