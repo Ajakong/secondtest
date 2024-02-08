@@ -156,9 +156,6 @@
     <ClCompile Include="Pad.cpp">
       <Filter>ソース ファイル\utl</Filter>
     </ClCompile>
-    <ClCompile Include="Effect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Particle.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -236,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="BossMain.cpp">
       <Filter>ソース ファイル\GamePlaying\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Effect.cpp">
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyMoveEffect.cpp">
+      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +320,6 @@
     <ClInclude Include="Pad.h">
       <Filter>ヘッダー ファイル\utl</Filter>
     </ClInclude>
-    <ClInclude Include="Effect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -397,6 +397,12 @@
     </ClInclude>
     <ClInclude Include="BossMain.h">
       <Filter>ヘッダー ファイル\GamePlaying\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Effect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyMoveEffect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

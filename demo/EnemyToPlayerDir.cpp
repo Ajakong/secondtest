@@ -5,6 +5,7 @@
 #include"Object.h"
 #include "EnemyBase.h"
 #include"HitEffect.h"
+#include"EnemyMoveEffect.h"
 #include"Player.h"
 #include"SceneMain.h"
 #include "EnemyToPlayerDir.h"
@@ -106,6 +107,7 @@ void EnemyToPlayerDir::OnDamage(int Atk)
 
 void EnemyToPlayerDir::OnHitShot()
 {
+
 }
 
 void EnemyToPlayerDir::OnMapCol(Vec2 colRange)
@@ -195,6 +197,7 @@ void EnemyToPlayerDir::IdleUpdate()
 
 void EnemyToPlayerDir::NeutralUpdate()
 {
+
 	m_velocity.y = 0.0f;
 	m_velocity.y += 9.8f;
 	CollisionUpdate();
@@ -225,6 +228,20 @@ void EnemyToPlayerDir::NeutralUpdate()
 			}
 		}
 		m_pos += m_velocity;
+		m_moveEffect.push_back(std::make_shared<EnemyMoveEffect>());
+		for (int i = 0; i < m_moveEffect.size(); i++)
+		{
+			if (m_velocity.x > 0)
+			{
+				m_enemyMoveEffectOffsetY = GetRand(50) - 25;
+			}
+			if (m_velocity.x < 0)
+			{
+
+			}
+			m_moveEffect[i]->CreateEffect(m_pos,0,m_enemyMoveEffectOffsetY);
+		}
+
 	}
 	
 	

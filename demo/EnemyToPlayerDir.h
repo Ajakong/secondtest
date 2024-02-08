@@ -3,6 +3,7 @@
 #include "EnemyBase.h"
 
 class HitEffect;
+class EnemyMoveEffect;
 
 class EnemyToPlayerDir
 {
@@ -67,6 +68,8 @@ private:
 	int m_idleMoveFrame = 0;
 	int m_wanderingInterval = 0;
 
+	int m_enemyMoveEffectOffsetX = 0;
+	int m_enemyMoveEffectOffsetY = 0;
 
 	int m_moveNumber = 0;
 
@@ -101,6 +104,8 @@ private:
 	Vec2 animFrameMana;
 
 	Rect m_colRect;
+
+	std::vector<std::shared_ptr<EnemyMoveEffect>> m_moveEffect;
 
 
 	Player* m_player;
