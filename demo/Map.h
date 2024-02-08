@@ -33,6 +33,8 @@ public:
 
 	bool ObjectCollision(const Rect& rect);
 
+	bool InTheMapChip(float posX,float posY);
+
 	Vec2 GetCollisionVelocity(){ return m_collisionVelocity; }
 	
 	//Vec2 GetEnePos() { return m_enemyPos; }
@@ -40,9 +42,10 @@ public:
 	int GetScreenMove() { return screenMove; }
 	int GetScreenMove(int move) { screenMove = move; return screenMove; }
 
-	void OnScreenMoveAdd(float veloX) { m_isScreenMoveAddFlag = true; screenMove += veloX;}
+	void OnScreenMoveAdd(float veloX);
 	Vec2 GetCollisionPos() { return m_collisionPos; }
 	
+
 
 
 private:

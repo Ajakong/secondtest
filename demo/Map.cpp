@@ -172,7 +172,18 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 							{
 								rect.bottom = h * kChipHeight;
 							}
-
+						}
+						else
+						{
+							
+							if (InTheMapChip(topRay.right, topRay.top))
+							{
+								m_player->PlayerStop();
+							}
+							if (InTheMapChip(topRay.left, topRay.top))
+							{
+								m_player->PlayerStop();
+							}
 						}
 						return true;
 					}
@@ -180,7 +191,6 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 				}
 			}
 			continue;
-
 		}
 	}
 
@@ -310,4 +320,36 @@ bool Map::ObjectCollision(const Rect& rect)
 		}
 	}
 	return false;
+}
+
+bool Map::InTheMapChip(float posX,float posY)
+{
+	for (int h = 0; h < kChipNumY; h++)
+	{
+		for (int w = 0; w < kChipNumX; w++)
+		{
+			if (m_chipData[h][w] == 1)
+			{
+				if (h * kChipHeight <= posY <= h * kChipHeight + kChipHeight)
+				{
+					if (w * kChipWidth - screenMove <= posX <= w * kChipWidth + kChipWidth - screenMove)
+					{
+						return true;
+					}
+				}
+			}
+
+		}
+	}
+	return false;
+}
+
+void Map::OnScreenMoveAdd(float veloX)
+{
+	m_isScreenMoveAddFlag = true;
+	if (veloX > 0)
+	{
+		screenMove += veloX;
+	}
+	
 }

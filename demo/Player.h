@@ -34,6 +34,9 @@ public:
 	void CollisionUpdate();
 	void Draw();
 	void VelocityToZero();
+
+	void PlayerStop();
+
 	bool OnDamage();
 	bool OnDamage(float hitDir);
 

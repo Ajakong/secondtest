@@ -68,7 +68,7 @@ SceneMain::SceneMain():
 	
 	m_pLaser = nullptr;
 
-	m_enePos[0] = Vec2(100, 50);
+	m_enePos[0] = Vec2(500, 200);
 	m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 50);
 	m_enePos[3] = Vec2(2400, 50);

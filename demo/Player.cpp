@@ -390,7 +390,7 @@ void Player::Update()
 	
 	(this->*m_playerUpdate)();//ó‘Ô‘JˆÚ
 
-	/*if (m_pos.y > Game::kScreenHeight - 45)
+	if (m_pos.y > Game::kScreenHeight - 45)
 	{
 		m_pos.y = Game::kScreenHeight - 45;
 		m_isGroundFlag = true;
@@ -407,7 +407,7 @@ void Player::Update()
 	if (m_pos.x < 0)
 	{
 		m_pos.x = 0.0f;
-	}*/
+	}
 	if (m_pos.y >= 1080)
 	{
 		
@@ -495,6 +495,18 @@ void Player::VelocityToZero()
 	if (m_velocity.y < 0)
 	{
 		m_velocity.y += 0.5f;
+	}
+}
+
+void Player::PlayerStop()
+{
+	if (m_velocity.x > 0)
+	{
+		m_velocity.x = 0;
+	}
+	if (m_velocity.x < 0)
+	{
+		m_velocity.x = 0;
 	}
 }
 
