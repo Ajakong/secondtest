@@ -44,6 +44,7 @@ public:
 
 	void OnClear();
 
+	void ToIdle();
 
 	void GetNewWeapon(int weaponNum);
 
@@ -64,6 +65,8 @@ public:
 	//当たり判定関数
 	void OnMapCollision();
 	bool OnCollision(Rect rect);
+
+	void PosXLock(float x) { m_pos.x = x; }
 
 	//ゲッター
 	int GetColRadius() const{ return m_collisionRadius; }
@@ -106,6 +109,7 @@ private:
 
 	bool m_isHitFlag=false;//ダメージフラグ
 
+	bool m_isCollision = false;
 
 	int m_animInterval=0;
 	int m_animXlimit=0;

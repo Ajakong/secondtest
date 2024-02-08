@@ -380,7 +380,6 @@ void Player::DeleteShot()
 
 void Player::Update()
 {
-
 	m_velocity.y += 2;//d—Í
 
 	//ƒ‹[ƒvŽž‚Ì‰Šú‰»ˆ—
@@ -389,7 +388,7 @@ void Player::Update()
 	m_fireDir.y = 0;
 	
 	(this->*m_playerUpdate)();//ó‘Ô‘JˆÚ
-
+	
 	if (m_pos.y > Game::kScreenHeight - 45)
 	{
 		m_pos.y = Game::kScreenHeight - 45;
@@ -410,9 +409,7 @@ void Player::Update()
 	}
 	if (m_pos.y >= 1080)
 	{
-		
 		m_playerUpdate = &Player::DieUpdate;
-		
 	}
 
 	m_visibleLimitTime++;//–³“GŽžŠÔ§ŒÀ‚Íí‚É‰ÁŽZ‚µ‚Ä‚¨‚­
@@ -424,6 +421,8 @@ void Player::Update()
 
 	DeleteShot();
 	VelocityToZero();
+
+	m_isCollision = false;
 }
 
 void Player::CollisionUpdate()
@@ -447,7 +446,6 @@ void Player::Draw()
 		if (m_visibleLimitTime % 5 == 1)
 		{
 			DrawRectRotaGraph(m_pos.x, m_pos.y,  animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
-			
 		}
 	}
 	else
@@ -468,11 +466,15 @@ void Player::Draw()
 	}
 	DrawFormatString(100, 300,0xffffff,"InVisibleTime:%d", m_visibleLimitTime);
 	
+
 	DrawBox(m_pos.x-m_collisionRadius, m_pos.y-m_collisionRadius, m_pos.x+m_collisionRadius, m_pos.y+m_collisionRadius, 0xff00ff, false);
+	DrawBox(m_topRay.left, m_topRay.top, m_topRay.right, m_topRay.bottom, 0x00ff00,false);
+	DrawBox(m_bottomRay.left, m_bottomRay.top, m_bottomRay.right, m_bottomRay.bottom, 0x0000ff, false);
 }
 
 void Player::VelocityToZero()
 {
+	
 	if (m_isGroundFlag == true)
 	{
 		if (m_velocity.x > 0)
@@ -502,17 +504,17 @@ void Player::PlayerStop()
 {
 	if (m_velocity.x > 0)
 	{
-		m_velocity.x = 0;
+		m_isCollision = true;
 	}
 	if (m_velocity.x < 0)
 	{
-		m_velocity.x = 0;
+		m_isCollision = true;
 	}
+	m_velocity.x = 0;
 }
 
 bool Player::OnDamage()
 {
-	
 	if (m_visibleLimitTime < 120||m_Hp<=0)
 	{
 		return false;
@@ -564,7 +566,6 @@ void Player::ToDie()
 {
 	if (m_Hp <= 0)
 	{
-		
 		if (m_isGroundFlag == true)
 		{
 			m_WorldMana->EnemyDelete();
@@ -606,7 +607,11 @@ void Player::OnClear()
 			m_playerUpdate = &Player::ClearUpdate;
 		}
 	}
-	
+}
+
+void Player::ToIdle()
+{
+	m_playerUpdate = &Player::IdleUpdate;
 }
 
 void Player::GetNewWeapon(int weaponNum)
@@ -693,7 +698,7 @@ void Player::WalkingUpdate()
 
 	m_velocity.y += 2;
 	//if(Pad::IsRepeat(PAD_INPUT_UP,))
-	m_pos += m_velocity;
+	
 	//•š‚¹”»’è‚ÍŽg‚Á‚½‚Ì‚Åfalse‚É‚·‚é
 	m_isFaceDownFlag = false;
 	m_animInterval++;
@@ -721,10 +726,7 @@ void Player::WalkingUpdate()
 	{
 		m_velocity.x -= 3.0f;
 		m_isDushFlag = true;
-		if (Pad::IsPress(PAD_INPUT_6))
-		{
-			
-		}
+	
 		if (m_velocity.x < -dushSpeed)
 		{
 			m_velocity.x = -dushSpeed;
@@ -747,8 +749,14 @@ void Player::WalkingUpdate()
 		m_isJumpFlag = true;
 		m_angle += 1.0f;
 	}
+	if (m_isCollision)
+	{
+		m_playerUpdate = &Player::IdleUpdate;
+	}
+	m_pos += m_velocity;
 
 	m_animFrame.y = 1;
+
 	if (m_animInterval >= 6)
 	{
 		m_animFrame.x++;
@@ -764,6 +772,7 @@ void Player::WalkingUpdate()
 
 	
 	ShotIt();
+	
 }
 
 void Player::NeutralUpdate()

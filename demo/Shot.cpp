@@ -63,10 +63,9 @@ void Shot::Update()
 	{
 		if (m_shotEffect != nullptr)
 		{
-			m_shotEffect->Update(m_screenMove);
+			m_shotEffect->Update();
 		}
 	}
-
 }
 
 void Shot::Draw()
@@ -77,12 +76,9 @@ void Shot::Draw()
 	}
 	if (effectFlag == true)
 	{
-		if (m_shotEffect != nullptr)m_shotEffect->Draw();
+		if (m_shotEffect != nullptr)m_shotEffect->Draw(m_screenMove  );
 	}
-	m_screenMove=0;
 }
-
-
 
 void Shot::ShotProgram(const Vec2& Spos, const Vec2& DirVec, const int& graph)
 {
@@ -101,7 +97,7 @@ bool Shot::GetShotColli(const Rect& rect)
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
 			{
 				m_shotEffect = make_shared<ShotEffect>();
-				m_shotEffect->WantHitPos(this, m_shotPos);
+				m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove);
 				effectFlag = true;
 				m_isInVisible = true;
 				return true;
@@ -111,17 +107,20 @@ bool Shot::GetShotColli(const Rect& rect)
 	return false;
 }
 
+void Shot::GetScreenMove(int screenmove)
+{
+	m_screenMove = screenmove;
+}
+
 void Shot::OnMapCol()
 {
 	if (m_isInVisible == false)
 	{
 		m_shotEffect = make_shared<ShotEffect>();
-		m_shotEffect->WantHitPos(this, m_shotPos);
+		m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove);
 		effectFlag = true;
 		m_isInVisible = true;
 	}
-	
-	
 }
 
 

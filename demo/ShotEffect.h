@@ -13,10 +13,10 @@ public:
 	~ShotEffect();
 
 	void Init();
-	void Update(int screenmove);
-	void Draw();
+	void Update();
+	void Draw(int screenmove);
 
-	void WantHitPos(Shot* shot, const Vec2& pos) { m_shot = shot; m_pos = pos; m_isAppear = true;	}
+	void WantHitPos(Shot* shot, const Vec2& pos, int screenMove);
 	
 private:
 	Vec2 m_pos;
@@ -28,6 +28,9 @@ private:
 	int m_frame;
 
 	int m_lineThickNess = 5;
+
+	int m_screenMove = 0;
+	int m_firstScreenMove=0;
 
 	Shot* m_shot;
 

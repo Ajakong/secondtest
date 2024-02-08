@@ -27,6 +27,7 @@ SceneMain::SceneMain():
 	m_gameScreenHandle(0),
 	bossZone (false)
 {
+	m_enemyBaseHandle= LoadGraph("data/image/Enemy/enemyBase.png");
 	m_enemyToPlayerHandle = LoadGraph("data/image/Enemy/enemyDevilSlime.png");
 	m_eneShotHandle = LoadGraph("data/image/eneShot.png");
 
@@ -43,9 +44,6 @@ SceneMain::SceneMain():
 	m_playerShotSound = LoadSoundMem("SE/shot.mp3");
 	m_playerDamageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 	m_laserSound = LoadSoundMem("SE/laser.mp3");
-
-
-	
 
 	for (auto& shot : m_pShot)
 	{
@@ -65,11 +63,10 @@ SceneMain::SceneMain():
 	m_pBgManager = new ImageGroundManager;
 	m_pBoss = new Boss{this};
 	
-	
 	m_pLaser = nullptr;
 
 	m_enePos[0] = Vec2(500, 200);
-	m_enePos[1] = Vec2(850, 700);
+	//m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 50);
 	m_enePos[3] = Vec2(2400, 50);
 	m_enePos[4] = Vec2(3200, 50);
@@ -115,7 +112,7 @@ SceneMain::SceneMain():
 		m_isEnemyCreate[i]=false;
 	}
 
-	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph };
+	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph,m_enemyBaseHandle };
 
 }
 
@@ -200,7 +197,12 @@ void SceneMain::Update()
 
 		if (m_pMap != nullptr)
 		{
-			m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
+			if (m_pPlayer->GetPos().x > 50)
+			{
+				m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
+			}
+					
+			
 			m_pMap->Update();
 			//if (!bossZone)
 			{
@@ -254,6 +256,7 @@ void SceneMain::Update()
 			CreateEnemy(m_eneToPlayerPos[26], 26);
 			CreateEnemy(m_eneToPlayerPos[27], 27);
 			CreateEnemy(m_eneToPlayerPos[28], 28);
+
 			m_isEnemyCreate[4] = true;
 		}
 		if (m_isEnemyCreate[5] == false && m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 5000)
@@ -270,6 +273,7 @@ void SceneMain::Update()
 		{
 			CreateEnemy(m_eneToPlayerPos[18], 18);
 			CreateEnemy(m_eneToPlayerPos[19], 19);
+
 			m_isEnemyCreate[6] = true;
 		}
 
@@ -331,9 +335,7 @@ void SceneMain::Update()
 						m_pEnemyToPlayer[e] = nullptr;
 					}
 				}
-				
 			}
-			
 		}
 
 		if (m_pBoss != nullptr)
@@ -395,69 +397,70 @@ void SceneMain::CollisionUpdate()
 					}
 				}
 			}
+		}
+	}
 
-			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	{
+		if (m_circleShot[i] != nullptr)
+		{
+			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-				if (m_circleShot[i] != nullptr)
+				if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
 				{
-					for (int e = 0; e < ENEMY_NUM; e++)
-					{
-						if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
-						{
-							m_pEnemy[e]->OnHitShot();
-						}
-						if (m_circleShot[i]->GetIsDestroy() == true)
-						{
-							m_circleShot[i] = nullptr;
-						}
-					}
+					m_pEnemy[e]->OnHitShot();
 				}
-			}
-
-			if (m_pLaser != nullptr)
-			{
-				for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+				if (m_circleShot[i]->GetIsDestroy() == true)
 				{
-					if(m_pEnemyToPlayer[e]!=nullptr)
-					{
-						if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
-						{
-							m_pEnemyToPlayer[e]->OnDamage(5);
-						}
-					}
-				}
-				for (int e = 0; e < ENEMY_NUM; e++)
-				{
-					if (m_pEnemy[e] != nullptr)
-					{
-						if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
-						{
-							m_pEnemy[e]->OnDamage(5);
-						}
-					}
-				}
-				if (m_pLaser->GetVisible())
-				{
-					m_pLaser = nullptr;
-				}
-			}
-			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
-			{
-				if(m_pEnemyToPlayer[e]!=nullptr)
-				{
-					if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
-					{
-						if (m_pPlayer->OnDamage())
-						{
-							m_pEnemyToPlayer[e]->OnPlayerHit();
-						}
-						//プレイヤーが敵にヒット
-						m_pPlayer->OnDamage();
-					}
+					m_circleShot[i] = nullptr;
 				}
 			}
 		}
 	}
+
+	if (m_pLaser != nullptr)
+	{
+		for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+		{
+			if(m_pEnemyToPlayer[e]!=nullptr)
+			{
+				if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+				{
+					m_pEnemyToPlayer[e]->OnDamage(5);
+				}
+			}
+		}
+		for (int e = 0; e < ENEMY_NUM; e++)
+		{
+			if (m_pEnemy[e] != nullptr)
+			{
+				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
+				{
+					m_pEnemy[e]->OnDamage(5);
+				}
+			}
+		}
+		if (m_pLaser->GetVisible())
+		{
+			m_pLaser = nullptr;
+		}
+	}
+	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+	{
+		if(m_pEnemyToPlayer[e]!=nullptr)
+		{
+			if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+			{
+				if (m_pPlayer->OnDamage())
+				{
+					m_pEnemyToPlayer[e]->OnPlayerHit();
+				}
+				//プレイヤーが敵にヒット
+				m_pPlayer->OnDamage();
+			}
+		}
+	}
+		
 	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 	{
 		if (m_pEnemyToPlayer[e] != nullptr)
@@ -513,12 +516,13 @@ void SceneMain::CollisionUpdate()
 		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(),m_pPlayer->GetBottomRay(),m_pPlayer->GetTopRay(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
 		{
 			m_pPlayer->OnMapCollision();
+			
 		}
 		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 		{
 			if (m_pShot[i] != nullptr)
 			{
-				m_pShot[i]->GetScreenMove(m_pPlayer->GetVelocity().x);
+				//m_pShot[i]->GetScreenMove(m_pPlayer->GetVelocity().x);
 
 				if (m_pMap->IsCollision(m_pShot[i]->GetPos(), m_pShot[i]->GetRadius())==true)
 				{
@@ -571,7 +575,6 @@ void SceneMain::CollisionUpdate()
 
 void SceneMain::Draw() const
 {
-
 	//if (bossZone == false)
 	{
 		m_pBgManager->Draw();

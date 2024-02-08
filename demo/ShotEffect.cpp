@@ -17,38 +17,35 @@ void ShotEffect::Init()
 {
 }
 
-void ShotEffect::Update(int screenmove)
+void ShotEffect::Update()
 {
 	if (m_isAppear)
 	{
 		m_frame++;
-		m_pos.x -= screenmove;
 		m_radius++;
 		m_lineThickNess--;
+
+		
+
 		if (m_radius >= 20)
 		{
 			m_shot->OnDestroy();
 		}
 	}
-
-
 }
 
-void ShotEffect::Draw()
+void ShotEffect::Draw(int screenmove)
 {
 	if (m_isAppear)
 	{
-		int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
-		//for (int i = 0; i < 255; i++)
-		{
-			//SetDrawBlendMode(DX_BLENDMODE_SUB, alpha-i);
-			DrawCircle(m_pos.x, m_pos.y, m_radius, 0xffdddd, false, 2);
-			//SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-			
-		}
-		
-		
-		
+		DrawCircle(m_pos.x-screenmove + m_firstScreenMove , m_pos.y, m_radius, 0xffdddd, false, 2);
 	}
+}
 
+void ShotEffect::WantHitPos(Shot* shot, const Vec2& pos, int screenMove)
+{
+	 m_shot = shot;
+	 m_pos = pos; 
+	 m_isAppear = true;
+	 m_firstScreenMove=screenMove;
 }

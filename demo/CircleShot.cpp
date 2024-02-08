@@ -43,22 +43,16 @@ void CircleShot::Update()
 		if (m_shotPos.y <= 0 - m_graphSize.y)
 			m_isInVisible = true;
 
-
-
 		/*m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);
 		m_Velocity.y = (m_enePos.y- m_shotPos.y);
 		m_Velocity.Normalize();*/
-
-		
 
 		m_Velocity.Normalize();
 		m_rotateCenter += m_Velocity * 20.0f;
 
 		rotatePos.x = (m_shotPos.x-m_rotateCenter.x)*cos(3.14 / 2)- (m_shotPos.y - m_rotateCenter.y) * sin(3.14 / 2);
 		rotatePos.y = (m_shotPos.x - m_rotateCenter.x) * sin(3.14 / 2) + (m_shotPos.y - m_rotateCenter.y) * cos(3.14 / 2);
-
-		
 
 		/*m_shotPos.x = ;
 		m_shotPos.y = rotatePos.y * sin(3.14 / 30) + rotatePos.x * cos(3.14 / 15) ;*/
@@ -72,29 +66,25 @@ void CircleShot::Update()
 	{
 		if (m_shotEffect != nullptr)
 		{
-			m_shotEffect->Update(m_screenMove);
+			m_shotEffect->Update();
 		}
 	}
-
-
 }
 
 void CircleShot::Draw()
 {
 	if (m_isInVisible == false)
 	{
-
 		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
 	}
 	if (effectFlag == true)
 	{
-		if (m_shotEffect != nullptr)m_shotEffect->Draw();
+		if (m_shotEffect != nullptr)m_shotEffect->Draw(m_screenMove);
 	}
 }
 
 void CircleShot::ShotProgram(const Vec2& Spos,const Vec2& DirVec,const int& graph)
 {
-	
 	m_isInVisible = false;
 	m_rotateCenter = Spos;
 	m_Velocity = DirVec;
@@ -111,10 +101,9 @@ bool CircleShot::GetShotColli(const Rect rect)
 		{
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
 			{
-				m_shotEffect->WantHitPos(this, m_shotPos);
 
 				m_shotEffect = make_shared<ShotEffect>();
-				m_shotEffect->WantHitPos(this, m_shotPos);
+				m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove);
 				effectFlag = true;
 				m_isInVisible = true;
 				return true;

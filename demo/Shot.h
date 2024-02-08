@@ -29,12 +29,11 @@ public:
 
 	bool GetShotColli(const Rect& rect);
 
-
 	void setShotBullet() { m_isInVisible = false; }
 
 	Vec2 GetPos() { return m_shotPos; }
 
-	void GetScreenMove(int screenmove) { m_screenMove = screenmove; }
+	void GetScreenMove(int screenmove);
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 

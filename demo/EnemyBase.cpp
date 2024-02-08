@@ -22,7 +22,7 @@ namespace
 	constexpr int animDisY = 112;
 }
 
-EnemyBase::EnemyBase(int sound,int fullAutoGunGraph,int spreadGraph,int laserItem,int CircleBulletItem) :
+EnemyBase::EnemyBase(int sound,int fullAutoGunGraph,int spreadGraph,int laserItem,int CircleBulletItem,int handle) :
 	m_isDeathFlag(false),
 	m_Hp(50),
 	m_pos(500.0f,200.0f),
@@ -50,6 +50,7 @@ EnemyBase::EnemyBase(int sound,int fullAutoGunGraph,int spreadGraph,int laserIte
 
 	m_itemNumber = GetRand(4) % 4;
 	
+	m_handle = handle;
 }
 
 EnemyBase::~EnemyBase()
@@ -66,9 +67,9 @@ void EnemyBase::Init(Vec2 pos,int shotgraph)
 void EnemyBase::CollisionUpdate()
 {
 	m_colRect.top = m_pos.y;
-	m_colRect.bottom = m_pos.y + 50;
+	m_colRect.bottom = m_pos.y +75;
 	m_colRect.left = m_pos.x-m_screenMove;
-	m_colRect.right = m_pos.x + 50-m_screenMove;
+	m_colRect.right = m_pos.x + 75-m_screenMove;
 }
 
 void EnemyBase::Update()
@@ -137,6 +138,7 @@ void EnemyBase::Draw()
 	if(m_isDeathFlag==false)
 	{
 		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xff0000, true);
+		DrawGraph(m_colRect.left, m_colRect.top, m_handle, true);
 		DrawPixel(m_pos.x-m_screenMove + 25, m_pos.y + 25, 0x000000);
 		for (int i = 0; i < m_shot.size(); i++)
 		{

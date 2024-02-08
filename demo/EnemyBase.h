@@ -28,7 +28,7 @@ class CircleItem;
 class EnemyBase
 {
 public:
-	EnemyBase(int sound, int fullAutoGunGraph, int spreadGraph, int laserItem, int CircleBulletItem);
+	EnemyBase(int sound, int fullAutoGunGraph, int spreadGraph, int laserItem, int CircleBulletItem, int handle);
 	//EnemyBase(Vec2 pos);マップが指定した位置に敵を誕生
 	~EnemyBase();
 

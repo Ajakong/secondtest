@@ -143,10 +143,6 @@ void EnemyToPlayerDir::IdleUpdate()
 		//m_enemyUpdate = &EnemyToPlayerDir::WanderingUpdate;
 	}
 	
-	
-	
-
-
 	if (m_player != nullptr)
 	{
 		if (abs(m_dis) < 600&& (m_playerPos.y - m_pos.y)<300)
@@ -207,7 +203,7 @@ void EnemyToPlayerDir::NeutralUpdate()
 
 	m_dis = sqrt((m_playerPos.x - m_pos.x) * (m_playerPos.x - m_pos.x) + (m_playerPos.y - m_pos.y) * (m_playerPos.y - m_pos.y));
 	
-	if (abs(m_dis) < 30)
+	if (abs(m_dis) < 40)
 	{
 		animFrameMana.x = 8;
 		m_enemyUpdate = &EnemyToPlayerDir::AttackUpdate;
@@ -260,24 +256,19 @@ void EnemyToPlayerDir::AttackUpdate()
 	m_dis = sqrt((m_playerPos.x - m_pos.x) * (m_playerPos.x - m_pos.x) + (m_playerPos.y - m_pos.y) * (m_playerPos.y - m_pos.y));
 
 
-	if (abs(m_dis) < 30)
+	if (m_animInterval > 6)
 	{
-		if (m_animInterval > 6)
+		animFrameMana.y = 2;
+		animFrameMana.x++;
+		m_animInterval = 0;
+		if (animFrameMana.x > 14)
 		{
-			animFrameMana.y = 2;
-			animFrameMana.x++;
-			m_animInterval = 0;
-			if (animFrameMana.x > 14)
-			{
-				animFrameMana.x = 0;
-			}
+			animFrameMana.x = 0;
+			m_enemyUpdate = &EnemyToPlayerDir::NeutralUpdate;
 		}
 	}
-	else
-	{
-		m_enemyUpdate = &EnemyToPlayerDir::NeutralUpdate;
-	}
-
+	
+	
 	for (int i = 0; i < m_HitEffect.size(); i++)
 	{
 		m_HitEffect[i]->Update();

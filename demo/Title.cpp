@@ -235,11 +235,8 @@ void Title::JammingDraw()
 	int c = a+GetRand(Game::kScreenHeight-a);//一個目のy分割終点
 
 	DrawRectRotaGraph(Game::kScreenWidth / 2 ,a / 2, 0, 0, Game::kScreenWidth, a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
-
 	DrawRectRotaGraph(Game::kScreenWidth / 2 - b, (a + c) / 2, 0, a, b, c-a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
-
 	DrawRectRotaGraph(Game::kScreenWidth / 2 + b, (a + c) / 2 , b, a, Game::kScreenWidth, c-a, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
-
 	DrawRectRotaGraph(Game::kScreenWidth / 2, (c+Game::kScreenHeight) / 2, 0, c, Game::kScreenWidth, Game::kScreenHeight-c, 1, 0, m_screenHandle, 0);//自作レンダーターゲットに描画したものの画像を表示
 
 }

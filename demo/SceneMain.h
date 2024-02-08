@@ -76,12 +76,12 @@ private:
 	int m_frame=0;
 	int m_gameScreenHandle=0;
 	int m_eneShotHandle = 0;
+	int m_enemyBaseHandle = 0;
 
 	int m_itenNumber0Graph = 0;
 	int m_itemNumber1Graph = 0;
 	int m_itemNumber2Graph = 0;
 	int m_itemNumber3Graph = 0;
-
 
 	int m_playerShotSound = 0;
 	int m_playerDamageSound = 0;

@@ -69,8 +69,9 @@ void EneShot::Draw(int screenMove)
 	if (m_isInVisible == false)
 	{
 		DrawGraph(m_shotPos.x-m_screenMove-m_radius, m_shotPos.y-m_radius, m_handle, true);
-		DrawBox(m_shotPos.x - m_screenMove-m_radius, m_shotPos.y-m_radius, m_shotPos.x + m_radius - m_screenMove, m_shotPos.y + m_radius,0xff0000,0);
-		
+#ifdef DEBUG
+		/rawBox(m_shotPos.x - m_screenMove-m_radius, m_shotPos.y-m_radius, m_shotPos.x + m_radius - m_screenMove, m_shotPos.y + m_radius,0xff0000,0);
+#endif		
 	}
 	if (m_isEffectFlag == true)
 	{
