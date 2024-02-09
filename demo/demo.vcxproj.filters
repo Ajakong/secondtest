@@ -243,6 +243,9 @@
     <ClCompile Include="EnemyAttackEffect.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyBornEffect.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -408,6 +411,9 @@
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAttackEffect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyBornEffect.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>

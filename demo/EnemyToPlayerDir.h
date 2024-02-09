@@ -5,6 +5,7 @@
 class HitEffect;
 class EnemyMoveEffect;
 class EnemyAttackEffect;
+class EnemyBornEffect;
 
 class EnemyToPlayerDir
 {
@@ -29,6 +30,7 @@ public:
 
 	void OnPlayerHit();
 
+	void SpawnUpdate();
 	void IdleUpdate();
 	void NeutralUpdate();
 	void AttackUpdate();
@@ -110,6 +112,7 @@ private:
 
 	std::vector<std::shared_ptr<EnemyMoveEffect>> m_moveEffect;
 	std::vector<std::shared_ptr<EnemyAttackEffect>> m_attackEffect;
+	std::shared_ptr<EnemyBornEffect> m_bornEffect;
 
 	Player* m_player;
 

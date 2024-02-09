@@ -7,6 +7,7 @@
 #include"HitEffect.h"
 #include"EnemyMoveEffect.h"
 #include"EnemyAttackEffect.h"
+#include"EnemyBornEffect.h"
 #include"Player.h"
 #include"SceneMain.h"
 #include "EnemyToPlayerDir.h"
@@ -32,11 +33,13 @@ EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos, int deathSound):
 	m_attackFrame(0),
 	m_isDesitionMyWay(false)
 {
-	m_enemyUpdate = &EnemyToPlayerDir::IdleUpdate;
+	m_enemyUpdate = &EnemyToPlayerDir::SpawnUpdate;
 	m_hole = true;
 	m_pos = pos;
 	m_firstPos = pos;
 	m_deathSound = deathSound;
+	m_bornEffect = std::make_shared<EnemyBornEffect>();
+	m_bornEffect->CreateEffect(m_pos, 0, 0, m_screenMove);
 }
 
 EnemyToPlayerDir::~EnemyToPlayerDir()
@@ -71,12 +74,13 @@ void EnemyToPlayerDir::Update()
 		m_dirX = 1;
 	}
 	(this->*m_enemyUpdate)();//状態遷移
-	for (int i = 0; i < m_attackEffect.size(); i++)
-	{
-		m_attackEffect[i]->Update();
-	}
+	
 	if (!m_moveEffect.empty())
 	{
+		for (int i = 0; i < m_moveEffect.size(); i++)
+		{
+			m_moveEffect[i]->Update();
+		}
 		auto it = remove_if(m_moveEffect.begin(), m_moveEffect.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
 			{
 				return a->GetDestroyFlag();
@@ -98,7 +102,10 @@ void EnemyToPlayerDir::Update()
 
 		m_HitEffect.erase(it, m_HitEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 	}
-
+	for (int i = 0; i < m_attackEffect.size(); i++)
+	{
+		m_attackEffect[i]->Update();
+	}
 	if (!m_attackEffect.empty())
 	{
 		auto it = remove_if(m_attackEffect.begin(), m_attackEffect.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
@@ -107,6 +114,11 @@ void EnemyToPlayerDir::Update()
 			});
 
 		m_attackEffect.erase(it, m_attackEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
+	}
+
+	if (m_bornEffect != nullptr)
+	{
+		m_bornEffect->Update();
 	}
 }
 
@@ -129,6 +141,10 @@ void EnemyToPlayerDir::Draw()
 	for (int i = 0; i < m_attackEffect.size(); i++)
 	{
 		m_attackEffect[i]->Draw(m_screenMove);
+	}
+	if (m_bornEffect != nullptr)
+	{
+		m_bornEffect->Draw(m_screenMove);
 	}
 
 	DrawCircle(m_firstPos.x, m_firstPos.y-500,50, 0xaa1100,false,5);
@@ -165,6 +181,23 @@ void EnemyToPlayerDir::OnMapCol(Vec2 colRange)
 void EnemyToPlayerDir::OnPlayerHit()
 {
 	m_HitEffect.push_back(std::make_shared<HitEffect>(m_pos.x - m_screenMove,m_pos.y,m_screenMove));
+}
+
+void EnemyToPlayerDir::SpawnUpdate()
+{
+	m_velocity.x = 0;
+	m_velocity.y = 0.0f;
+	m_velocity.y += 9.8f;
+
+	CollisionUpdate();
+
+	if (m_isMapCol)
+	{
+		m_enemyUpdate = &EnemyToPlayerDir::IdleUpdate;
+	}
+
+	m_pos += m_velocity;
+
 }
 
 void EnemyToPlayerDir::IdleUpdate()
@@ -253,12 +286,13 @@ void EnemyToPlayerDir::NeutralUpdate()
 	if (abs(m_dis) < 40)
 	{
 		animFrameMana.x = 8;
-		for (int i = 0; i < 40; i++)
+		for (int i = 0; i < 8; i++)
 		{
-			m_attackEffect.push_back(std::make_shared<EnemyAttackEffect>(m_screenMove,GetRand(9)));
+			m_attackEffect.push_back(std::make_shared<EnemyAttackEffect>(m_screenMove, GetRand(5) - 4, GetRand(6) - 12));
 			for (int i = 0; i < m_attackEffect.size(); i++)
 			{
-				m_attackEffect[i]->CreateEffect(m_pos, 0, 0, m_screenMove);
+				Vec2 effectPos(m_colRect.left - 10, m_colRect.bottom);
+				m_attackEffect[i]->CreateEffect(effectPos, 0, 0, m_screenMove);
 			}
 		}
 		m_enemyUpdate = &EnemyToPlayerDir::AttackUpdate;

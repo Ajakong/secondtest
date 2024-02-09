@@ -1,10 +1,14 @@
 #include "EnemyAttackEffect.h"
 #include"Dxlib.h"
 
-EnemyAttackEffect::EnemyAttackEffect(int screenMove, float velocityX)
+EnemyAttackEffect::EnemyAttackEffect()
+{
+}
+
+EnemyAttackEffect::EnemyAttackEffect(int screenMove, float velocityX,float velocityY)
 {
 	m_firstScreenMove = screenMove;
-	m_velocity.y = -10;
+	m_velocity.y = velocityY;
 	m_velocity.x = velocityX;
 }
 
@@ -29,9 +33,8 @@ void EnemyAttackEffect::Update()
 
 void EnemyAttackEffect::Draw(int screenMove)
 {
-	
-	DrawBox(m_pos.x + m_offSetX+screenMove-m_firstScreenMove+m_randNumX, m_pos.y + m_offSetY, m_pos.x + m_offSetX+screenMove-m_firstScreenMove + m_randNumX, m_pos.y + m_offSetY, 0xffaa11, true);
-	DrawBox(m_pos.x + m_offSetX+screenMove-m_firstScreenMove + m_randNumX, m_pos.y + m_offSetY, m_pos.x + m_offSetX + screenMove - m_firstScreenMove + m_randNumX, m_pos.y + m_offSetY, 0xffaa11, false);
+	DrawBox(m_pos.x + m_offSetX-screenMove+m_firstScreenMove, m_pos.y + m_offSetY, m_pos.x + m_offSetX-screenMove+m_firstScreenMove+5 , m_pos.y + m_offSetY+5, 0xffaa11, true);
+	DrawBox(m_pos.x + m_offSetX-screenMove+m_firstScreenMove , m_pos.y + m_offSetY, m_pos.x + m_offSetX - screenMove + m_firstScreenMove+5 , m_pos.y + m_offSetY+5, 0xffaa11, false);
 }
 
 void EnemyAttackEffect::CreateEffect(Vec2 pos, float offSetX, float offSetY, int screenMove)

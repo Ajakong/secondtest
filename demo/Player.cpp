@@ -201,21 +201,7 @@ void Player::PlayerMove()
 
 void Player::ShotIt()
 {
-	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
-	if(m_fireDir.x!=0)
-	{
-		m_fireDir.x = m_inputX;
-		
-	}
 	
-	m_fireDir.y = m_inputY;
-	if (abs(m_fireDir.x )<0.3f)
-	{
-		if (m_isLeftFlag)m_fireDir.x = -1;
-		else m_fireDir.x = 1;
-	}
-	m_fireDir.Normalize();
-
 	//Shot it!!
 	switch (m_kindOfBullet)
 	{
@@ -436,6 +422,7 @@ void Player::CollisionUpdate()
 	m_bottomRay.top = m_bottomRay.bottom - 5;
 
 	m_topRay = m_playerCol;
+
 	m_topRay.bottom = m_topRay.top + 5;
 }
 
@@ -684,6 +671,22 @@ void Player::IdleUpdate()
 	//Die
 	ToDie();
 
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
+
 	ShotIt();
 }
 
@@ -720,7 +723,7 @@ void Player::WalkingUpdate()
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
 
-		ShotIt();
+		
 	}
 	else if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_LEFT))
 	{
@@ -735,7 +738,8 @@ void Player::WalkingUpdate()
 		m_dir.x = -1.0f;
 		m_dir.y = 0.0f;
 		m_isLeftFlag = true;
-		ShotIt();
+
+		
 	}
 	else
 	{
@@ -770,9 +774,22 @@ void Player::WalkingUpdate()
 	//Die
 	ToDie();
 
-	
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
 	ShotIt();
-	
 }
 
 void Player::NeutralUpdate()
@@ -795,6 +812,10 @@ void Player::FaceDownUpdate()
 {
 	CollisionUpdate();
 
+	m_animFrame.x = 7.0f;
+	m_animFrame.y = 6.0f;
+	m_isFaceDownFlag = true;
+	
 	if (m_isJumpFlag == false && Pad::IsTrigger(PAD_INPUT_2))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
@@ -804,8 +825,30 @@ void Player::FaceDownUpdate()
 		m_angle += 1.0f;
 	}
 
+	if (m_isGroundFlag == true && Pad::IsRelase(PAD_INPUT_DOWN))
+	{
+		m_playerUpdate = &Player::IdleUpdate;
+	}
+	
 	//Die
 	ToDie();
+
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = 0;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
+
 
 	ShotIt();
 }
@@ -838,6 +881,22 @@ void Player::JumpingUpdate()
 	//Die
 	ToDie();
 
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
+
 	ShotIt();
 }
 
@@ -860,6 +919,23 @@ void Player::FlyingUpdate()
 
 	//Die
 	ToDie();
+
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
+
 	ShotIt();
 }
 
@@ -959,6 +1035,22 @@ void Player::EndingUpdate()
 		}
 		m_animInterval = 0;
 	}
+
+	GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
+	if (m_fireDir.x != 0)
+	{
+		m_fireDir.x = m_inputX;
+
+	}
+
+	m_fireDir.y = m_inputY;
+	if (abs(m_fireDir.x) < 0.3f)
+	{
+		if (m_isLeftFlag)m_fireDir.x = -1;
+		else m_fireDir.x = 1;
+	}
+	m_fireDir.Normalize();
+
 
 	ShotIt();
 	//Die

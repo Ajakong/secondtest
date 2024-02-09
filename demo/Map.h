@@ -29,7 +29,7 @@ public:
 	bool IsPlayerCollision(Rect& rect,Rect& bottomRay,Rect& topRay, int colRadius, Vec2 velo);
 	bool IsCollision(Rect& rect, Vec2 velo);
 	bool IsCollision(Vec2 pos, int radius);
-	bool RectCollision(Rect& rect,int w, int h);
+	bool RectCollision(Rect& rect,int w, int h, float veloX);
 
 	bool ObjectCollision(const Rect& rect);
 

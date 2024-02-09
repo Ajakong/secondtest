@@ -26,17 +26,17 @@ void EnemyMoveEffect::Draw(int screenMove)
 		m_offSetY--;
 		if (m_exisFrame < 60)
 		{
+			int a = screenMove - m_firstScreenMove;
 			m_effectFrameOffSet.x = GetRand(10);
 			m_effectFrameOffSet.y = GetRand(50);
-			DrawBox(m_pos.x - screenMove+m_firstScreenMove, m_pos.y + m_offSetY, m_pos.x + m_offSetX + 5-screenMove+m_firstScreenMove, m_pos.y + 5+m_offSetY, 0xffaa11, true);
-			DrawBox(m_pos.x+m_effectFrameOffSet.x - screenMove+m_firstScreenMove, m_pos.y +m_effectFrameOffSet.y, m_pos.x + +m_effectFrameOffSet.x + 5 - screenMove+m_firstScreenMove, m_pos.y + 5 + +m_effectFrameOffSet.y, 0xffaa11, false);
+			DrawBox(m_pos.x - a, m_pos.y + m_offSetY, m_pos.x + m_offSetX + 5-a, m_pos.y + 5+m_offSetY, 0xffaa11, true);
+			DrawBox(m_pos.x+m_effectFrameOffSet.x - a, m_pos.y +m_effectFrameOffSet.y, m_pos.x + +m_effectFrameOffSet.x + 5 - a, m_pos.y + 5 + +m_effectFrameOffSet.y, 0xffaa11, false);
 		}
 		else
 		{
 			m_isDestroy = true;
 		}
 	}
-	
 }
 
 void EnemyMoveEffect::CreateEffect(Vec2 pos,float offSetX,float offSetY, int screenMove)
@@ -46,5 +46,4 @@ void EnemyMoveEffect::CreateEffect(Vec2 pos,float offSetX,float offSetY, int scr
 	m_offSetY = offSetY;
 	m_firstScreenMove = screenMove;
 	m_isExisFlag = true;
-	
 }

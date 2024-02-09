@@ -155,6 +155,7 @@
     <ClCompile Include="EnemyAttackEffect.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyBasePro.cpp" />
+    <ClCompile Include="EnemyBornEffect.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="EnemyMoveEffect.cpp" />
     <ClCompile Include="EnemyToPlayerDir.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="EnemyAttackEffect.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyBasePro.h" />
+    <ClInclude Include="EnemyBornEffect.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="EnemyMoveEffect.h" />
     <ClInclude Include="EnemyToPlayerDir.h" />

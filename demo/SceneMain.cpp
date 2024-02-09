@@ -76,22 +76,22 @@ SceneMain::SceneMain():
 	m_enePos[8] = Vec2(5000, 50);
 	m_enePos[9] = Vec2(5500, 800);
 
-	m_eneToPlayerPos[0] = Vec2(800, -50);
-	m_eneToPlayerPos[1] = Vec2(850, -50);
-	m_eneToPlayerPos[2] = Vec2(600, -50);
-	m_eneToPlayerPos[3] = Vec2(1200, -50);
-	m_eneToPlayerPos[4] = Vec2(1250, -50);
-	m_eneToPlayerPos[5] = Vec2(1300, -50);
-	m_eneToPlayerPos[6] = Vec2(1800, -50);
-	m_eneToPlayerPos[7] = Vec2(2200, -50);
-	m_eneToPlayerPos[8] = Vec2(2500, -50);
-	m_eneToPlayerPos[9] = Vec2(2900, -50);
-	m_eneToPlayerPos[10] = Vec2(3500, -50);
-	m_eneToPlayerPos[11] = Vec2(3900, -50);
-	m_eneToPlayerPos[12] = Vec2(5300, -50);
-	m_eneToPlayerPos[13] = Vec2(5400, -50);
-	m_eneToPlayerPos[14] = Vec2(5700, -50);
-	m_eneToPlayerPos[15] = Vec2(6000, -50);
+	m_eneToPlayerPos[0] = Vec2(800, 100);
+	m_eneToPlayerPos[1] = Vec2(850, 100);
+	m_eneToPlayerPos[2] = Vec2(600, 100);
+	m_eneToPlayerPos[3] = Vec2(1200, 100);
+	m_eneToPlayerPos[4] = Vec2(1250, 100);
+	m_eneToPlayerPos[5] = Vec2(1300, 100);
+	m_eneToPlayerPos[6] = Vec2(1800, 100);
+	m_eneToPlayerPos[7] = Vec2(2200, 100);
+	m_eneToPlayerPos[8] = Vec2(2500, 100);
+	m_eneToPlayerPos[9] = Vec2(2900, 100);
+	m_eneToPlayerPos[10] = Vec2(3500, 100);
+	m_eneToPlayerPos[11] = Vec2(3900, 100);
+	m_eneToPlayerPos[12] = Vec2(5300, 100);
+	m_eneToPlayerPos[13] = Vec2(5400, 100);
+	m_eneToPlayerPos[14] = Vec2(5700, 100);
+	m_eneToPlayerPos[15] = Vec2(6000, 100);
 	m_eneToPlayerPos[16] = Vec2(3400, 500);
 	m_eneToPlayerPos[17] = Vec2(3850, 500);
 	m_eneToPlayerPos[18] = Vec2(4250, 500);
@@ -302,7 +302,7 @@ void SceneMain::Update()
 					m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
 					m_pEnemy[e]->Update();
 
-					if (m_pEnemy[e]->OnDie())m_pEnemy[e] = nullptr;
+					if (m_pEnemy[e]->OnDie())delete m_pEnemy[e];
 				}
 			}
 
@@ -328,7 +328,7 @@ void SceneMain::Update()
 				{
 					if (m_pEnemyToPlayer[e]->OnDie())
 					{
-						m_pEnemyToPlayer[e] = nullptr;
+						m_pEnemyToPlayer[e]==nullptr ;
 					}
 				}
 			}
@@ -349,7 +349,7 @@ void SceneMain::Update()
 				{
 					if (m_pShot[i]->GetIsDestroy() == true)
 					{
-						m_pShot[i] = nullptr;
+						m_pShot[i] =nullptr;
 					}
 				}
 			}
@@ -359,15 +359,19 @@ void SceneMain::Update()
 	for (int i = 0; i < m_item.size(); i++)
 	{
 		m_item[i]->Update();
-		if (m_item[i]->GetDestroy())
-		{
-			m_item.erase(m_item.begin() + i);
-		}
 	}
+	auto it = remove_if(m_item.begin(), m_item.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+		{
+			return a->GetDestroy();
+		});
+
+	m_item.erase(it, m_item.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 
 	if (bossZone = true)
 	{
-
+		//余裕があったら
+		//マップの終わりについたらホワイトアウトしてボス戦に移行
+		//スクロールは無し
 	}
 	Pad::Update();
 }
@@ -408,7 +412,7 @@ void SceneMain::CollisionUpdate()
 				}
 				if (m_circleShot[i]->GetIsDestroy() == true)
 				{
-					m_circleShot[i] = nullptr;
+					m_circleShot[i]=nullptr;
 				}
 			}
 		}
@@ -438,7 +442,7 @@ void SceneMain::CollisionUpdate()
 		}
 		if (m_pLaser->GetVisible())
 		{
-			m_pLaser = nullptr;
+			m_pLaser =nullptr;
 		}
 	}
 	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
@@ -509,11 +513,7 @@ void SceneMain::CollisionUpdate()
 		}
 
 		//マップとの当たり判定
-		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(),m_pPlayer->GetBottomRay(),m_pPlayer->GetTopRay(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
-		{
-			m_pPlayer->OnMapCollision();
-			
-		}
+		
 		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 		{
 			if (m_pShot[i] != nullptr)
@@ -526,7 +526,7 @@ void SceneMain::CollisionUpdate()
 				}
 				if (m_pShot[i]->GetIsDestroy() == true)
 				{
-					m_pShot[i] = nullptr;
+					m_pShot[i] =nullptr;
 				}
 			}
 		}
@@ -551,12 +551,15 @@ void SceneMain::CollisionUpdate()
 					{
 						m_eneShot[e]->OnCollision();
 					}
-					if (m_eneShot[e]->GetIsDestroy())
-					{
-						m_eneShot.erase(m_eneShot.begin() + e);
-					}
 				}
 			}
+
+			auto it = remove_if(m_eneShot.begin(), m_eneShot.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+				{
+					return a->GetIsDestroy();
+				});
+
+			m_eneShot.erase(it, m_eneShot.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 
 			for (int i = 0; i < m_item.size(); i++)
 			{
@@ -565,6 +568,11 @@ void SceneMain::CollisionUpdate()
 					m_item[i]->OnMapCol(m_pMap->GetCollisionPos());
 				}
 			}
+		}
+		if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetBottomRay(), m_pPlayer->GetTopRay(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
+		{
+			m_pPlayer->OnMapCollision();
+
 		}
 	}
 }

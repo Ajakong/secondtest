@@ -116,10 +116,11 @@ private:
 	// “G
 	EnemyBase* m_pEnemy[ENEMY_NUM];
 	EnemyToPlayerDir* m_pEnemyToPlayer[ENEMY_TO_PLAYER_NUM];
+
 	Boss* m_pBoss;
 	BossMain* m_bossMain;
+
 	Shot* m_pShot[SHOT_NUM_LIMIT];
-	//ShotEffect* m_pShotEffect[SHOT_NUM_LIMIT];
 	Laser* m_pLaser;
 	CircleShot* m_circleShot[SHOT_NUM_LIMIT];
 	
