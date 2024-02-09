@@ -4,6 +4,7 @@
 
 class HitEffect;
 class EnemyMoveEffect;
+class EnemyAttackEffect;
 
 class EnemyToPlayerDir
 {
@@ -108,7 +109,7 @@ private:
 	Rect m_colRect;
 
 	std::vector<std::shared_ptr<EnemyMoveEffect>> m_moveEffect;
-
+	std::vector<std::shared_ptr<EnemyAttackEffect>> m_attackEffect;
 
 	Player* m_player;
 
