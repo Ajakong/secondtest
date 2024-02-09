@@ -73,8 +73,7 @@ void EnemyToPlayerDir::Update()
 
 	if (!m_moveEffect.empty())
 	{
-		auto it = remove_if(m_moveEffect.begin(), m_moveEffect.end()
-			, [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+		auto it = remove_if(m_moveEffect.begin(), m_moveEffect.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
 			{
 				return a->GetDestroyFlag();
 			});

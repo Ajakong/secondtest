@@ -152,6 +152,7 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="EndRoll.cpp" />
     <ClCompile Include="EneDeathEffect.cpp" />
+    <ClCompile Include="EnemyAttackEffect.cpp" />
     <ClCompile Include="EnemyBase.cpp" />
     <ClCompile Include="EnemyBasePro.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="EndRoll.h" />
     <ClInclude Include="EneDeathEffect.h" />
+    <ClInclude Include="EnemyAttackEffect.h" />
     <ClInclude Include="EnemyBase.h" />
     <ClInclude Include="EnemyBasePro.h" />
     <ClInclude Include="EnemyManager.h" />

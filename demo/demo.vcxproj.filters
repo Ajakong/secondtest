@@ -34,9 +34,6 @@
     <Filter Include="ソース ファイル\GamePlaying\Boss">
       <UniqueIdentifier>{783bda3a-837d-4d2e-ae54-9bf1fe33eb09}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GamePlaying\Effect">
-      <UniqueIdentifier>{9f9e9d75-d3c6-4d4d-aa5c-314ca2a0bc81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\GamePlaying\Enemy">
       <UniqueIdentifier>{b642166e-8a89-4a6d-bd9d-2c7aa48e6e31}</UniqueIdentifier>
     </Filter>
@@ -78,6 +75,9 @@
     </Filter>
     <Filter Include="ソース ファイル\MapGraph">
       <UniqueIdentifier>{33eb3de8-fb4d-4987-85e3-1db63a5e5083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{9f9e9d75-d3c6-4d4d-aa5c-314ca2a0bc81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -160,10 +160,10 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="ShotEffect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="DieEnemyEffect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Missile.cpp">
       <Filter>ソース ファイル\GamePlaying\Shot</Filter>
@@ -196,10 +196,10 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="EneDeathEffect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>ソース ファイル\GamePlaying\Item</Filter>
@@ -235,10 +235,13 @@
       <Filter>ソース ファイル\GamePlaying\Boss</Filter>
     </ClCompile>
     <ClCompile Include="Effect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="EnemyMoveEffect.cpp">
-      <Filter>ソース ファイル\GamePlaying\Effect</Filter>
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttackEffect.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +405,9 @@
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="EnemyMoveEffect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttackEffect.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
