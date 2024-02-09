@@ -256,6 +256,10 @@ void EnemyToPlayerDir::NeutralUpdate()
 		for (int i = 0; i < 40; i++)
 		{
 			m_attackEffect.push_back(std::make_shared<EnemyAttackEffect>(m_screenMove,GetRand(9)));
+			for (int i = 0; i < m_attackEffect.size(); i++)
+			{
+				m_attackEffect[i]->CreateEffect(m_pos, 0, 0, m_screenMove);
+			}
 		}
 		m_enemyUpdate = &EnemyToPlayerDir::AttackUpdate;
 	}
