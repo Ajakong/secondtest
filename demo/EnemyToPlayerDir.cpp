@@ -64,7 +64,7 @@ void EnemyToPlayerDir::CollisionUpdate()
 
 void EnemyToPlayerDir::Update()
 {
-
+	
 	if (m_isRight)
 	{
 		m_dirX = -1;
@@ -75,6 +75,8 @@ void EnemyToPlayerDir::Update()
 	}
 	(this->*m_enemyUpdate)();//ó‘Ô‘JˆÚ
 	
+	
+
 	if (!m_moveEffect.empty())
 	{
 		for (int i = 0; i < m_moveEffect.size(); i++)
@@ -120,6 +122,8 @@ void EnemyToPlayerDir::Update()
 	{
 		m_bornEffect->Update();
 	}
+
+
 }
 
 void EnemyToPlayerDir::Draw()

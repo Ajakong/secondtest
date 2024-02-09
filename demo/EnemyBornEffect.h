@@ -10,6 +10,8 @@ public:
 	virtual void Update();
 	virtual void Draw(int m_screenMove);
 
+	bool GetDestroyFlag() { return m_isDestroy; }
+
 	virtual void CreateEffect(Vec2 pos, float offSetX, float offSetY, int screenMove);
 
 private:

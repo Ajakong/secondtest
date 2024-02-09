@@ -328,7 +328,7 @@ void SceneMain::Update()
 				{
 					if (m_pEnemyToPlayer[e]->OnDie())
 					{
-						m_pEnemyToPlayer[e]==nullptr ;
+						//m_pEnemyToPlayer[e]==nullptr ;
 					}
 				}
 			}

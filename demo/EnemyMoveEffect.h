@@ -11,6 +11,8 @@ public:
     void Update();
     void Draw(int screenMove);
 
+    bool GetDestroyFlag() { return m_isDestroy; }
+
     virtual void CreateEffect(Vec2 pos, float offSetX, float offSetY,int screenMove);
 private:
    

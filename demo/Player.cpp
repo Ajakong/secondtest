@@ -451,8 +451,8 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	DrawFormatString(100, 300,0xffffff,"InVisibleTime:%d", m_visibleLimitTime);
-	
+	DrawFormatString(100, 300,0xffffff,"left:%f", m_topRay.left);
+	DrawFormatString(100, 400, 0xffffff, "right:%f", m_topRay.right);
 
 	DrawBox(m_pos.x-m_collisionRadius, m_pos.y-m_collisionRadius, m_pos.x+m_collisionRadius, m_pos.y+m_collisionRadius, 0xff00ff, false);
 	DrawBox(m_topRay.left, m_topRay.top, m_topRay.right, m_topRay.bottom, 0x00ff00,false);
