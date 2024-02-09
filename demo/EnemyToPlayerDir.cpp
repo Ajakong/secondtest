@@ -60,6 +60,7 @@ void EnemyToPlayerDir::CollisionUpdate()
 
 void EnemyToPlayerDir::Update()
 {
+
 	if (m_isRight)
 	{
 		m_dirX = -1;
@@ -70,22 +71,61 @@ void EnemyToPlayerDir::Update()
 	}
 	(this->*m_enemyUpdate)();//状態遷移
 
+	if (!m_moveEffect.empty())
+	{
+		auto it = remove_if(m_moveEffect.begin(), m_moveEffect.end()
+			, [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+			{
+				return a->GetDestroyFlag();
+			});
+		
+		m_moveEffect.erase(it, m_moveEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
+	}
 	
+	if (!m_HitEffect.empty())
+	{
+		for (int i = 0; i < m_HitEffect.size(); i++)
+		{
+			m_HitEffect[i]->Update();
+		}
+		auto it = remove_if(m_HitEffect.begin(), m_HitEffect.end(), [](const auto a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+			{
+				return a->OnDestroy();
+			});
+
+		m_HitEffect.erase(it, m_HitEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
+	}
 }
 
 void EnemyToPlayerDir::Draw()
 {
+
+	/*for (int i = 0; i < m_moveEffect.size();)
+	{
+		m_moveEffect[i]->Draw(m_screenMove);
+		if (m_moveEffect[i]->GetDestroyFlag())
+		{
+			m_moveEffect.erase(m_moveEffect.begin() + i);
+			i--;
+		}
+		i++;
+	}*/
+
+	
+	for (int i = 0; i < m_moveEffect.size();i++)
+	{
+		m_moveEffect[i]->Draw(m_screenMove);
+	}
+
 	if (m_isDeathFlag == false)
 	{
 		DrawRectRotaGraphF(m_pos.x - m_screenMove,m_pos.y, 30 + animDisX * animFrameMana.x,animDisY * animFrameMana.y, 220, 170, 1,0, m_handle, true, m_isRight,false);
 	}
 	for (int i = 0; i < m_HitEffect.size(); i++)
 	{
-		m_HitEffect[i]->Draw();
+		m_HitEffect[i]->Draw(m_screenMove);
 	}
 
-	//if (m_hole)
-	
 	DrawCircle(m_firstPos.x, m_firstPos.y-500,50, 0xaa1100,false,5);
 	DrawCircle(m_firstPos.x, m_firstPos.y-500,40, 0xffbb00, false,5);
 	DrawCircle(m_firstPos.x, m_firstPos.y-500,30, 0xffeeaa, false,5);
@@ -119,7 +159,7 @@ void EnemyToPlayerDir::OnMapCol(Vec2 colRange)
 
 void EnemyToPlayerDir::OnPlayerHit()
 {
-	m_HitEffect.push_back(std::make_shared<HitEffect>(m_pos.x - m_screenMove,m_pos.y));
+	m_HitEffect.push_back(std::make_shared<HitEffect>(m_pos.x - m_screenMove,m_pos.y,m_screenMove));
 }
 
 void EnemyToPlayerDir::IdleUpdate()
@@ -227,33 +267,42 @@ void EnemyToPlayerDir::NeutralUpdate()
 				animFrameMana.x = 0;
 			}
 		}
-		m_pos += m_velocity;
 		m_moveEffect.push_back(std::make_shared<EnemyMoveEffect>());
-		for (int i = 0; i < m_moveEffect.size(); i++)
+		for (int i = m_moveEffect.size() - 1; i < m_moveEffect.size(); i++)
 		{
+			m_enemyMoveEffectOffsetY = GetRand(50)+50;
 			if (m_velocity.x > 0)
 			{
-				m_enemyMoveEffectOffsetY = GetRand(50) - 25;
+				
 			}
 			if (m_velocity.x < 0)
 			{
 
 			}
-			m_moveEffect[i]->CreateEffect(m_pos,0,m_enemyMoveEffectOffsetY);
+			if (m_enemyWalkEffectFrame > 10)
+			{
+				m_moveEffect[i]->CreateEffect(m_footPos, 0, m_enemyMoveEffectOffsetY,m_screenMove);
+				m_enemyWalkEffectFrame = 0;
+			}
+			
 		}
 
+		m_enemyWalkEffectFrame++;
+		m_pos += m_velocity;
+		m_footPos.x = m_colRect.right;
+		m_footPos.y = m_pos.y;
+		
 	}
-	
-	
 
-	for (int i = 0; i < m_HitEffect.size(); i++)
+	/*for (int i = 0; i < m_HitEffect.size(); i++)
 	{
 		m_HitEffect[i]->Update();
 		if (m_HitEffect[i]->OnDestroy())
 		{
-			m_HitEffect.erase(m_HitEffect.begin());
+			m_HitEffect.erase(m_HitEffect.begin()+i);
 		}
-	}
+	}*/
+	
 	
 	m_animInterval++;
 
@@ -291,7 +340,7 @@ void EnemyToPlayerDir::AttackUpdate()
 		m_HitEffect[i]->Update();
 		if (m_HitEffect[i]->OnDestroy())
 		{
-			m_HitEffect.erase(m_HitEffect.begin());
+			m_HitEffect.erase(m_HitEffect.begin()+i);
 		}
 	}
 

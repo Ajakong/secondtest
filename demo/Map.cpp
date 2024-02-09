@@ -142,7 +142,7 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 				{
 					if (w * kChipWidth + kChipWidth - screenMove > bottomRay.left+velo.x && w * kChipWidth - screenMove < bottomRay.right+velo.x)
 					{
-						if(!RectCollision(topRay))
+						if (!RectCollision(topRay, w, h))
 						{
 							if (velo.y > 0)
 							{
@@ -151,15 +151,17 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 						}
 						else
 						{
-							if (InTheMapChip(topRay.right+velo.x, topRay.top+velo.y))
+							if (InTheMapChip(topRay.right + velo.x, topRay.top + velo.y))
 							{
-								m_player->PosXLock(w * kChipWidth - screenMove-30);
+								m_player->PosXLock(w * kChipWidth - screenMove - 30);
 							}
-							else
+							else if (InTheMapChip(topRay.left + velo.x, topRay.top + velo.y))
 							{
-								m_player->PosXLock(w * kChipWidth + kChipWidth*3 - screenMove+30);
+								m_player->PosXLock(w * kChipWidth + kChipWidth * 3 - screenMove + 30);
 							}
+
 							m_player->PlayerStop();
+							screenMove -= m_player->GetVelocity().x;
 
 						}
 						return true;
@@ -251,25 +253,17 @@ bool Map::IsCollision(Vec2 pos, int radius)
 	
 }
 
-bool Map::RectCollision(Rect& rect)
+bool Map::RectCollision(Rect& rect,int w,int h)
 {
-	for (int h = 0; h < kChipNumY; h++)
+	
+	if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
 	{
-		for (int w = 0; w < kChipNumX; w++)
+		if (w * kChipWidth + kChipWidth - screenMove >= rect.left && w * kChipWidth - screenMove <= rect.right)
 		{
-			if (m_chipData[h][w] == 1)
-			{
-				if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
-				{
-					if (w * kChipWidth + kChipWidth - screenMove >= rect.left && w * kChipWidth - screenMove <= rect.right)
-					{
 						
-						return true;
-					}
-
-				}
-			}
+			return true;
 		}
+
 	}
 	return false;
 }

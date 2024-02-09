@@ -51,15 +51,14 @@ void CircleShot::Update()
 		m_Velocity.Normalize();
 		m_rotateCenter += m_Velocity * 20.0f;
 
-		rotatePos.x = (m_shotPos.x-m_rotateCenter.x)*cos(3.14 / 2)- (m_shotPos.y - m_rotateCenter.y) * sin(3.14 / 2);
-		rotatePos.y = (m_shotPos.x - m_rotateCenter.x) * sin(3.14 / 2) + (m_shotPos.y - m_rotateCenter.y) * cos(3.14 / 2);
+		rotatePos.x = (m_shotPos.x-m_rotateCenter.x)*cos(3.14 / 5)- (m_shotPos.y - m_rotateCenter.y) * sin(3.14 / 5);
+		rotatePos.y = (m_shotPos.x - m_rotateCenter.x) * sin(3.14 / 5) + (m_shotPos.y - m_rotateCenter.y) * cos(3.14 / 5);
 
 		/*m_shotPos.x = ;
 		m_shotPos.y = rotatePos.y * sin(3.14 / 30) + rotatePos.x * cos(3.14 / 15) ;*/
 
 		m_shotPos = rotatePos+m_rotateCenter;
 		
-
 	}
 
 	if (effectFlag == true)

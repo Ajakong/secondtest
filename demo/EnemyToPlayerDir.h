@@ -67,9 +67,10 @@ private:
 
 	int m_idleMoveFrame = 0;
 	int m_wanderingInterval = 0;
-
 	int m_enemyMoveEffectOffsetX = 0;
 	int m_enemyMoveEffectOffsetY = 0;
+
+	int m_enemyWalkEffectFrame = 5;
 
 	int m_moveNumber = 0;
 
@@ -96,6 +97,7 @@ private:
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü
 
 	Vec2 m_pos;
+	Vec2 m_footPos;
 	Vec2 m_graphSize;
 
 	Vec2 m_velocity;

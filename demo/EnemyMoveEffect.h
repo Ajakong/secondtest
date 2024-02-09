@@ -9,11 +9,14 @@ public:
 
     void Init();
     void Update();
-    void Draw();
+    void Draw(int screenMove);
 
-    virtual void CreateEffect(Vec2 pos, float offSetX, float offSetY);
+    virtual void CreateEffect(Vec2 pos, float offSetX, float offSetY,int screenMove);
 private:
-    s
+   
+    int m_firstScreenMove = 0;
+
+    Vec2 m_effectFrameOffSet;
 
 };
 

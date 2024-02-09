@@ -76,6 +76,10 @@ void EnemyBase::Update()
 {
 	CollisionUpdate();
 	m_attackFrame++;
+	if (m_attackFrame > 120)
+	{
+		m_attackFrame = 120;
+	}
 
 	if (m_player != nullptr)
 	{
@@ -98,7 +102,7 @@ void EnemyBase::Update()
 			m_fireDir.x = m_velocity.x;
 			m_fireDir.y = m_velocity.y;
 			m_fireDir.Normalize();
-			if (m_attackFrame >= 60)
+			if (m_attackFrame >= 120)
 			{
 				m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
 				for (int i = m_shot.size()-1; i < m_shot.size(); i++)
@@ -131,6 +135,8 @@ void EnemyBase::Update()
 			}
 		}
 	}
+
+	m_addFrame+=0.04f;
 }
 
 void EnemyBase::Draw()
@@ -138,8 +144,14 @@ void EnemyBase::Draw()
 	if(m_isDeathFlag==false)
 	{
 		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xff0000, true);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, sin(m_addFrame) * 255);
+		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xdddd11, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawGraph(m_colRect.left, m_colRect.top, m_handle, true);
-		DrawPixel(m_pos.x-m_screenMove + 25, m_pos.y + 25, 0x000000);
+		
+		/*SetDrawBlendMode(DX_BLENDMODE_ADD,m_attackFrame * 2);
+		DrawCircle(m_colRect.left + 37.5f, m_colRect.top+37.5f,m_attackFrame/10, 0xffaa11);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
 		for (int i = 0; i < m_shot.size(); i++)
 		{
 			if (m_shot[i] != nullptr)
@@ -158,36 +170,34 @@ void EnemyBase::OnHitShot()
 	m_Hp -= 10;
 	if(m_Hp<0)
 	{
-		m_ItemThrowVel.x = 4;
-		m_ItemThrowVel.y = -5;
+		if (!m_isDeathFlag)
+		{
+			m_ItemThrowVel.x = 4;
+			m_ItemThrowVel.y = -5;
 
-		m_colRect.top = -500;
-		m_colRect.bottom = -500;
-		m_colRect.left = -500;
-		m_colRect.right = -500;
+			if (m_itemNumber == 0)
+			{
+				m_item = make_shared<FullAutoGun>(m_pos, m_ItemThrowVel, m_fullAutoGunGraph);
+			}
+			if (m_itemNumber == 1)
+			{
+				m_item = make_shared<Spread>(m_pos, m_ItemThrowVel, m_spreadGraph);
+			}
+			if (m_itemNumber == 2)
+			{
+				m_item = make_shared<LaserItem>(m_pos, m_ItemThrowVel, m_laserItemGraph);
+			}
+			if (m_itemNumber == 3)
+			{
+				m_item = make_shared<CircleBulletItem>(m_pos, m_ItemThrowVel, m_CircleItemGraph);
+			}
 
-		if (m_itemNumber == 0)
-		{
-			m_item = make_shared<FullAutoGun>(m_pos,m_ItemThrowVel,m_fullAutoGunGraph);
+			PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
+			m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove + 20, m_pos.y + 25));
+			m_WorldMana->AddScore(2000000);
+			m_WorldMana->AddItem(m_item);
+			m_isDeathFlag = true;
 		}
-		if (m_itemNumber == 1)
-		{
-			m_item = make_shared<Spread>(m_pos, m_ItemThrowVel,m_spreadGraph );
-		}
-		if (m_itemNumber == 2)
-		{
-			m_item = make_shared<LaserItem>(m_pos, m_ItemThrowVel,m_laserItemGraph );
-		}
-		if (m_itemNumber == 3)
-		{
-			m_item = make_shared<CircleBulletItem>(m_pos, m_ItemThrowVel,m_CircleItemGraph );
-		}
-
-		PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
-		m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove+20, m_pos.y+25));
-		m_WorldMana->AddScore(2000000);
-		m_WorldMana->AddItem(m_item);
-		m_isDeathFlag = true;
 	}
 }
 

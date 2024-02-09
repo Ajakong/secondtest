@@ -79,7 +79,7 @@ void Title::FadeInUpdate()
 void Title::NormalUpdate()
 {
 	m_jammingFrame ++;
-	if (m_jammingFrame % 800 == 0)
+	if (m_jammingFrame % 400 == 0)
 	{
 		m_screenHandle = Application::GetInstance().GetScreenHandle();
 		

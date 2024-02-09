@@ -67,11 +67,13 @@ private:
 	int m_laserItemGraph = 0;
 	int m_CircleItemGraph = 0;
 
+	float m_addFrame=0;
 
 	bool m_isShotCollFlag=false;
 	bool m_isDeathFlag=false;
 
 	bool m_shotIt=false;
+
 
 	Vec2 m_targetPos;
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü

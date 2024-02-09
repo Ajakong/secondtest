@@ -1,7 +1,7 @@
 #pragma once
 #include "Effect.h"
 
-class Particle : public Effect
+class Particle
 {
 public:
 

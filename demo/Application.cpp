@@ -54,6 +54,8 @@ bool Application::Init()
 
     DxLib_Init();
    
+    SetWindowIconID(573);
+
     SetUseASyncChangeWindowModeFunction(TRUE,NULL, NULL);
 
     SetWindowText("スーパーサイヤング7");

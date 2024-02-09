@@ -3,12 +3,12 @@
 class HitEffect
 {
 public:
-	HitEffect(float x,float y);
+	HitEffect(float x,float y,int screenmove);
 	~HitEffect();
 
 	void Init();
 	void Update();
-	void Draw();
+	void Draw(int screenMove);
 
 	bool OnDestroy() { return m_isDestroy; }
 private:
@@ -20,6 +20,8 @@ private:
 	int m_count;
 
 	Vec2 m_PlusUltra;
+
+	int m_firstScreenMove=0;
 	
 };
 

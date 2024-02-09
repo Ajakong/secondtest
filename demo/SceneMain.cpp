@@ -197,11 +197,7 @@ void SceneMain::Update()
 
 		if (m_pMap != nullptr)
 		{
-			if (m_pPlayer->GetPos().x > 50)
-			{
-				m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
-			}
-					
+			m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
 			
 			m_pMap->Update();
 			//if (!bossZone)
@@ -436,7 +432,7 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 				{
-					m_pEnemy[e]->OnDamage(5);
+					m_pEnemy[e]->OnDamage(0.25f);
 				}
 			}
 		}
