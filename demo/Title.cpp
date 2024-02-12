@@ -5,6 +5,7 @@
 #include "Title.h"
 #include "GamePlayingScene.h"
 #include"Game.h"
+#include"Pad.h"
 
 // デバッグログ関係
 #include <sstream>
@@ -53,6 +54,8 @@ void Title::Update()
 {
 	m_particle->Update();
 	(this->*m_updateFunc)();
+
+	Pad::Update();
 }
 
 void Title::Draw()
@@ -76,26 +79,47 @@ void Title::FadeInUpdate()
 	}
 }
 
+void Title::FadeInStringUpdate()
+{
+	m_gameStartY -= 7;
+	m_fadeFrame--;
+	if (m_gameStartY < 0)
+	{
+		
+	}
+	m_rightsNotationY -= 7;
+	if (0 >= m_fadeFrame)
+	{
+		m_updateFunc = &Title::NormalUpdate;
+
+	}
+}
+
 void Title::NormalUpdate()
 {
-	m_jammingFrame ++;
+	m_jammingFrame++;
 	if (m_jammingFrame % 400 == 0)
 	{
 		m_screenHandle = Application::GetInstance().GetScreenHandle();
-		
+
 		PlaySoundMem(m_jammingSound, DX_PLAYTYPE_BACK);
 		m_updateFunc = &Title::JammingUpdate;
 		m_drawFunc = &Title::JammingDraw;
 	}
-	if(GetJoypadInputState(DX_INPUT_KEY_PAD1)&&!GetKeyState(KEY_INPUT_ESCAPE))
+	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) && !GetKeyState(KEY_INPUT_ESCAPE))
 	{
+		m_isSelectMode = true;
+		//m_updateFunc = &Title::FadeOutStringUpdate;
+		//m_drawFunc = &Title::FadeStringDraw;
 		m_updateFunc = &Title::FadeOutUpdate;
 		m_drawFunc = &Title::FadeDraw;
 		m_fadeFrame = 0;
 		m_fadeFrame = m_fadeFrame + 8;
 		m_frame++;
 	}
+	
 }
+
 
 void Title::FadeOutUpdate()
 {
@@ -107,6 +131,18 @@ void Title::FadeOutUpdate()
 		StopSoundMem(m_bgmHandle);
 		m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 	}
+}
+
+void Title::FadeOutStringUpdate()
+{
+	m_pressAnyButtonY+=7;
+	m_fadeFrame++;
+	if (60 <= m_fadeFrame)
+	{
+		m_updateFunc = &Title::FadeInStringUpdate;
+
+	}
+	
 }
 
 void Title::JammingUpdate()
@@ -152,6 +188,32 @@ void Title::FadeDraw()
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }
 
+void Title::FadeStringDraw()
+{
+	m_particle->Draw();
+	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
+	
+	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX+100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX+50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+
+	
+	// フェード暗幕
+	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(drawStringPosX, drawStringPosY, drawStringPosX + 1000, drawStringPosY + 20, 0xff0000, true);
+	DrawBox(drawStringPosX, drawStringPosY + 20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
+	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
 void Title::NormalDraw()
 {
 	m_particle->Draw();
@@ -168,7 +230,9 @@ void Title::NormalDraw()
 	
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-	DrawRotaString(drawStringPosX, drawStringPosY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
@@ -209,7 +273,9 @@ void Title::JammingDraw()
 
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
-	DrawRotaString(drawStringPosX, drawStringPosY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	/*SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);

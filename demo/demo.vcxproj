@@ -168,6 +168,7 @@
     <ClCompile Include="GamePlayingScene.cpp" />
     <ClCompile Include="HitEffect.cpp" />
     <ClCompile Include="ImageGroundManager.cpp" />
+    <ClCompile Include="IntroScene.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Laser.cpp" />
     <ClCompile Include="LaserItem.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="GamePlayingScene.h" />
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="ImageGroundManager.h" />
+    <ClInclude Include="IntroScene.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Laser.h" />
     <ClInclude Include="LaserItem.h" />

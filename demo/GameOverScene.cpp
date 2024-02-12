@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "SceneManager.h"
 #include "GameOverScene.h"
+#include"GamePlayingScene.h"
 #include "Title.h"
 #include"Pad.h"
 
@@ -26,6 +27,8 @@ GameOverScene::~GameOverScene()
 void GameOverScene::Update()
 {
 	(this->*m_updateFunc)();
+
+	Pad::Update();
 }
 
 void GameOverScene::Draw()
@@ -52,6 +55,15 @@ void GameOverScene::NormalUpdate()
 		m_updateFunc = &GameOverScene::FadeOutUpdate;
 		m_drawFunc = &GameOverScene::FadeDraw;
 	}
+	if (Pad::IsTrigger(PAD_INPUT_DOWN))
+	{
+		m_selectNumber++;
+	}
+	if (Pad::IsTrigger(PAD_INPUT_UP))
+	{
+		m_selectNumber--;
+	}
+
 }
 
 void GameOverScene::FadeOutUpdate()
@@ -64,14 +76,37 @@ void GameOverScene::FadeOutUpdate()
 	{
 		
 		m_manager.PopScene();
+		if (m_selectNumber % 2 == 0)
+		{
+			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+
+		}
+		if (m_selectNumber % 2 == 1)
+		{
+			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+
+		}
 	}
 }
 
 void GameOverScene::FadeDraw()
 {
+	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
+
+
 	DrawString(1000, 500, "Continue", 0xffffff);
 	DrawString(1000, 600, "To Title", 0xffffff);
-	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
+
+	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha/3);
+	if (m_selectNumber % 2 == 0)
+	{
+		DrawBox(950, 470, 1200, 530, 0xffffff, true);
+	}
+	if (m_selectNumber % 2 == 1)
+	{
+		DrawBox(950, 570, 1200, 630, 0xffffff, true);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawString(1000, 500, "Continue", 0x000000);
 	DrawString(1000, 600, "To Title", 0x000000);
@@ -82,6 +117,17 @@ void GameOverScene::NormalDraw()
 {
 	DrawString(1000, 500, "Continue", 0xffffff);
 	DrawString(1000, 600, "To Title", 0xffffff);
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 255 / 3);
+	if (m_selectNumber % 2 == 0)
+	{
+		DrawBox(950, 470, 1200, 530, 0xffffff, true);
+	}
+	if (m_selectNumber % 2 == 1)
+	{
+		DrawBox(950, 570, 1200, 630, 0xffffff, true);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	auto& app = Application::GetInstance();
 	auto size = app.GetWindowSize();
 	int idx = m_btnFrame / 10 % 3;

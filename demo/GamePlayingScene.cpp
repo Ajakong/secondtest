@@ -9,6 +9,7 @@
 #include"Pad.h"
 #include"PauseScene.h"
 #include"Title.h"
+#include"Game.h"
 
 
 
@@ -90,7 +91,6 @@ void GamePlayingScene::NormalUpdate()
 	if (Pad::IsPress(PAD_INPUT_R))//XBOXコントローラーのSTART
 	{
 		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
-		
 	}
 }
 
@@ -127,28 +127,31 @@ void GamePlayingScene::PlayerLightingUpdate()
 			}
 		}
 	}
-	
-
 }
 
 void GamePlayingScene::PunishmentUpdate()
 {
 	m_punishmentFrame++;
-	m_punishmentRange *= 1.1f;
+	m_punishmentRange += 2.0f;
 	if (m_Scene->GetClearFlag())
 	{
 		if (200 <= m_punishmentFrame)
 		{
-			if (m_isEndRoll)
-			{
-				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
-				m_selectTitle = true;
-			}
-			if (!m_isEndRoll)
-			{
-				m_isEndRoll = true;
-				m_manager.PushScene(std::make_shared<ClearScene>(m_manager));
-			}
+			m_Scene->OnBossZorn();
+			m_updateFunc = &GamePlayingScene::NormalUpdate;
+			m_drawFunc = &GamePlayingScene::NormalDraw;
+
+			//if (m_isEndRoll)
+			//{
+			//	m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+			//	m_selectTitle = true;
+			//}
+			//if (!m_isEndRoll)
+			//{
+			//	
+			//	//m_isEndRoll = true;
+			//	//m_manager.PushScene(std::make_shared<ClearScene>(m_manager));
+			//}
 		}
 	}
 }
@@ -204,7 +207,7 @@ void GamePlayingScene::PunishmentDraw()
 
 	for (int i = 50; i < 2000; i++)
 	{
-		DrawLine(m_punishmentPos, 0, m_punishmentPos, 2000, 0xffffff, m_punishmentRange);
+		DrawLine(Game::kScreenWidth/2, 0, Game::kScreenWidth/2, 2000, 0xffffff, m_punishmentRange);
 	}
 	
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

@@ -103,6 +103,8 @@ Player::Player()://クリアシーン用のコンストラクタ
 
 	m_damageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 
+	
+
 	m_animFrame.y = 1;
 }
 
@@ -115,6 +117,8 @@ void Player::Init()
 {
 	m_handle = LoadGraph("data/image/PlayerDevil.png");
 	m_ShotGraph = LoadGraph("data/image/Shot.png");
+
+
 	m_pos.x = 50.0f;
 	m_pos.y = 50.0f;
 }
@@ -954,8 +958,12 @@ void Player::DieUpdate()
 	}
 	if(m_animFrame.x >= 10)
 	{
-		m_pos.y--;
 		m_WorldMana->GameOver();
+		m_pos.y-=2;
+	}
+	if (m_pos.y < 0)
+	{
+		
 	}
 	m_animInterval++;
 }
@@ -977,7 +985,7 @@ void Player::ClearUpdate()
 		{
 			if (m_animFrame.x >= 8)
 			{
-				m_WorldMana->GameOver();
+				m_WorldMana->Clear();
 			}
 		}
 		m_animInterval = 0;

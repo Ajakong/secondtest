@@ -9,7 +9,7 @@
 
 namespace
 {
-	constexpr int ENEMY_NUM = 10;
+	constexpr int ENEMY_NUM = 7;
 	constexpr int ENEMY_TO_PLAYER_NUM = 30;
 }
 
@@ -49,6 +49,7 @@ public:
 
 	void Update();
 	void CollisionUpdate();
+	void EnemyToPlayerCollisionUpdate();
 	void Draw() const;
 
 	void CreateEnemy(Vec2 pos,int enemyNumber);
@@ -57,6 +58,8 @@ public:
 	void GameOver();
 	float GetPlayerPos();
 	bool GetGameOverFlag() { return m_isGameOver; }
+
+	void OnBossZorn();
 
 	void Clear();
 	bool GetClearFlag() { return m_isClear; }
@@ -69,6 +72,14 @@ public:
 	void AddItem(std::shared_ptr<Item> item);
 
 	void AddScore(int score) { m_score += score; }
+
+	void NormalUpdate();
+	void BossUpdate();
+
+	//メンバ関数ポインタ
+	using SceneState_t = void(SceneMain::*)();
+	SceneState_t m_SceneUpdate;
+
 	
 private:
 	// グラフィックのハンドル
@@ -133,11 +144,11 @@ private:
 	std::vector < std::shared_ptr<Item>>m_item;
 
 	//画面ワイプ処理
-	int m_wipeFrame;
+	int m_wipeFrame=0;
 	// 敵の登場間隔
-	int m_enemyInterval;
+	int m_enemyInterval=0;
 	//ダメージを受けた時の画面揺れ
-	int m_shakeFrame;
+	int m_shakeFrame=0;
 };
 
 

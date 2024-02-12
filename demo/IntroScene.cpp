@@ -1,9 +1,9 @@
-#include "PauseScene.h"
+#include "IntroScene.h"
 #include <DxLib.h>
 #include"Pad.h"
 #include "Application.h"
 #include "SceneManager.h"
-#include "PauseScene.h"
+#include "IntroScene.h"
 #include"Title.h"
 
 namespace
@@ -12,40 +12,38 @@ namespace
 	constexpr int kMenuMargin = 50;
 }
 
-PauseScene::PauseScene(SceneManager& mgr) : Scene(mgr)
+IntroScene::IntroScene(SceneManager& mgr) : Scene(mgr)
 {
-	m_updateFunc = &PauseScene::AppearUpdate;
-	m_drawFunc = &PauseScene::ExpandDraw;
+	m_updateFunc = &IntroScene::AppearUpdate;
+	m_drawFunc = &IntroScene::ExpandDraw;
 }
 
-void PauseScene::Update()
+void IntroScene::Update()
 {
 	(this->*m_updateFunc)();
-
-	Pad::Update();
 }
 
-void PauseScene::Draw()
+void IntroScene::Draw()
 {
 	(this->*m_drawFunc)();
 }
 
-void PauseScene::AppearUpdate()
+void IntroScene::AppearUpdate()
 {
 	m_frame++;
 	if (kAppeaInterval <= m_frame)
 	{
-		m_updateFunc = &PauseScene::NormalUpdate;
-		m_drawFunc = &PauseScene::NormalDraw;
+		m_updateFunc = &IntroScene::NormalUpdate;
+		m_drawFunc = &IntroScene::NormalDraw;
 	}
 }
 
-void PauseScene::NormalUpdate()
+void IntroScene::NormalUpdate()
 {
 	if (Pad::IsPress(PAD_INPUT_R))
 	{
-		m_updateFunc = &PauseScene::DisappearUpdate;
-		m_drawFunc = &PauseScene::ExpandDraw;
+		m_updateFunc = &IntroScene::DisappearUpdate;
+		m_drawFunc = &IntroScene::ExpandDraw;
 
 	}
 	if (Pad::IsPress(PAD_INPUT_DOWN))
@@ -60,19 +58,19 @@ void PauseScene::NormalUpdate()
 	{
 		if (m_select % 2 == 0)
 		{
-			m_updateFunc = &PauseScene::DisappearUpdate;
-			m_drawFunc = &PauseScene::ExpandDraw;
+			m_updateFunc = &IntroScene::DisappearUpdate;
+			m_drawFunc = &IntroScene::ExpandDraw;
 		}
 		else
 		{
 			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
 		}
-		
+
 	}
-	
+
 }
 
-void PauseScene::DisappearUpdate()
+void IntroScene::DisappearUpdate()
 {
 	m_frame--;
 	if (m_frame == 0)
@@ -81,7 +79,7 @@ void PauseScene::DisappearUpdate()
 	}
 }
 
-void PauseScene::ExpandDraw()
+void IntroScene::ExpandDraw()
 {
 	Application& app = Application::GetInstance();
 	const auto& size = app.GetWindowSize();
@@ -101,7 +99,7 @@ void PauseScene::ExpandDraw()
 		0xffffff, false);
 }
 
-void PauseScene::NormalDraw()
+void IntroScene::NormalDraw()
 {
 	Application& app = Application::GetInstance();
 	const auto& size = app.GetWindowSize();
@@ -115,5 +113,4 @@ void PauseScene::NormalDraw()
 
 	DrawBox(kMenuMargin, kMenuMargin, size.w - kMenuMargin, size.h - kMenuMargin,
 		0xffffff, false);
-	
 }

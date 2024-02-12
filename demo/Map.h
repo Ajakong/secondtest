@@ -45,7 +45,7 @@ public:
 	void OnScreenMoveAdd(float veloX);
 	Vec2 GetCollisionPos() { return m_collisionPos; }
 	
-
+	void BossMap() { m_bossMap = true; }
 
 
 private:
@@ -56,6 +56,7 @@ private:
 	bool m_isScreenMoveAddFlag=false;
 	bool m_isScreenMoveSubFlag=true;
 
+	bool m_bossMap = false;
 
 	Player* m_player;
 

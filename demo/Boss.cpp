@@ -10,6 +10,16 @@
 #include"Player.h"
 #include"SceneMain.h"
 
+namespace
+{
+	constexpr int animDisX = 288*2;
+	constexpr int animDisY = 162*2;
+
+	constexpr int collisionSizeX = 45;
+	constexpr int collisionSizeY = 80;
+}
+
+
 Boss::Boss(SceneMain* mana) :
 	m_isDeathFlag(false),
 	m_Hp(1600),
@@ -27,6 +37,8 @@ Boss::Boss(SceneMain* mana) :
 	}*/
 
 	m_bossSphere = std::make_shared<BossSphere>(this);
+
+	m_handle = LoadGraph("data/image/Enemy/Boss.png");
 
 	m_colRect.top = m_pos.y;
 	m_colRect.bottom = m_pos.y + 896;
@@ -97,12 +109,14 @@ void Boss::Draw()
 		//DrawBox(m_pos.x+200- m_screenMove, m_pos.y+100, m_pos.x +320- m_screenMove, m_pos.y + 420, 0x00dddd, true);//Žè‘O
 		//
 		//DrawPixel(m_pos.x + 25- m_screenMove, m_pos.y + 25, 0x000000);
-		
-		//DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
+		//
+		DrawRectRotaGraphF(m_pos.x, m_pos.y, 0 + animDisX * animFrameMana.x, 0 + animDisY * animFrameMana.y, 220, 170, 1, 0, m_handle, true);
 	}
 
+
+
 	////////////
-	m_bossSphere->Draw();
+	//m_bossSphere->Draw();
 }
 
 void Boss::OnHitShot()

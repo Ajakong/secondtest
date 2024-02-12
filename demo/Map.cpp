@@ -90,22 +90,30 @@ void Map::Update()
 
 void Map::Draw()
 {
-	for (int h = 0; h < kChipNumY; h++)
+	if (!m_bossMap)
 	{
-		for (int w = 0; w < kChipNumX; w++)
+		for (int h = 0; h < kChipNumY; h++)
 		{
-			if(m_chipData[h][w]==1)
+			for (int w = 0; w < kChipNumX; w++)
 			{
-				DrawBox(w * kChipWidth-screenMove, h * kChipHeight, w * kChipWidth + kChipWidth-screenMove, h * kChipHeight + kChipHeight, 0x444444, true);
-				
-			}
-			if (m_chipData[h][w] == 2)
-			{
-				DrawBox(w * kChipWidth - screenMove, h * kChipHeight, w * kChipWidth + kChipWidth - screenMove, h * kChipHeight + kChipHeight, 0x444444, true);
-				DrawBox(w * kChipWidth - screenMove, h * kChipHeight, w * kChipWidth + kChipWidth - screenMove, h * kChipHeight + 10, 0xaa0000, true);
+				if (m_chipData[h][w] == 1)
+				{
+					DrawBox(w * kChipWidth - screenMove, h * kChipHeight, w * kChipWidth + kChipWidth - screenMove, h * kChipHeight + kChipHeight, 0x444444, true);
+
+				}
+				if (m_chipData[h][w] == 2)
+				{
+					DrawBox(w * kChipWidth - screenMove, h * kChipHeight, w * kChipWidth + kChipWidth - screenMove, h * kChipHeight + kChipHeight, 0x444444, true);
+					DrawBox(w * kChipWidth - screenMove, h * kChipHeight, w * kChipWidth + kChipWidth - screenMove, h * kChipHeight + 10, 0xaa0000, true);
+				}
 			}
 		}
 	}
+	else
+	{
+		DrawBox(0, Game::kScreenHeight - 100, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
+	}
+	
 	DrawFormatString(300, 500, 0xff0000, "%d", 26*kChipWidth-screenMove);
 }
 
@@ -116,12 +124,13 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 	{
 		for (int w = 0; w < kChipNumX; w++)
 		{
-			if (m_chipData[h][w] == 1|| m_chipData[h][w] == 2)
+			if (m_chipData[h][w] == 1 || m_chipData[h][w] == 2)
 			{
-				if (h * kChipHeight <= rect.bottom && h * kChipHeight + kChipHeight >= rect.top)
+				if (h * kChipHeight <= rect.bottom + velo.y && h * kChipHeight + kChipHeight >= rect.top + velo.y)
 				{
-					if (w * kChipWidth + kChipWidth-screenMove > rect.left && w * kChipWidth-screenMove < rect.right)
+					if (w * kChipWidth + kChipWidth - screenMove > rect.left + velo.x && w * kChipWidth - screenMove < rect.right + velo.x)
 					{
+
 						if (velo.y > 0)
 						{
 							rect.bottom = h * kChipHeight;
@@ -131,55 +140,66 @@ bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
 					}
 				}
 			}
-			continue;
+		
 
 		}
 	}
+	return false;
 }
 
 bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRadius, Vec2 velo)
 {
-	for (int h = 0; h < kChipNumY; h++)
+	if (!m_bossMap)
 	{
-		for (int w = 0; w < kChipNumX; w++)
+		for (int h = 0; h < kChipNumY; h++)
 		{
-			if (m_chipData[h][w] == 1 || m_chipData[h][w] == 2)
+			for (int w = 0; w < kChipNumX; w++)
 			{
-				if (h * kChipHeight <= bottomRay.bottom+velo.y && h * kChipHeight + kChipHeight >= bottomRay.top+velo.y)
+				if (m_chipData[h][w] == 1 || m_chipData[h][w] == 2)
 				{
-					if (w * kChipWidth + kChipWidth - screenMove > bottomRay.left+velo.x && w * kChipWidth - screenMove < bottomRay.right+velo.x)
+					if (h * kChipHeight <= bottomRay.bottom + velo.y && h * kChipHeight + kChipHeight >= bottomRay.top + velo.y)
 					{
-						
-						if (!RectCollision(topRay,w,velo.x))
+						if (w * kChipWidth + kChipWidth - screenMove > bottomRay.left + velo.x && w * kChipWidth - screenMove < bottomRay.right + velo.x)
 						{
-							if (velo.y > 0)
-							{
-								rect.bottom = h * kChipHeight;
-							}
-						}
-						else
-						{
-							if (InTheMapChip(topRay.right + velo.x, topRay.top ))
-							{
-								m_player->PosXLock(w * kChipWidth - screenMove +(m_player->GetRect().left- m_player->GetRect().right));
-							}
-							if (InTheMapChip(topRay.left + velo.x, topRay.top ))
-							{
-								m_player->PosXLock(w * kChipWidth + kChipWidth - screenMove  + (-m_player->GetRect().left + m_player->GetRect().right));
-							}
-							//screenMove -= m_player->GetVelocity().x;
-							
-							
-						}
-						return true;
-					}
 
+							if (!RectCollision(topRay, w, velo.x))
+							{
+								if (velo.y > 0)
+								{
+									rect.bottom = h * kChipHeight;
+								}
+							}
+							else
+							{
+								if (InTheMapChip(topRay.right + velo.x, topRay.top))
+								{
+									m_player->PosXLock(w * kChipWidth - screenMove + (m_player->GetRect().left - m_player->GetRect().right));
+								}
+								if (InTheMapChip(topRay.left + velo.x, topRay.top))
+								{
+									m_player->PosXLock(w * kChipWidth + kChipWidth - screenMove + (-m_player->GetRect().left + m_player->GetRect().right));
+								}
+								//screenMove -= m_player->GetVelocity().x;
+
+
+							}
+							return true;
+						}
+
+					}
 				}
 			}
-			continue;
 		}
 	}
-
+	else
+	{
+		if (bottomRay.bottom > Game::kScreenHeight - 100)
+		{
+			rect.bottom = Game::kScreenHeight-100;
+		}
+	}
+	
+	return false;
 }
 
 

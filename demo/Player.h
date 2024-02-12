@@ -46,6 +46,9 @@ public:
 
 	void ToIdle();
 
+	void ToBoss() {
+		m_playerUpdate = &Player::StartUpdate;};
+
 	void GetNewWeapon(int weaponNum);
 
 	//状態別関数(ポインタで呼び出す)
@@ -58,6 +61,7 @@ public:
 	void FlyingUpdate();
 	void DieUpdate();
 	void ClearUpdate();
+	void BossStartUpdate();
 
 	void EndingStartUpdate();
 	void EndingUpdate();
@@ -114,12 +118,12 @@ private:
 	int m_animInterval=0;
 	int m_animXlimit=0;
 	int m_visibleLimitTime=0;//無敵時間
-	int m_inputX;
-	int m_inputY;
+	int m_inputX=0;
+	int m_inputY=0;
 
 	//Die
-	bool m_isEndroll;
-	int m_rollCount;
+	bool m_isEndroll=false;
+	int m_rollCount=0;
 
 	bool m_isClear=false;
 

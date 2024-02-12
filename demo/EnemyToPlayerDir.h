@@ -116,7 +116,7 @@ private:
 
 	Player* m_player;
 
-	float m_dirX;
+	float m_dirX=0;
 
 	std::vector<std::shared_ptr<HitEffect>> m_HitEffect;
 
