@@ -29,6 +29,14 @@ private:
 
 	int m_bgmHandle = 0;
 	int m_jammingSound = 0;
+
+
+	int m_selectNumber = 0;
+	int m_pressAnyButtonY = 0;
+	int m_gameStartY = 430;
+	int m_rightsNotationY = 500;
+
+	bool m_isSelectMode = false;
 	Particle* m_particle;
 
 	// 更新メンバ関数ポインタ
@@ -39,12 +47,15 @@ private:
 
 	// 更新関数
 	void FadeInUpdate();	// フェードイン状態
+	void FadeInStringUpdate();
 	void NormalUpdate();	// 通常状態
 	void FadeOutUpdate();	// フェードアウト状態
+	void FadeOutStringUpdate();
 	void JammingUpdate();
 
 	// 描画関数
 	void FadeDraw();	// フェード中描画
+	void FadeStringDraw();
 	void NormalDraw();	// 非フェード描画
 	void JammingDraw();
 };
