@@ -1,11 +1,13 @@
 #pragma once
 #include "Scene.h"
 
+class GamePlayingScene;
 
 class GameOverScene : public Scene
 {
 public:
     GameOverScene(SceneManager& mgr);
+   
     ~GameOverScene();
     virtual void Update();
     virtual void Draw();
@@ -20,6 +22,8 @@ private:
 
 
     int m_DyingSound = 0;
+
+    
 
     // メンバ関数ポインタの宣言
     using UpdateFunc_t = void (GameOverScene::*)();

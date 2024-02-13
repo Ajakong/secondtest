@@ -383,15 +383,7 @@ void EnemyToPlayerDir::AttackUpdate()
 		}
 	}
 	
-	for (int i = 0; i < m_HitEffect.size(); i++)
-	{
-		m_HitEffect[i]->Update();
-		if (m_HitEffect[i]->OnDestroy())
-		{
-			m_HitEffect.erase(m_HitEffect.begin()+i);
-		}
-	}
-
+	
 	m_animInterval++;
 
 	if (m_Hp <= 0)

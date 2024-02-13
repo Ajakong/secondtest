@@ -6,6 +6,8 @@
 #include "Title.h"
 #include "Player.h"
 #include"EndRoll.h"
+#include"Game.h"
+#include"Pad.h"
 
 
 ClearScene::ClearScene(SceneManager& mgr) :
@@ -32,6 +34,8 @@ void ClearScene::Update()
 	(this->*m_updateFunc)();
 	m_player->Update();
 	m_endRoll->Update();
+
+	Pad::Update();
 }
 
 void ClearScene::Draw()
@@ -54,8 +58,12 @@ void ClearScene::FadeInUpdate()
 void ClearScene::NormalUpdate()
 {
 	m_btnFrame++;
-	m_updateFunc = &ClearScene::FadeOutUpdate;
-	m_drawFunc = &ClearScene::FadeDraw;
+	if (Pad::IsTrigger(PAD_INPUT_1))
+	{
+		m_updateFunc = &ClearScene::FadeOutUpdate;
+		m_drawFunc = &ClearScene::FadeDraw;
+	}
+	
 }
 
 void ClearScene::FadeOutUpdate()
@@ -69,7 +77,7 @@ void ClearScene::FadeOutUpdate()
 
 void ClearScene::FadeDraw()
 {
-	DrawString(10, 100, "ClearScene", 0xffffff);
+	DrawRotaString(Game::kScreenWidth/2, Game::kScreenHeight/2, 5, 5, 0, 0, 0, 0xffffff, 0, 0, "Clear");
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(0, 0, 2000, 2000, 0x000000, true);
@@ -78,7 +86,7 @@ void ClearScene::FadeDraw()
 
 void ClearScene::NormalDraw()
 {
-	DrawString(10, 100, "ClearScene", 0xffffff);
+	DrawRotaString(Game::kScreenWidth / 2, Game::kScreenHeight / 2, 5, 5, 0, 0, 0, 0xffffff, 0, 0, "Clear");
 	auto& app = Application::GetInstance();
 	auto size = app.GetWindowSize();
 	int idx = m_btnFrame / 10 % 3;

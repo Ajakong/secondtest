@@ -196,6 +196,7 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 		if (bottomRay.bottom > Game::kScreenHeight - 100)
 		{
 			rect.bottom = Game::kScreenHeight-100;
+			return true;
 		}
 	}
 	

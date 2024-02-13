@@ -46,11 +46,9 @@ void GamePlayingScene::Update()
 
 void GamePlayingScene::Draw()
 {
-	if (!m_selectTitle)
-	{
-		m_Scene->Draw();
-		(this->*m_drawFunc)();
-	}
+	m_Scene->Draw();
+	(this->*m_drawFunc)();
+	
 	
 }
 
@@ -115,10 +113,14 @@ void GamePlayingScene::PlayerLightingUpdate()
 	{
 		if (200 <= m_lightingFrame)
 		{
-			if (m_isEndRoll)
+			if (m_selectNum==1)
 			{
 				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
-				m_selectTitle=true;
+				
+			}
+			if (m_selectNum == 0)
+			{
+				m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 			}
 			if(!m_isEndRoll)
 			{
@@ -132,7 +134,7 @@ void GamePlayingScene::PlayerLightingUpdate()
 void GamePlayingScene::PunishmentUpdate()
 {
 	m_punishmentFrame++;
-	m_punishmentRange += 2.0f;
+	m_punishmentRange *= 1.04f;
 	if (m_Scene->GetClearFlag())
 	{
 		if (200 <= m_punishmentFrame)

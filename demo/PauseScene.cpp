@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "PauseScene.h"
 #include"Title.h"
+#include"Game.h"
 
 namespace
 {
@@ -16,6 +17,7 @@ PauseScene::PauseScene(SceneManager& mgr) : Scene(mgr)
 {
 	m_updateFunc = &PauseScene::AppearUpdate;
 	m_drawFunc = &PauseScene::ExpandDraw;
+	m_tutoHandle=LoadGraph("data/image/tuto/controller_format.png");
 }
 
 void PauseScene::Update()
@@ -42,32 +44,50 @@ void PauseScene::AppearUpdate()
 
 void PauseScene::NormalUpdate()
 {
-	if (Pad::IsPress(PAD_INPUT_R))
+	if (!m_tutoFlag)
 	{
-		m_updateFunc = &PauseScene::DisappearUpdate;
-		m_drawFunc = &PauseScene::ExpandDraw;
+		if (Pad::IsTrigger(PAD_INPUT_R))
+		{
+			m_updateFunc = &PauseScene::DisappearUpdate;
+			m_drawFunc = &PauseScene::ExpandDraw;
 
+		}
+		if (Pad::IsTrigger(PAD_INPUT_DOWN))
+		{
+			m_select++;
+		}
+		if (Pad::IsTrigger(PAD_INPUT_UP))
+		{
+			m_select--;
+		}
 	}
-	if (Pad::IsPress(PAD_INPUT_DOWN))
+	
+	if (Pad::IsTrigger(PAD_INPUT_2))
 	{
-		m_select++;
-	}
-	if (Pad::IsPress(PAD_INPUT_UP))
-	{
-		m_select--;
-	}
-	if (Pad::IsPress(PAD_INPUT_2))
-	{
-		if (m_select % 2 == 0)
+		if (m_select % 3 == 0)
 		{
 			m_updateFunc = &PauseScene::DisappearUpdate;
 			m_drawFunc = &PauseScene::ExpandDraw;
 		}
-		else
+		if(m_select % 3 == 1|| m_select % 3 == -2)
 		{
-			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+			if (m_tutoFlag)
+			{
+				m_tutoFlag = false;
+			}
+			else
+			{
+				m_tutoFlag = true;
+
+			}
+			
 		}
-		
+		if (m_select % 3 == 2 || m_select % 3 == -1)
+		{
+			m_manager.PopScene();
+			
+			m_manager.InsertScene(std::make_shared<Title>(m_manager));
+		}
 	}
 	
 }
@@ -113,6 +133,32 @@ void PauseScene::NormalDraw()
 
 	DrawString(100, 100, "Pause Scene", 0xffffff);
 
+	DrawString(800, 500, "ゲームに戻る", 0xffffff);
+	DrawString(830, 600, "操作説明", 0xffffff);
+	DrawString(810, 700, "タイトルへ", 0xffffff);
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 255 / 3);
+	if (m_select % 3 == 0)
+	{
+		DrawBox(770, 50, 970, 580, 0xffffff, true);
+	}
+	if (m_select % 3 == 1 || m_select % 3 == -2)
+	{
+		DrawBox(770, 600, 970, 680, 0xffffff, true);
+	}
+	if (m_select % 3 == 2 || m_select % 3 == -1)
+	{
+		DrawBox(770, 700, 970, 780, 0xffffff, true);
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+
+	if (m_tutoFlag)
+	{
+		DrawRotaGraph(Game::kScreenWidth/2, Game::kScreenHeight/2,0.8f,0, m_tutoHandle, false);
+
+	}
+	
 	DrawBox(kMenuMargin, kMenuMargin, size.w - kMenuMargin, size.h - kMenuMargin,
 		0xffffff, false);
 	

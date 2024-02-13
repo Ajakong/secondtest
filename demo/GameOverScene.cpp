@@ -18,6 +18,7 @@ GameOverScene::GameOverScene(SceneManager& mgr) :
 	m_DyingSound = LoadSoundMem("BGM/Patrasche.mp3");
 	PlaySoundMem(m_DyingSound, DX_PLAYTYPE_BACK);
 	ChangeVolumeSoundMem(m_fadeSoundFrame, m_DyingSound);
+	
 }
 
 GameOverScene::~GameOverScene()
@@ -75,17 +76,20 @@ void GameOverScene::FadeOutUpdate()
 	if (60 <= m_frame)
 	{
 		
-		m_manager.PopScene();
+		
 		if (m_selectNumber % 2 == 0)
 		{
-			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+			
+			m_manager.PushScene(std::make_shared<GamePlayingScene>(m_manager));
 
 		}
 		if (m_selectNumber % 2 == 1)
 		{
-			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+			
+			m_manager.PushScene(std::make_shared<Title>(m_manager));
 
 		}
+		m_manager.PopScene();
 	}
 }
 

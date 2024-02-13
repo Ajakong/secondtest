@@ -29,7 +29,7 @@ public:
 	/// </summary>
 	/// <param name="nextScene">次のシーン</param>
 	void ChangeScene(std::shared_ptr<Scene> nextScene);
-
+	void InsertScene(std::shared_ptr<Scene> nextScene);
 	/// <summary>
 	/// 現在のシーンの上にシーンを乗っけます
 	/// </summary>

@@ -36,6 +36,14 @@ void SceneManager::ChangeScene(std::shared_ptr<Scene> nextScene)
 	}
 }
 
+void SceneManager::InsertScene(std::shared_ptr<Scene> nextScene)
+{
+	int b = 0;
+	m_scenes.insert(m_scenes.begin(), nextScene);
+}
+
+
+
 void SceneManager::PushScene(std::shared_ptr<Scene> scene)
 {
 	m_scenes.push_back(scene);

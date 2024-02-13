@@ -118,6 +118,8 @@ private:
 	bool m_isPlayerDie=false;
 
 	bool m_isEnemyCreate[10];
+
+	bool m_enemyCreated[ENEMY_TO_PLAYER_NUM];
 	// プレイヤー
 	Player* m_pPlayer;
 	//マップ

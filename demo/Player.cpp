@@ -455,12 +455,10 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	DrawFormatString(100, 300,0xffffff,"left:%f", m_topRay.left);
-	DrawFormatString(100, 400, 0xffffff, "right:%f", m_topRay.right);
+	DrawFormatString(100, 300,0xffffff,"left:%f", m_bottomRay.bottom);
+	//DrawFormatString(100, 400, 0xffffff, "right:%f", m_topRay.right);
 
-	DrawBox(m_pos.x-m_collisionRadius, m_pos.y-m_collisionRadius, m_pos.x+m_collisionRadius, m_pos.y+m_collisionRadius, 0xff00ff, false);
-	DrawBox(m_topRay.left, m_topRay.top, m_topRay.right, m_topRay.bottom, 0x00ff00,false);
-	DrawBox(m_bottomRay.left, m_bottomRay.top, m_bottomRay.right, m_bottomRay.bottom, 0x0000ff, false);
+	
 }
 
 void Player::VelocityToZero()
@@ -616,7 +614,7 @@ void Player::StartUpdate()
 	CollisionUpdate();
 
 	m_pos.x += 2;
-	m_velocity.y+= 0.5f;
+	m_velocity.y+= 0.2f;
 	m_angle += 1.0f;
 	m_pos.y += m_velocity.y;
 	if(m_isGroundFlag==true)

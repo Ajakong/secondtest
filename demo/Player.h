@@ -47,7 +47,8 @@ public:
 	void ToIdle();
 
 	void ToBoss() {
-		m_playerUpdate = &Player::StartUpdate;};
+		m_playerUpdate = &Player::StartUpdate; m_isGroundFlag = false;
+	};
 
 	void GetNewWeapon(int weaponNum);
 

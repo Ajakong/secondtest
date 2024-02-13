@@ -19,6 +19,8 @@ private:
     int m_btnFrame = 0;
     int m_frame;
 
+    
+
     Player* m_player;
     EndRoll* m_endRoll;
 

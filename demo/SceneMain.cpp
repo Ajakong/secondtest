@@ -115,6 +115,10 @@ SceneMain::SceneMain():
 	{
 		m_isEnemyCreate[i]=false;
 	}
+	for (int i = 0; i < ENEMY_TO_PLAYER_NUM; i++)
+	{
+		m_enemyCreated[i] = false;
+	}
 
 	for (int i = 0; i < ENEMY_NUM; i++)m_pEnemy[i] = new EnemyBase{ m_eneDestroySound,m_itenNumber0Graph,m_itemNumber1Graph,m_itemNumber2Graph,m_itemNumber3Graph,m_enemyBaseHandle };
 
@@ -395,11 +399,14 @@ void SceneMain::Draw() const
 
 		for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 		{
-			if (m_pEnemyToPlayer[e] != nullptr)
+			if (m_enemyCreated[e])
 			{
-				m_pEnemyToPlayer[e]->Draw();
-
+				if (m_pEnemyToPlayer[e] != nullptr)
+				{
+					if (m_enemyCreated[e])m_pEnemyToPlayer[e]->Draw();
+				}
 			}
+			
 		}
 		m_pMap->Draw();
 
@@ -416,7 +423,6 @@ void SceneMain::Draw() const
 			m_item[i]->Draw(m_pMap->GetScreenMove());
 		}
 
-		
 		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);
 		DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
@@ -437,7 +443,7 @@ void SceneMain::Draw() const
 
 void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 {
-	
+	m_enemyCreated[enemyNumber] = true;
 	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos,m_enemyDeathSound};
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer,m_enemyToPlayerHandle);
@@ -695,7 +701,7 @@ void SceneMain::NormalUpdate()
 				}
 			}
 
-			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+			/*for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
@@ -704,7 +710,7 @@ void SceneMain::NormalUpdate()
 						m_pEnemyToPlayer[e]==nullptr ;
 					}
 				}
-			}
+			}*/
 		}
 
 		if (m_pBoss != nullptr)
@@ -740,7 +746,7 @@ void SceneMain::NormalUpdate()
 
 	m_item.erase(it, m_item.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 
-	if (bossZone = true)
+	if (bossZone == true)
 	{
 		//余裕があったら
 		//マップの終わりについたらホワイトアウトしてボス戦に移行
@@ -757,4 +763,10 @@ void SceneMain::BossUpdate()
 	m_pBoss->Update();
 
 	Pad::Update();
+
+	if (m_pMap->IsPlayerCollision(m_pPlayer->GetRect(), m_pPlayer->GetBottomRay(), m_pPlayer->GetTopRay(), m_pPlayer->GetColRadius(), m_pPlayer->GetVelocity()) == true)
+	{
+		m_pPlayer->OnMapCollision();
+
+	}
 }

@@ -14,6 +14,8 @@ public:
     virtual void Update();
     virtual void Draw();
 
+    void getSlectNumber(int a) { m_selectNum = a; }
+
 private:
     
     int m_btnFrame = 0;
@@ -38,15 +40,19 @@ private:
 
     bool m_isEndRoll=false;
    
-    int m_selectTitle=false;
+    int m_selectNum=0;
 
     SceneMain* m_Scene;
+
+    
 
     // メンバ関数ポインタの宣言
     using UpdateFunc_t = void (GamePlayingScene::*)();
     using DrawFunc_t = void (GamePlayingScene::*)();
     UpdateFunc_t m_updateFunc = nullptr;
     DrawFunc_t m_drawFunc = nullptr;
+
+
 
     // 更新関数
     void FadeInUpdate();

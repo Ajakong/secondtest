@@ -18,6 +18,9 @@ private:
 	int m_frame = 0;
 	int m_select = 0;
 
+	int m_tutoHandle = 0;
+
+	bool m_tutoFlag=false;
 	// 更新メンバ関数ポインタ
 	using UpdateFunc_t = void(PauseScene::*)();
 	UpdateFunc_t  m_updateFunc;
