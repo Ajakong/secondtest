@@ -69,7 +69,19 @@ void PauseScene::NormalUpdate()
 			m_updateFunc = &PauseScene::DisappearUpdate;
 			m_drawFunc = &PauseScene::ExpandDraw;
 		}
-		if(m_select % 3 == 1|| m_select % 3 == -2)
+		else
+		{
+			if (m_tutoFlag)
+			{
+				m_tutoFlag = false;
+			}
+			else
+			{
+				m_tutoFlag = true;
+
+			}
+		}
+		/*if(m_select % 3 == 1|| m_select % 3 == -2)
 		{
 			if (m_tutoFlag)
 			{
@@ -87,7 +99,7 @@ void PauseScene::NormalUpdate()
 			m_manager.PopScene();
 			
 			m_manager.InsertScene(std::make_shared<Title>(m_manager));
-		}
+		}*/
 	}
 	
 }
@@ -131,25 +143,25 @@ void PauseScene::NormalDraw()
 		0x888888, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawString(100, 100, "Pause Scene", 0xffffff);
+	DrawRotaString(650, 300, 6, 6, 0, 0, 0, 0xffffbb, 0, 0, "Pause");
 
-	DrawString(800, 500, "ゲームに戻る", 0xffffff);
-	DrawString(830, 600, "操作説明", 0xffffff);
-	DrawString(810, 700, "タイトルへ", 0xffffff);
+	DrawString(750, 500, "ゲームに戻る", 0xffffff);
+	DrawString(770, 600, "操作説明", 0xffffff);
+	//DrawString(810, 700, "タイトルへ", 0xffffff);
 
-	SetDrawBlendMode(DX_BLENDMODE_MULA, 255 / 3);
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255 / 3);
 	if (m_select % 3 == 0)
 	{
-		DrawBox(770, 50, 970, 580, 0xffffff, true);
+		DrawBox(700, 480, 900, 550, 0xffffff, true);
 	}
 	if (m_select % 3 == 1 || m_select % 3 == -2)
 	{
-		DrawBox(770, 600, 970, 680, 0xffffff, true);
+		DrawBox(700, 580, 900, 650, 0xffffff, true);
 	}
-	if (m_select % 3 == 2 || m_select % 3 == -1)
+	/*if (m_select % 3 == 2 || m_select % 3 == -1)
 	{
-		DrawBox(770, 700, 970, 780, 0xffffff, true);
-	}
+		DrawBox(770, 680, 970, 750, 0xffffff, true);
+	}*/
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 

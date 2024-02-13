@@ -16,7 +16,8 @@
 GamePlayingScene::GamePlayingScene(SceneManager& manager) :
 	Scene(manager),
 	m_punishmentRange(1.0f),
-	m_frame(60)
+	m_frame(60),
+	m_toTitle(false)
 {
 	m_Scene = new SceneMain;
 	m_Scene->Init();
@@ -90,6 +91,12 @@ void GamePlayingScene::NormalUpdate()
 	{
 		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
 	}
+
+	if (m_Scene->OnHitTitle())
+	{
+		m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+		
+	}
 }
 
 void GamePlayingScene::FadeOutUpdate()
@@ -113,12 +120,12 @@ void GamePlayingScene::PlayerLightingUpdate()
 	{
 		if (200 <= m_lightingFrame)
 		{
-			if (m_selectNum==1)
+			if (m_selectNum==0)
 			{
 				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
 				
 			}
-			if (m_selectNum == 0)
+			if (m_selectNum == 1)
 			{
 				m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 			}
@@ -142,12 +149,13 @@ void GamePlayingScene::PunishmentUpdate()
 			m_Scene->OnBossZorn();
 			m_updateFunc = &GamePlayingScene::NormalUpdate;
 			m_drawFunc = &GamePlayingScene::NormalDraw;
+			m_toTitle = true;
 
-			//if (m_isEndRoll)
-			//{
-			//	m_manager.ChangeScene(std::make_shared<Title>(m_manager));
-			//	m_selectTitle = true;
-			//}
+			/*if (m_isEndRoll)
+			{
+				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+				m_selectTitle = true;
+			}*/
 			//if (!m_isEndRoll)
 			//{
 			//	
@@ -161,7 +169,7 @@ void GamePlayingScene::PunishmentUpdate()
 void GamePlayingScene::FadeDraw()
 {
 	m_Scene->Draw();
-	DrawString(10, 100, "GamePlayingScene", 0xffffff);
+	//DrawString(10, 100, "GamePlayingScene", 0xffffff);
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(0, 0, 1600, 900, 0x000000, true);
@@ -171,8 +179,8 @@ void GamePlayingScene::FadeDraw()
 void GamePlayingScene::NormalDraw()
 {
 	m_Scene->Draw();
-	DrawString(10, 100, "GamePlayingScene", 0xffffff);
-	DrawFormatString(10, 10, 0xffffff, "fps = %2.2f", m_fps);
+	//DrawString(10, 100, "GamePlayingScene", 0xffffff);
+	//DrawFormatString(10, 10, 0xffffff, "fps = %2.2f", m_fps);
 	auto& app = Application::GetInstance();
 	auto size = app.GetWindowSize();
 	int idx = m_btnFrame / 10 % 3;

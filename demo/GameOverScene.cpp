@@ -77,18 +77,18 @@ void GameOverScene::FadeOutUpdate()
 	{
 		
 		
-		if (m_selectNumber % 2 == 0)
+		/*if (m_selectNumber % 2 == 0)
 		{
 			
-			m_manager.PushScene(std::make_shared<GamePlayingScene>(m_manager));
+			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 
 		}
 		if (m_selectNumber % 2 == 1)
 		{
 			
-			m_manager.PushScene(std::make_shared<Title>(m_manager));
+			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
 
-		}
+		}*/
 		m_manager.PopScene();
 	}
 }

@@ -24,7 +24,7 @@ namespace
 
 EnemyToPlayerDir::EnemyToPlayerDir(Vec2 pos, int deathSound):
 	m_isDeathFlag(false),
-	m_Hp(24),
+	m_Hp(20),
 	m_pos(0.0f, 0.0f),
 	m_velocity(0.0f, 0.0f),
 	animFrameMana(0, 0),
@@ -317,8 +317,8 @@ void EnemyToPlayerDir::NeutralUpdate()
 				animFrameMana.x = 0;
 			}
 		}
-		m_moveEffect.push_back(std::make_shared<EnemyMoveEffect>());
-		for (int i = m_moveEffect.size() - 1; i < m_moveEffect.size(); i++)
+		
+		//for (int i = m_moveEffect.size() - 1; i < m_moveEffect.size(); i++)
 		{
 			m_enemyMoveEffectOffsetY = GetRand(50)+50;
 			if (m_velocity.x > 0)
@@ -329,9 +329,10 @@ void EnemyToPlayerDir::NeutralUpdate()
 			{
 
 			}
-			if (m_enemyWalkEffectFrame > 10)
+			if (m_enemyWalkEffectFrame > 5)
 			{
-				m_moveEffect[i]->CreateEffect(m_footPos, 0, m_enemyMoveEffectOffsetY,m_screenMove);
+				m_moveEffect.push_back(std::make_shared<EnemyMoveEffect>());
+				m_moveEffect.back()->CreateEffect(m_footPos, 0, m_enemyMoveEffectOffsetY, m_screenMove);
 				m_enemyWalkEffectFrame = 0;
 			}
 			

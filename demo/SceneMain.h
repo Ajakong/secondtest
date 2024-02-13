@@ -73,6 +73,8 @@ public:
 
 	void AddScore(int score) { m_score += score; }
 
+	bool OnHitTitle() { return m_isHitTitle; }
+
 	void NormalUpdate();
 	void BossUpdate();
 
@@ -120,6 +122,8 @@ private:
 	bool m_isEnemyCreate[10];
 
 	bool m_enemyCreated[ENEMY_TO_PLAYER_NUM];
+
+	bool m_isHitTitle = false;
 	// プレイヤー
 	Player* m_pPlayer;
 	//マップ

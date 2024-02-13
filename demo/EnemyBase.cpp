@@ -24,7 +24,7 @@ namespace
 
 EnemyBase::EnemyBase(int sound,int fullAutoGunGraph,int spreadGraph,int laserItem,int CircleBulletItem,int handle) :
 	m_isDeathFlag(false),
-	m_Hp(50),
+	m_Hp(20),
 	m_pos(500.0f,200.0f),
 	m_velocity(0.0f,0.0f),
 	animFrameMana(0,0),

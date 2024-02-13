@@ -77,7 +77,7 @@ SceneMain::SceneMain():
 	m_enePos[2] = Vec2(6000, 50);
 	m_enePos[3] = Vec2(6500, 50);
 	m_enePos[4] = Vec2(7100, 50);
-	m_enePos[5] = Vec2(5000, 50);
+	m_enePos[5] = Vec2(500, 50);
 	m_enePos[6] = Vec2(5500, 500);
 
 	m_eneToPlayerPos[0] = Vec2(800, 100);
@@ -403,7 +403,7 @@ void SceneMain::Draw() const
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
-					if (m_enemyCreated[e])m_pEnemyToPlayer[e]->Draw();
+					m_pEnemyToPlayer[e]->Draw();
 				}
 			}
 			
@@ -423,8 +423,8 @@ void SceneMain::Draw() const
 			m_item[i]->Draw(m_pMap->GetScreenMove());
 		}
 
-		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);
-		DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
+		DrawFormatString(100, 0, 0xffffff, "score:%d", m_score);
+		//DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
 	else
 	{
@@ -769,4 +769,24 @@ void SceneMain::BossUpdate()
 		m_pPlayer->OnMapCollision();
 
 	}
+
+	Rect toTitle;
+	toTitle.bottom = 400;
+	toTitle.left = 1200;
+	toTitle.right = 1400;
+	toTitle.top = 0;
+	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	{
+		if (m_pShot[i] != nullptr)
+		{
+			
+			if (m_pShot[i]->GetShotColli(toTitle))
+			{
+				m_isHitTitle = true;
+			}
+		}
+	}
+	
+	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
+	
 }

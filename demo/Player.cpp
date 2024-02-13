@@ -64,7 +64,7 @@ Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 
 Player::Player()://クリアシーン用のコンストラクタ
 	m_pos(0, 50),
-	m_Hp(30),
+	m_Hp(10),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f, 0.0f),
@@ -455,7 +455,7 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	DrawFormatString(100, 300,0xffffff,"left:%f", m_bottomRay.bottom);
+	//DrawFormatString(100, 300,0xffffff,"left:%f", m_bottomRay.bottom);
 	//DrawFormatString(100, 400, 0xffffff, "right:%f", m_topRay.right);
 
 	

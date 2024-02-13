@@ -114,7 +114,7 @@ void Map::Draw()
 		DrawBox(0, Game::kScreenHeight - 100, Game::kScreenWidth, Game::kScreenHeight, 0xffffff, true);
 	}
 	
-	DrawFormatString(300, 500, 0xff0000, "%d", 26*kChipWidth-screenMove);
+	//DrawFormatString(300, 500, 0xff0000, "%d", 26*kChipWidth-screenMove);
 }
 
 bool Map::IsPlayerCollision(Rect& rect, int colRadius, Vec2 velo)
@@ -162,7 +162,7 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 						if (w * kChipWidth + kChipWidth - screenMove > bottomRay.left + velo.x && w * kChipWidth - screenMove < bottomRay.right + velo.x)
 						{
 
-							if (!RectCollision(topRay, w, velo.x))
+							if (!RectCollision(topRay, w, velo.x)||m_player->GetPos().x<60)
 							{
 								if (velo.y > 0)
 								{

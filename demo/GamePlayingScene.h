@@ -39,6 +39,7 @@ private:
 
 
     bool m_isEndRoll=false;
+    bool m_toTitle = false;
    
     int m_selectNum=0;
 
