@@ -380,8 +380,6 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 				m_pPlayer->GetNewWeapon(m_item[i]->GetWeaponNum());
 			}
 		}
-
-
 	}
 }
 
@@ -576,12 +574,18 @@ void SceneMain::NormalUpdate()
 		{
 			m_pMap->OnScreenMoveAdd(m_pPlayer->GetVelocity().x);
 
+			if (m_pPlayer->GetPos().x > Game::kScreenWidth * 3 / 5)
+			{
+				m_pPlayer->GetPos(m_pPlayer->GetPos().x- Game::kScreenWidth * 3 / 5);
+
+			}
+			
 			m_pMap->Update();
 			if (!bossZone)
 			{
-				if (m_pMap->GetScreenMove() + m_pPlayer->GetPos().x > 6500)
+				if (m_pMap->GetScreenMove() >= 6500)
 				{
-					m_pMap->GetScreenMove(6500);
+					m_pMap->GetScreenMove(6500-m_pPlayer->GetPos().x);
 					m_screenMove = m_pMap->GetScreenMove();
 
 					m_pPlayer->OnClear();
