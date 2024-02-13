@@ -162,7 +162,7 @@ bool Map::IsPlayerCollision(Rect& rect,Rect& bottomRay, Rect& topRay, int colRad
 						if (w * kChipWidth + kChipWidth - screenMove > bottomRay.left + velo.x && w * kChipWidth - screenMove < bottomRay.right + velo.x)
 						{
 
-							if (!RectCollision(topRay, w, velo.x)||m_player->GetPos().x<60)
+							if (!RectCollision(topRay, w, velo.x)||m_player->GetPos().x<60||m_player->GetPos().x>Game::kScreenWidth*3/5)
 							{
 								if (velo.y > 0)
 								{
