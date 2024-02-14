@@ -217,6 +217,10 @@ bool EnemyBase::OnDie()
 	{
 		if (m_EneDeathEffect[i]->GetOnDestroy())
 		{
+			m_colRect.top = -5000;
+			m_colRect.bottom = -5000;
+			m_colRect.left = -5000;
+			m_colRect.right = -5000;
 			return m_isDeathFlag;
 		}
 	}

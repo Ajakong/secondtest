@@ -341,7 +341,7 @@ void EnemyToPlayerDir::NeutralUpdate()
 
 		m_enemyWalkEffectFrame++;
 		m_pos += m_velocity;
-		m_footPos.x = m_colRect.right;
+		m_footPos.x = (m_colRect.right+m_colRect.left)/2;
 		m_footPos.y = m_pos.y;
 		
 	}

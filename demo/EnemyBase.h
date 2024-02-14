@@ -46,6 +46,8 @@ public:
 
 	void GetSceneMain(SceneMain* sceneMain) { m_WorldMana = sceneMain; }
 
+	bool GetDeathFlag() { return m_isDeathFlag; }
+
 	Rect GetCollRect()const { return m_colRect; }
 	Vec2 GetEnePos() { return m_pos; }
 
