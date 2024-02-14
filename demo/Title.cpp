@@ -90,28 +90,38 @@ void Title::FadeInStringUpdate()
 	m_rightsNotationY -= 7;
 	if (0 >= m_fadeFrame)
 	{
-		m_updateFunc = &Title::NormalUpdate;
+		m_updateFunc = &Title::NormalStringUpdate;
+		m_drawFunc = &Title::NormalStringDraw;
 
 	}
 }
 
 void Title::NormalStringUpdate()
 {
-	if (Pad::IsTrigger(PAD_INPUT_DOWN))
+	if (Pad::IsTrigger(PAD_INPUT_DOWN) && !m_isrightsNotation)
 	{
 		m_selectNumber--;
 	}
-	if (Pad::IsTrigger(PAD_INPUT_UP))
+	if (Pad::IsTrigger(PAD_INPUT_UP)&&!m_isrightsNotation)
 	{
 		m_selectNumber++;
 	}
-	if (Pad::IsTrigger(PAD_INPUT_1))
+	if (Pad::IsTrigger(PAD_INPUT_1) && !m_isrightsNotation)
 	{
-		m_updateFunc = &Title::FadeOutStringUpdate;
-		m_drawFunc = &Title::FadeStringDraw;
+		if (m_selectNumber % 2 == 0)
+		{
+			m_updateFunc = &Title::FadeOutStringUpdate;
+			m_drawFunc = &Title::FadeStringDraw;
+		}
+		else
+		{
+			m_isrightsNotation = true;
+		}
 	}
-
-
+	else if (Pad::IsTrigger(PAD_INPUT_1) && m_isrightsNotation)
+	{
+		m_isrightsNotation = false;
+	}
 }
 
 void Title::NormalUpdate()
@@ -148,9 +158,9 @@ void Title::FadeOutUpdate()
 	if (60 <= m_fadeFrame)
 	{
 		StopSoundMem(m_bgmHandle);
-		/*m_updateFunc = &Title::FadeInStringUpdate;
+		m_updateFunc = &Title::FadeInStringUpdate;
 		m_drawFunc = &Title::FadeStringDraw;
-		*/m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+		//m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 	}
 }
 
@@ -161,7 +171,6 @@ void Title::FadeOutStringUpdate()
 	if (60 <= m_fadeFrame)
 	{
 		m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
-
 	}
 	
 }
@@ -269,6 +278,10 @@ void Title::NormalDraw()
 	{
 		m_stringColorPlusA = 0;
 	}
+	if (m_isrightsNotation)
+	{
+		//Œ —˜•\‹L
+	}
 	
 }
 
@@ -281,10 +294,32 @@ void Title::NormalStringDraw()
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
 	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
-	DrawBox(drawStringPosX, drawStringPosY, drawStringPosX + 1000, drawStringPosY + 20, 0xff0000, true);
-	DrawBox(drawStringPosX, drawStringPosY + 20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
-	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
 	
+	
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, 255/4);
+	DrawBox(drawStringPosX, drawStringPosY - 45 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);
+	DrawBox(drawStringPosX, drawStringPosY - 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 15 + m_stringColorPlusA, 0xddffff, true);
+	DrawBox(drawStringPosX, drawStringPosY - 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 0 + m_stringColorPlusA, 0xffddff, true);
+	DrawBox(drawStringPosX, drawStringPosY + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 15 + m_stringColorPlusA, 0xffdddd, true);
+	DrawBox(drawStringPosX, drawStringPosY + 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 30 + m_stringColorPlusA, 0xddffdd, true);
+	DrawBox(drawStringPosX, drawStringPosY + 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 45 + m_stringColorPlusA, 0xddddff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_ADD, 255 / 3);
+
+	if (m_selectNumber % 2 == 0)
+	{
+		DrawBox(drawStringPosX + 100, drawStringPosY + m_gameStartY, drawStringPosX +350, drawStringPosY + m_gameStartY + 50, 0xffffff, true);
+	}
+	else
+	{
+
+		DrawBox(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, drawStringPosX + 430, drawStringPosY + m_rightsNotationY + 50, 0xffffff, true);
+
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 }
 
 void Title::JammingDraw()

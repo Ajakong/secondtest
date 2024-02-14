@@ -34,9 +34,10 @@ private:
 	int m_selectNumber = 0;
 	int m_pressAnyButtonY = 0;
 	int m_gameStartY = 430;
-	int m_rightsNotationY = 500;
+	int m_rightsNotationY = 530;
 
 	bool m_isSelectMode = false;
+	bool m_isrightsNotation = false;
 	Particle* m_particle;
 
 	// 更新メンバ関数ポインタ
