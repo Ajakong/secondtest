@@ -37,6 +37,7 @@ Title::Title(SceneManager& manager) :
 
 	m_bgmHandle = LoadSoundMem("BGM/titleBgm.mp3");
 	m_jammingSound = LoadSoundMem("SE/jamming.mp3");
+	m_rightsHandle = LoadGraph("data/Rights.png");
 	ChangeVolumeSoundMem(150, m_jammingSound);
 	PlaySoundMem(m_bgmHandle,DX_PLAYTYPE_LOOP);
 
@@ -111,7 +112,7 @@ void Title::NormalStringUpdate()
 		if (m_selectNumber % 2 == 0)
 		{
 			m_updateFunc = &Title::FadeOutStringUpdate;
-			m_drawFunc = &Title::FadeStringDraw;
+			m_drawFunc = &Title::FadeOutStringDraw;
 		}
 		else
 		{
@@ -237,6 +238,42 @@ void Title::FadeStringDraw()
 	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(0, drawStringPosY,2000, 2000, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(drawStringPosX, drawStringPosY, drawStringPosX + 1000, drawStringPosY + 20, 0xff0000, true);
+	DrawBox(drawStringPosX, drawStringPosY + 20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
+	DrawBox(drawStringPosX, drawStringPosY + 350, drawStringPosX + 1000, drawStringPosY + 35, 0x0000ff, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+}
+
+void Title::FadeOutStringDraw()
+{
+	m_particle->Draw();
+	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
+
+	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+
+
+	// フェード暗幕
+	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "Press any button");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
+	DrawBox(0, 0, 2000, 2000, 0x000000, true);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	DrawBox(drawStringPosX, drawStringPosY, drawStringPosX + 1000, drawStringPosY + 20, 0xff0000, true);
 	DrawBox(drawStringPosX, drawStringPosY + 20, drawStringPosX + 1000, drawStringPosY + 35, 0x00ff00, true);
@@ -278,10 +315,8 @@ void Title::NormalDraw()
 	{
 		m_stringColorPlusA = 0;
 	}
-	if (m_isrightsNotation)
-	{
-		//権利表記
-	}
+
+	
 	
 }
 
@@ -320,6 +355,10 @@ void Title::NormalStringDraw()
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
+	if (m_isrightsNotation)
+	{
+		DrawRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight / 2, 1, 0, m_rightsHandle, true);
+	}
 }
 
 void Title::JammingDraw()

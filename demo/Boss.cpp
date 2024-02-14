@@ -23,7 +23,7 @@ namespace
 Boss::Boss(SceneMain* mana) :
 	m_isDeathFlag(false),
 	m_Hp(1600),
-	m_pos(8000.0f, 0.0f),
+	m_pos(0.0f, 0.0f),
 	m_velocity(0.0f, 0.0f),
 	animFrameMana(0, 0),
 	m_fireDir(1.0f, 0.0f),
@@ -67,14 +67,15 @@ void Boss::CollisionUpdate()
 void Boss::Update()
 {
 	CollisionUpdate();
+	m_velocity.y = 1;
 	MissilePoint.x = m_pos.x + 320;
 	MissilePoint.y = m_pos.y + 420;
 
 	m_attackFrame++;
 	
-	m_velocity.x = (m_targetPos.x - m_pos.x) * (m_targetPos.x - m_pos.x);
+	/*m_velocity.x = (m_targetPos.x - m_pos.x) * (m_targetPos.x - m_pos.x);
 	m_velocity.y = (m_targetPos.y - m_pos.y) * (m_targetPos.y - m_pos.y);
-	m_distance = sqrt(m_velocity.x + m_velocity.y);
+	m_distance = sqrt(m_velocity.x + m_velocity.y);*/
 
 	m_bossSphere->Update();
 		if (m_distance < 1000)
@@ -98,6 +99,8 @@ void Boss::Update()
 				}
 			}
 		}
+
+		m_pos += m_velocity;
 }
 
 void Boss::Draw()
@@ -118,6 +121,15 @@ void Boss::Draw()
 	////////////
 	//m_bossSphere->Draw();
 }
+
+void Boss::OnMapCol(Vec2 colRange)
+{
+	m_isMapCol = true;
+	m_pos.y = m_colRect.bottom - 80;
+	m_pos += colRange;
+}
+
+
 
 void Boss::OnHitShot()
 {

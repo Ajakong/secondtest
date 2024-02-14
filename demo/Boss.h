@@ -15,7 +15,7 @@ public:
 	virtual void Update();
 	void Draw();
 
-	
+	void OnMapCol(Vec2 colRange);
 
 	void OnDamage(int Atk) { m_Hp - Atk; }
 
@@ -34,21 +34,23 @@ public:
 	Vec2 GetEnePos() { return m_pos; }
 
 private:
-	int m_Hp;
+	int m_Hp=0;
 
-	int m_handle;
+	int m_handle=0;
 
-	int m_attackFrame;
+	int m_attackFrame=0;
 
-	int m_shotGraph;
+	int m_shotGraph=0;
 
-	int m_distance;
+	int m_distance=0;
 
-	int m_screenMove;
+	int m_screenMove=0;
 
-	bool m_isShotCollFlag;
+	bool m_isShotCollFlag=false;
 
-	bool m_isDeathFlag;
+	bool m_isDeathFlag=false;
+
+	bool m_isMapCol = false;
 
 	Vec2 m_targetPos;
 	Vec2 m_fireDir;//Æ€‚Ì•ûŒü
@@ -73,7 +75,7 @@ private:
 	std::shared_ptr<BossSphere> m_bossSphere;
 
 	//’e‚Ì”­Ëƒtƒ‰ƒO
-	bool shotBulletFlag;
+	bool shotBulletFlag=false;
 
 	///////////////////////////////
 

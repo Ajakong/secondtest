@@ -449,7 +449,7 @@ void SceneMain::Draw() const
 
 		if (m_pBoss != nullptr)
 		{
-			m_pBoss->Draw();
+			//m_pBoss->Draw();
 		}
 
 		m_pMap->Draw();
@@ -795,6 +795,6 @@ void SceneMain::BossUpdate()
 	
 	
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
-	DrawRotaGraph(1200, 330,0.5f,0, m_targetHandle, true);
+	DrawRotaGraph(1250, 330,0.5f,0, m_targetHandle, true);
 	
 }

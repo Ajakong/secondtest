@@ -35,6 +35,7 @@ private:
 	int m_pressAnyButtonY = 0;
 	int m_gameStartY = 430;
 	int m_rightsNotationY = 530;
+	int m_rightsHandle = 0;
 
 	bool m_isSelectMode = false;
 	bool m_isrightsNotation = false;
@@ -60,6 +61,7 @@ private:
 	// 描画関数
 	void FadeDraw();	// フェード中描画
 	void FadeStringDraw();
+	void FadeOutStringDraw();
 	void NormalDraw();	// 非フェード描画
 	void NormalStringDraw();	// 非フェード描画
 	void JammingDraw();

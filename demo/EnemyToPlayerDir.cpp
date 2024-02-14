@@ -367,6 +367,7 @@ void EnemyToPlayerDir::NeutralUpdate()
 	if (m_pos.x < 0)
 	{
 		m_velocity.x *= -1;
+		m_isRight = true;
 	}
 }
 
