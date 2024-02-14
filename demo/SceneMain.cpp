@@ -407,7 +407,6 @@ void SceneMain::Draw() const
 			if (m_pEnemy[e] != nullptr)m_pEnemy[e]->Draw();
 		}
 		
-
 		for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 		{
 			if (m_enemyCreated[e])
@@ -417,7 +416,6 @@ void SceneMain::Draw() const
 					m_pEnemyToPlayer[e]->Draw();
 				}
 			}
-			
 		}
 		m_pMap->Draw();
 
@@ -438,8 +436,8 @@ void SceneMain::Draw() const
 		DrawRotaFormatString(100, Game::kScreenHeight - 75, 2.5, 2.5, 0, 0, 0, 0xffffff, 0, 0, "Hp:%d", m_pPlayer->GetHp());
 
 
-		DrawBox(1300, Game::kScreenHeight - 90, 1380, Game::kScreenHeight - 10, 0xffffff, false);
-		DrawGraph(1300, Game::kScreenHeight - 90, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
+		DrawBox(10, Game::kScreenHeight - 90, 90, Game::kScreenHeight - 10, 0xffffff, false);
+		DrawGraph(10, Game::kScreenHeight - 90, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
 
 		//DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
@@ -454,7 +452,11 @@ void SceneMain::Draw() const
 
 		m_pMap->Draw();
 
+		DrawFormatString(100, 0, 0xffffff, "score:%d", m_score);
 		DrawRotaFormatString(100, Game::kScreenHeight - 100,3,3,0,0,0, 0xffffff,0,0, "Hp:%d", m_pPlayer->GetHp());
+
+		DrawBox(10, Game::kScreenHeight - 90, 90, Game::kScreenHeight - 10, 0xffffff, false);
+		DrawGraph(10, Game::kScreenHeight - 90, m_BulletKindNum[ m_pPlayer->GetKindOfBullet() ], true);
 	}
 }
 
