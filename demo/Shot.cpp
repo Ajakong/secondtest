@@ -73,7 +73,7 @@ void Shot::Draw()
 {
 	if (m_isInVisible == false)
 	{
-		DrawGraph(m_shotPos.x+(m_firstScreenMove-m_screenMove), m_shotPos.y, m_handle, true);
+		DrawGraph(m_shotPos.x-m_screenMove, m_shotPos.y, m_handle, true);
 	}
 	if (effectFlag == true)
 	{
@@ -95,10 +95,10 @@ bool Shot::GetShotColli(const Rect& rect)
 	{
 		if (m_shotPos.y - m_radius <= rect.bottom && m_shotPos.y + m_radius >= rect.top)
 		{
-			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
+			if (m_shotPos.x + m_radius-m_screenMove >= rect.left && m_shotPos.x - m_radius-m_screenMove <= rect.right)
 			{
 				m_shotEffect = make_shared<ShotEffect>();
-				m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove);
+				m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove-m_screenMove);
 				effectFlag = true;
 				m_isInVisible = true;
 				return true;
@@ -108,14 +108,9 @@ bool Shot::GetShotColli(const Rect& rect)
 	return false;
 }
 
-void Shot::GetFirstScreenMove(int screenmove)
+void Shot::GetScreenMove(int velocity)
 {
-	m_firstScreenMove = screenmove;
-}
-
-void Shot::GetScreenMove(int screenMove)
-{
-	m_screenMove = screenMove;
+	m_screenMove += velocity;
 }
 
 void Shot::OnMapCol()

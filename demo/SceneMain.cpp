@@ -525,7 +525,7 @@ void SceneMain::AddShot(std::shared_ptr<Shot> shot)
 		if(m_pShot[i]==nullptr)
 		{
 			m_pShot[i] = shot.get();
-			m_pShot[i]->GetFirstScreenMove(m_pMap->GetScreenMove());
+			
 			break;
 		}
 	}
