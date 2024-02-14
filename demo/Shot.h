@@ -11,7 +11,7 @@ class EnemyBase;
 class ShotEffect;
 
 
-class Shot : public Object
+class Shot
 {
 public:
 	Shot();
@@ -33,7 +33,10 @@ public:
 
 	Vec2 GetPos() { return m_shotPos; }
 
+	void GetFirstScreenMove(int screenmove);
+
 	void GetScreenMove(int screenmove);
+
 
 	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 
@@ -59,7 +62,7 @@ private:
 	Sqhere m_collider;
 
 	int m_radius=0;
-
+	int m_firstScreenMove = 0;
 	
 
 	bool m_isInVisible = true;

@@ -48,15 +48,19 @@ private:
 	// 更新関数
 	void FadeInUpdate();	// フェードイン状態
 	void FadeInStringUpdate();
+	void NormalStringUpdate();	// 通常状態
 	void NormalUpdate();	// 通常状態
 	void FadeOutUpdate();	// フェードアウト状態
 	void FadeOutStringUpdate();
+	
+
 	void JammingUpdate();
 
 	// 描画関数
 	void FadeDraw();	// フェード中描画
 	void FadeStringDraw();
 	void NormalDraw();	// 非フェード描画
+	void NormalStringDraw();	// 非フェード描画
 	void JammingDraw();
 };
 

@@ -16,7 +16,7 @@ Shot::Shot() :
 	m_isDestroy(false),
 	effectFlag(false)
 {
-	
+	m_firstScreenMove = 0;
 }
 
 Shot::~Shot()
@@ -26,6 +26,7 @@ Shot::~Shot()
 void Shot::Init()
 {
 	GetGraphSizeF(m_handle, &m_graphSize.x, &m_graphSize.y);
+	
 }
 
 void Shot::Update()
@@ -72,7 +73,7 @@ void Shot::Draw()
 {
 	if (m_isInVisible == false)
 	{
-		DrawGraph(m_shotPos.x, m_shotPos.y, m_handle, true);
+		DrawGraph(m_shotPos.x+(m_firstScreenMove-m_screenMove), m_shotPos.y, m_handle, true);
 	}
 	if (effectFlag == true)
 	{
@@ -107,9 +108,14 @@ bool Shot::GetShotColli(const Rect& rect)
 	return false;
 }
 
-void Shot::GetScreenMove(int screenmove)
+void Shot::GetFirstScreenMove(int screenmove)
 {
-	m_screenMove = screenmove;
+	m_firstScreenMove = screenmove;
+}
+
+void Shot::GetScreenMove(int screenMove)
+{
+	m_screenMove = screenMove;
 }
 
 void Shot::OnMapCol()

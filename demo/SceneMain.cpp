@@ -236,7 +236,7 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pLaser->OnLaserCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 				{
-					m_pEnemyToPlayer[e]->OnDamage(5);
+					m_pEnemyToPlayer[e]->OnDamage(5.0f);
 				}
 			}
 		}
@@ -246,7 +246,7 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 				{
-					m_pEnemy[e]->OnDamage(0.05f);
+					m_pEnemy[e]->OnDamage(5.0f);
 				}
 			}
 		}
@@ -283,7 +283,7 @@ void SceneMain::CollisionUpdate()
 			if (m_pShot[i] != nullptr)
 			{
 				//m_pShot[i]->GetScreenMove(m_pPlayer->GetVelocity().x);
-
+				
 				if (m_pMap->IsCollision(m_pShot[i]->GetPos(), m_pShot[i]->GetRadius())==true)
 				{
 					m_pShot[i]->OnMapCol();
@@ -525,6 +525,7 @@ void SceneMain::AddShot(std::shared_ptr<Shot> shot)
 		if(m_pShot[i]==nullptr)
 		{
 			m_pShot[i] = shot.get();
+			m_pShot[i]->GetFirstScreenMove(m_pMap->GetScreenMove());
 			break;
 		}
 	}
@@ -698,7 +699,7 @@ void SceneMain::NormalUpdate()
 			{
 				if (m_pShot[i] != nullptr)
 				{
-					m_pShot[i]->GetScreenMove(m_pMap->GetScreenMove());
+					
 				}
 			}
 

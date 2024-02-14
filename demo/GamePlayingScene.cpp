@@ -26,7 +26,7 @@ GamePlayingScene::GamePlayingScene(SceneManager& manager) :
 	m_holySoundHandle = LoadSoundMem("SE/HolyLight.mp3");
 	m_stageBgm = LoadSoundMem("BGM/stageBgm.mp3");
 	m_DyingSound = LoadSoundMem("BGM/Patrasche.mp3");
-	PlaySoundMem(m_stageBgm,DX_PLAYTYPE_BACK);
+	PlaySoundMem(m_stageBgm, DX_PLAYTYPE_LOOP);
 	ChangeVolumeSoundMem(250, m_stageBgm);
 }
 
