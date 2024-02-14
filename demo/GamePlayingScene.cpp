@@ -120,19 +120,31 @@ void GamePlayingScene::PlayerLightingUpdate()
 	{
 		if (200 <= m_lightingFrame)
 		{
-			if (m_selectNum==0)
-			{
-				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
-				
-			}
-			if (m_selectNum == 1)
-			{
-				m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
-			}
-			if(!m_isEndRoll)
+			/*if (!m_isEndRoll)
 			{
 				m_isEndRoll = true;
 				m_manager.PushScene(std::make_shared<GameOverScene>(m_manager));
+			}*/
+
+			if (Pad::IsTrigger(PAD_INPUT_1))
+			{
+				if (m_selectNum == 1)
+				{
+					m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+
+				}
+				if (m_selectNum == 0)
+				{
+					m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+				}
+			}
+			if (Pad::IsTrigger(PAD_INPUT_DOWN))
+			{
+				m_selectNum++;
+			}
+			if (Pad::IsTrigger(PAD_INPUT_UP))
+			{
+				m_selectNum--;
 			}
 		}
 	}
@@ -201,9 +213,33 @@ void GamePlayingScene::PlayerLightingDraw()
 	{
 		DrawLine(LightingPos - 25 - i / 5, i, LightingPos + 25 + i / 5, i, 0x222222, i / 100);
 	}
+	
 	SetDrawBlendMode(DX_BLENDMODE_SUB, alpha);
 	DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	if (200 <= m_lightingFrame)
+	{
+		DrawString(1000, 500, "Continue", 0xffffff);
+		DrawString(1000, 600, "To Title", 0xffffff);
+		DrawString(1450, 800, "Aƒ{ƒ^ƒ“‚ÅŒˆ’è", 0xffffff);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, 255 / 3);
+		if (m_selectNum % 2 == 0)
+		{
+			DrawBox(950, 470, 1200, 530, 0xffffff, true);
+		}
+		if (m_selectNum % 2 != 0)
+		{
+			DrawBox(950, 570, 1200, 630, 0xffffff, true);
+		}
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+	
+
+	auto& app = Application::GetInstance();
+	auto size = app.GetWindowSize();
+	int idx = m_btnFrame / 10 % 3;
+	constexpr int kButtonSize = 16;
+	constexpr float kBtnScale = 3.0f;
 }
 
 void GamePlayingScene::PunishmentDraw()

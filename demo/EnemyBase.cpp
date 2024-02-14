@@ -193,7 +193,7 @@ void EnemyBase::OnHitShot()
 			}
 
 			PlaySoundMem(m_deathSoundHandle, DX_PLAYTYPE_BACK);
-			m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x - m_screenMove + 20, m_pos.y + 25));
+			m_EneDeathEffect.push_back(std::make_shared<EneDeathEffect>(m_pos.x + 20, m_pos.y + 25));
 			m_WorldMana->AddScore(2000000);
 			m_WorldMana->AddItem(m_item);
 			m_isDeathFlag = true;

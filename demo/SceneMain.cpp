@@ -47,6 +47,8 @@ SceneMain::SceneMain():
 	m_playerShotSound = LoadSoundMem("SE/shot.mp3");
 	m_playerDamageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 	m_laserSound = LoadSoundMem("SE/laser.mp3");
+	m_hitShotToEnemyHandle = LoadSoundMem("SE/HitShotEnemy.mp3");
+	m_hitShotToEnemyBaseHandle = LoadSoundMem("SE/HitShotEnemyBase.mp3");
 
 	for (auto& shot : m_pShot)
 	{
@@ -192,6 +194,7 @@ void SceneMain::CollisionUpdate()
 				{
 					if (m_pShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
 					{
+						PlaySoundMem(m_hitShotToEnemyBaseHandle, DX_PLAYTYPE_BACK);
 						m_pEnemy[e]->OnHitShot();
 					}
 				}
@@ -255,6 +258,7 @@ void SceneMain::CollisionUpdate()
 				{
 					if (m_pShot[i]->GetShotColli(m_pEnemyToPlayer[e]->GetCollRect()))
 					{
+						PlaySoundMem(m_hitShotToEnemyHandle,DX_PLAYTYPE_BACK);
 						m_pEnemyToPlayer[e]->OnDamage(10);	
 					}
 				}
@@ -278,7 +282,7 @@ void SceneMain::CollisionUpdate()
 				}
 				if (m_pShot[i]->GetIsDestroy() == true)
 				{
-					m_pShot[i] =nullptr;
+					m_pShot[i]=nullptr;
 				}
 			}
 		}
@@ -352,13 +356,16 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 	{
 		for (int i = 0; i < m_eneShot.size(); i++)
 		{
-
-			m_eneShot[i]->CollisionUpdate();
-			;			if (m_eneShot[i]->GetShotColli())
+			if (m_eneShot[i] != nullptr)
 			{
-				//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
-				m_pPlayer->OnDamage(0);
+				m_eneShot[i]->CollisionUpdate();
+				;			if (m_eneShot[i]->GetShotColli())
+				{
+					//Player‚ªUŒ‚‚ðŽó‚¯‚½ˆ—	
+					m_pPlayer->OnDamage(0);
+				}
 			}
+			
 		}
 		for (int i = 0; i < ENEMY_NUM; i++)
 		{

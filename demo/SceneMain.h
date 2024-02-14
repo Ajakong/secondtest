@@ -110,6 +110,9 @@ private:
 
 	int m_enemyBornSound = 0;
 
+	int m_hitShotToEnemyHandle = 0;
+	int m_hitShotToEnemyBaseHandle = 0;
+
 	int m_score = 0;
 
 	bool m_isGameOver = false;

@@ -51,7 +51,7 @@ void GameOverScene::FadeInUpdate()
 void GameOverScene::NormalUpdate()
 {
 	m_btnFrame++;
-	if(GetJoypadInputState(DX_INPUT_KEY_PAD1))
+	if(Pad::IsTrigger(PAD_INPUT_1))
 	{
 		m_updateFunc = &GameOverScene::FadeOutUpdate;
 		m_drawFunc = &GameOverScene::FadeDraw;
@@ -77,18 +77,18 @@ void GameOverScene::FadeOutUpdate()
 	{
 		
 		
-		/*if (m_selectNumber % 2 == 0)
+		if (m_selectNumber % 2 == 0)
 		{
 			
-			m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
+			m_manager.InsertScene(std::make_shared<GamePlayingScene>(m_manager));
 
 		}
 		if (m_selectNumber % 2 == 1)
 		{
 			
-			m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+			m_manager.InsertScene(std::make_shared<Title>(m_manager));
 
-		}*/
+		}
 		m_manager.PopScene();
 	}
 }

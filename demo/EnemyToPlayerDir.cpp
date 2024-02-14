@@ -77,7 +77,7 @@ void EnemyToPlayerDir::Update()
 	
 	
 
-	if (!m_moveEffect.empty())
+	//if (!m_moveEffect.empty())
 	{
 		for (int i = 0; i < m_moveEffect.size(); i++)
 		{
@@ -91,7 +91,7 @@ void EnemyToPlayerDir::Update()
 		m_moveEffect.erase(it, m_moveEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 	}
 	
-	if (!m_HitEffect.empty())
+	//if (!m_HitEffect.empty())
 	{
 		for (int i = 0; i < m_HitEffect.size(); i++)
 		{
@@ -108,7 +108,7 @@ void EnemyToPlayerDir::Update()
 	{
 		m_attackEffect[i]->Update();
 	}
-	if (!m_attackEffect.empty())
+	//if (!m_attackEffect.empty())
 	{
 		auto it = remove_if(m_attackEffect.begin(), m_attackEffect.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
 			{
@@ -116,6 +116,7 @@ void EnemyToPlayerDir::Update()
 			});
 
 		m_attackEffect.erase(it, m_attackEffect.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
+
 	}
 
 	if (m_bornEffect != nullptr)
