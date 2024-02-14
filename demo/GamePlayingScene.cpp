@@ -43,7 +43,6 @@ void GamePlayingScene::Update()
 		m_fps = GetFPS();
 		(this->*m_updateFunc)();
 	}
-	
 }
 
 void GamePlayingScene::Draw()

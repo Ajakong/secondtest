@@ -34,7 +34,7 @@ void PauseScene::Draw()
 
 void PauseScene::AppearUpdate()
 {
-	m_frame++;
+	m_frame+=2;
 	if (kAppeaInterval <= m_frame)
 	{
 		m_updateFunc = &PauseScene::NormalUpdate;
@@ -106,7 +106,7 @@ void PauseScene::NormalUpdate()
 
 void PauseScene::DisappearUpdate()
 {
-	m_frame--;
+	m_frame-=2;
 	if (m_frame == 0)
 	{
 		m_manager.PopScene();

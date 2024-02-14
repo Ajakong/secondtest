@@ -244,7 +244,7 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 				{
-					m_pEnemy[e]->OnDamage(0.25f);
+					m_pEnemy[e]->OnDamage(0.05f);
 				}
 			}
 		}
@@ -810,6 +810,10 @@ void SceneMain::BossUpdate()
 				m_isHitTitle = true;
 			}
 		}
+	}
+	if (m_pLaser->OnLaserCollision(toTitle))
+	{
+		m_isHitTitle = true;
 	}
 	
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
