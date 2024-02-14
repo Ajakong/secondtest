@@ -25,6 +25,7 @@ GamePlayingScene::GamePlayingScene(SceneManager& manager) :
 	m_drawFunc = &GamePlayingScene::FadeDraw;	
 	m_holySoundHandle = LoadSoundMem("SE/HolyLight.mp3");
 	m_stageBgm = LoadSoundMem("BGM/stageBgm.mp3");
+	m_DyingSound = LoadSoundMem("BGM/Patrasche.mp3");
 	PlaySoundMem(m_stageBgm,DX_PLAYTYPE_BACK);
 	ChangeVolumeSoundMem(250, m_stageBgm);
 }
@@ -118,8 +119,14 @@ void GamePlayingScene::PlayerLightingUpdate()
 	m_lightRange += 0.5f;
 	if (m_Scene->GetGameOverFlag())
 	{
+		
 		if (200 <= m_lightingFrame)
 		{
+			if (m_soundFlag == false)
+			{
+				PlaySoundMem(m_DyingSound, DX_PLAYTYPE_BACK);
+				m_soundFlag = true;
+			}
 			/*if (!m_isEndRoll)
 			{
 				m_isEndRoll = true;
@@ -130,11 +137,13 @@ void GamePlayingScene::PlayerLightingUpdate()
 			{
 				if (m_selectNum == 1)
 				{
+					StopSoundMem(m_DyingSound);
 					m_manager.ChangeScene(std::make_shared<Title>(m_manager));
 
 				}
 				if (m_selectNum == 0)
 				{
+					StopSoundMem(m_DyingSound);
 					m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 				}
 			}

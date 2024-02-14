@@ -21,7 +21,7 @@ private:
     int m_selectNumber = 0;
 
 
-    int m_DyingSound = 0;
+   
 
     
 

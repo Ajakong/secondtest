@@ -50,6 +50,12 @@ SceneMain::SceneMain():
 	m_hitShotToEnemyHandle = LoadSoundMem("SE/HitShotEnemy.mp3");
 	m_hitShotToEnemyBaseHandle = LoadSoundMem("SE/HitShotEnemyBase.mp3");
 
+
+	m_BulletKindNum[0] = LoadGraph("data/UI/OneShot.png");
+	m_BulletKindNum[1] = LoadGraph("data/UI/RapidFire.png");
+	m_BulletKindNum[2] = LoadGraph("data/UI/SpreadBullet.png");
+	m_BulletKindNum[3] = LoadGraph("data/UI/BloodLaser.png");
+	m_BulletKindNum[4] = LoadGraph("data/UI/CircleShot.png");
 	for (auto& shot : m_pShot)
 	{
 		shot = nullptr;
@@ -429,6 +435,12 @@ void SceneMain::Draw() const
 		}
 
 		DrawFormatString(100, 0, 0xffffff, "score:%d", m_score);
+		DrawRotaFormatString(100, Game::kScreenHeight - 75, 2.5, 2.5, 0, 0, 0, 0xffffff, 0, 0, "Hp:%d", m_pPlayer->GetHp());
+
+
+		DrawBox(1300, Game::kScreenHeight - 90, 1380, Game::kScreenHeight - 10, 0xffffff, false);
+		DrawGraph(1300, Game::kScreenHeight - 90, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
+
 		//DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
 	else
@@ -442,7 +454,7 @@ void SceneMain::Draw() const
 
 		m_pMap->Draw();
 
-
+		DrawRotaFormatString(100, Game::kScreenHeight - 100,3,3,0,0,0, 0xffffff,0,0, "Hp:%d", m_pPlayer->GetHp());
 	}
 }
 

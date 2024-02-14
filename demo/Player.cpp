@@ -210,7 +210,7 @@ void Player::ShotIt()
 	switch (m_kindOfBullet)
 	{
 	default:
-		if (Pad::IsTrigger(PAD_INPUT_1))
+		if (Pad::IsTrigger(PAD_INPUT_2))
 		{
 			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 			{
@@ -234,7 +234,7 @@ void Player::ShotIt()
 		}
 		break;
 	case 1://マシンガン
-		if (Pad::IsPress(PAD_INPUT_1)){
+		if (Pad::IsPress(PAD_INPUT_2)){
 			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 			{
 				if (m_shot[i] == nullptr)
@@ -255,7 +255,7 @@ void Player::ShotIt()
 		}
 		break;
 	case 2://スプレッド
-		if (Pad::IsTrigger(PAD_INPUT_1))
+		if (Pad::IsTrigger(PAD_INPUT_2))
 		{
 			m_dir.y = m_fireDir.y;
 			if (m_shotBulletInterval > 30)
@@ -280,7 +280,7 @@ void Player::ShotIt()
 		}
 		break;
 	case 3://視線はまるでレーザービーム
-		if (Pad::IsTrigger(PAD_INPUT_1))
+		if (Pad::IsTrigger(PAD_INPUT_2))
 		{
 			if (m_laser == nullptr)
 			{
@@ -299,7 +299,7 @@ void Player::ShotIt()
 		}
 		break;
 	case 4://サークルバレット
-		if (Pad::IsTrigger(PAD_INPUT_1))
+		if (Pad::IsTrigger(PAD_INPUT_2))
 		{
 			for (int i = 0; i < 3; i++)
 			{
@@ -455,7 +455,7 @@ void Player::Draw()
 	{
 		if (m_circleShot[i] != nullptr)m_circleShot[i]->Draw();
 	}
-	//DrawFormatString(100, 300,0xffffff,"left:%f", m_bottomRay.bottom);
+	
 	//DrawFormatString(100, 400, 0xffffff, "right:%f", m_topRay.right);
 
 	
@@ -659,7 +659,7 @@ void Player::IdleUpdate()
 		m_angle = 4.5f;	
 		m_playerUpdate = &Player::FlyingUpdate;
 	}*/
-	if (Pad::IsTrigger(PAD_INPUT_2))
+	if (Pad::IsTrigger(PAD_INPUT_1))
 	{
 		
 		m_velocity.y = -35.0f;
@@ -747,7 +747,7 @@ void Player::WalkingUpdate()
 	{
 		m_playerUpdate = &Player::IdleUpdate;
 	}
-	if (Pad::IsTrigger(PAD_INPUT_2))
+	if (Pad::IsTrigger(PAD_INPUT_1))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
 		m_velocity.y = -35.0f;
@@ -818,7 +818,7 @@ void Player::FaceDownUpdate()
 	m_animFrame.y = 6.0f;
 	m_isFaceDownFlag = true;
 	
-	if (m_isJumpFlag == false && Pad::IsTrigger(PAD_INPUT_2))
+	if (m_isJumpFlag == false && Pad::IsTrigger(PAD_INPUT_1))
 	{
 		m_playerUpdate = &Player::JumpingUpdate;
 		m_velocity.y = -35.0f;

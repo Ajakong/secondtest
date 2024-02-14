@@ -42,6 +42,8 @@ private:
     bool m_toTitle = false;
    
     int m_selectNum=0;
+    int m_DyingSound = 0;
+    bool m_soundFlag = false;
 
     SceneMain* m_Scene;
 

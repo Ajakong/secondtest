@@ -64,6 +64,10 @@ public:
 	void ClearUpdate();
 	void BossStartUpdate();
 
+	int GetHp() { return m_Hp; }
+
+	int GetKindOfBullet() { return m_kindOfBullet; }
+
 	void EndingStartUpdate();
 	void EndingUpdate();
 	

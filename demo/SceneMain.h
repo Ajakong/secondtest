@@ -124,6 +124,8 @@ private:
 
 	bool m_isEnemyCreate[10];
 
+	int m_BulletKindNum[5];
+
 	bool m_enemyCreated[ENEMY_TO_PLAYER_NUM];
 
 	bool m_isHitTitle = false;
