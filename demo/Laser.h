@@ -48,5 +48,7 @@ private:
     int m_screenMove=0;
 
     int m_laserSound = 0;
+
+    int m_handle = 0;
 };
 

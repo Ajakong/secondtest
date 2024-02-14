@@ -25,8 +25,6 @@ void ShotEffect::Update()
 		m_radius++;
 		m_lineThickNess--;
 
-		
-
 		if (m_radius >= 20)
 		{
 			m_shot->OnDestroy();

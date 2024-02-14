@@ -58,7 +58,7 @@ bool Application::Init()
 
     SetUseASyncChangeWindowModeFunction(TRUE,NULL, NULL);
 
-    SetWindowText("スーパーサイヤング7");
+    SetWindowText("CURSED BENIR");
     if (DxLib_Init() == -1)
     {
         return false;

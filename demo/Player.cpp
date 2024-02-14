@@ -40,11 +40,9 @@ Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 	shotBulletFlag(false),
 	m_angle(0),
 	m_collisionRadius(30),
-	m_handle(0),
 	m_kindOfBullet(0),
 	m_havingweaponNumber(0),
-	m_rotateAngle(0),
-	m_ShotGraph(false)
+	m_rotateAngle(0)
 {
 	for (auto& shot : m_shot)
 	{
@@ -83,11 +81,9 @@ Player::Player()://クリアシーン用のコンストラクタ
 	shotBulletFlag(false),
 	m_angle(0),
 	m_collisionRadius(30),
-	m_handle(0),
 	m_kindOfBullet(0),
 	m_havingweaponNumber(0),
-	m_rotateAngle(0),
-	m_ShotGraph(false)
+	m_rotateAngle(0)
 {
 	for (auto& shot : m_shot)
 	{
@@ -103,8 +99,6 @@ Player::Player()://クリアシーン用のコンストラクタ
 
 	m_damageSound = LoadSoundMem("SE/PlayerDamage.mp3");
 
-	
-
 	m_animFrame.y = 1;
 }
 
@@ -115,9 +109,16 @@ Player::~Player()
 
 void Player::Init()
 {
-	m_handle = LoadGraph("data/image/PlayerDevil.png");
-	m_ShotGraph = LoadGraph("data/image/Shot.png");
-
+	m_handle[0] = LoadGraph("data/image/PlayerDevil0.png");
+	m_handle[1] = LoadGraph("data/image/PlayerDevil1.png");
+	m_handle[2] = LoadGraph("data/image/PlayerDevil2.png");
+	m_handle[3] = LoadGraph("data/image/PlayerDevil3.png");
+	m_handle[4] = LoadGraph("data/image/PlayerDevil4.png");
+	m_ShotGraph[0] = LoadGraph("data/image/Shot0.png");
+	m_ShotGraph[1] = LoadGraph("data/image/Shot1.png");
+	m_ShotGraph[2] = LoadGraph("data/image/Shot2.png");
+	m_ShotGraph[3] = LoadGraph("data/image/Shot3.png");
+	m_ShotGraph[4] = LoadGraph("data/image/Shot4.png");
 
 	m_pos.x = 50.0f;
 	m_pos.y = 50.0f;
@@ -135,7 +136,6 @@ void Player::PlayerMove()
 	m_playerCol.left = m_pos.x-30;
 	m_playerCol.right = m_pos.x + 30;
 	m_playerCol.bottom = m_pos.y + 40;
-
 	
 	if (m_isGroundFlag==true&&Pad::IsPress(PAD_INPUT_RIGHT))
 	{
@@ -220,7 +220,7 @@ void Player::ShotIt()
 					{
 						m_shot[i] = std::make_shared<Shot>();
 						m_dir = m_fireDir;
-						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 						PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 						m_WorldMana->AddShot(m_shot[i]);
 						m_shotBulletInterval = 0;
@@ -243,7 +243,7 @@ void Player::ShotIt()
 					{
 						m_shot[i] = std::make_shared<Shot>();
 						m_dir.y = m_fireDir.y;
-						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 						PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 						m_WorldMana->AddShot(m_shot[i]);
 						m_shotBulletInterval = 0;
@@ -268,7 +268,7 @@ void Player::ShotIt()
 						{
 							m_shot[i] = std::make_shared<Shot>();
 							m_dir.y = m_dir.y + (a - 1) * 0.5f;
-							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+							m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 							PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 							m_WorldMana->AddShot(m_shot[i]);
 							m_shotBulletInterval = 0;
@@ -307,7 +307,7 @@ void Player::ShotIt()
 				{
 					m_circleShot[i] = std::make_shared<CircleShot>();
 					m_dir.y = m_fireDir.y;
-					m_circleShot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph);
+					m_circleShot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 					m_WorldMana->AddCircleShot(m_circleShot[i]);
 					m_shotBulletInterval = 0;
 					break;
@@ -436,12 +436,12 @@ void Player::Draw()
 	{
 		if (m_visibleLimitTime % 5 == 1)
 		{
-			DrawRectRotaGraph(m_pos.x, m_pos.y,  animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+			DrawRectRotaGraph(m_pos.x, m_pos.y,  animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle[m_kindOfBullet], true, m_isLeftFlag, 0);
 		}
 	}
 	else
 	{
-		DrawRectRotaGraph(m_pos.x, m_pos.y,animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle, true, m_isLeftFlag, 0);
+		DrawRectRotaGraph(m_pos.x, m_pos.y,animDisX * m_animFrame.x, animDisY * m_animFrame.y, animDisX, animDisY, 1, m_angle + m_rotateAngle, m_handle[m_kindOfBullet], true, m_isLeftFlag, 0);
 	}
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
@@ -688,7 +688,6 @@ void Player::IdleUpdate()
 	}
 	m_fireDir.Normalize();
 
-
 	ShotIt();
 }
 
@@ -725,7 +724,6 @@ void Player::WalkingUpdate()
 		m_dir.y = 0.0f;
 		m_isLeftFlag = false;
 
-		
 	}
 	else if (m_isGroundFlag == true && Pad::IsPress(PAD_INPUT_LEFT))
 	{
@@ -741,7 +739,6 @@ void Player::WalkingUpdate()
 		m_dir.y = 0.0f;
 		m_isLeftFlag = true;
 
-		
 	}
 	else
 	{
@@ -780,7 +777,6 @@ void Player::WalkingUpdate()
 	if (m_fireDir.x != 0)
 	{
 		m_fireDir.x = m_inputX;
-
 	}
 
 	m_fireDir.y = m_inputY;
@@ -850,8 +846,6 @@ void Player::FaceDownUpdate()
 	}
 	m_fireDir.Normalize();
 
-
-
 	ShotIt();
 }
 
@@ -898,7 +892,6 @@ void Player::JumpingUpdate()
 	}
 	m_fireDir.Normalize();
 
-
 	ShotIt();
 }
 
@@ -926,7 +919,6 @@ void Player::FlyingUpdate()
 	if (m_fireDir.x != 0)
 	{
 		m_fireDir.x = m_inputX;
-
 	}
 
 	m_fireDir.y = m_inputY;
@@ -936,7 +928,6 @@ void Player::FlyingUpdate()
 		else m_fireDir.x = 1;
 	}
 	m_fireDir.Normalize();
-
 
 	ShotIt();
 }

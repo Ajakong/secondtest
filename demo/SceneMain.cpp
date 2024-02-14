@@ -604,7 +604,7 @@ void SceneMain::NormalUpdate()
 			m_pMap->Update();
 			if (!bossZone)
 			{
-				if (m_pMap->GetScreenMove() >= 6500)
+				if (m_pMap->GetScreenMove()+ m_pPlayer->GetPos().x >= 6500)
 				{
 					m_pMap->GetScreenMove(6500-m_pPlayer->GetPos().x);
 					m_screenMove = m_pMap->GetScreenMove();

@@ -4,7 +4,7 @@
 
 Laser::Laser()
 {
-	
+	m_handle = LoadGraph("data/image/laser.png");
 }
 
 Laser::~Laser()
@@ -38,8 +38,7 @@ void Laser::Draw()
 {
 	if(!m_isInVisible)
 	{
-		DrawLine(m_laserTail.x, m_laserTail.y,
-					 m_laserHead.x, m_laserHead.y, 0xff0000,7);
+		DrawRectRotaGraph(m_laserTail.x + (m_laserHead.x-m_laserTail.x)/2, m_laserTail.y+(m_laserHead.y-m_laserTail.y)/2,0,0,abs(m_laserHead.x-m_laserTail.x),7,1,atan2(m_laserHead.y - m_laserTail.y,m_laserHead.x-m_laserTail.x),m_handle, true,7);
 	}
 	
 	

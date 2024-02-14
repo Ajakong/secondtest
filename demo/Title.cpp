@@ -253,13 +253,8 @@ void Title::NormalDraw()
 
 void Title::JammingDraw()
 {
-	
-
-
 	SetDrawScreen(m_screenHandle);//レンダーターゲットの変更
 
-
-	
 	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 	m_fadeFrame += a;
 	if (m_fadeFrame > 60)
@@ -278,14 +273,7 @@ void Title::JammingDraw()
 	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-	/*SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
-	DrawBox(drawStringPosX, drawStringPosY - 45 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);
-	DrawBox(drawStringPosX, drawStringPosY - 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 15 + m_stringColorPlusA, 0xddffff, true);
-	DrawBox(drawStringPosX, drawStringPosY - 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 0 + m_stringColorPlusA, 0xffddff, true);
-	DrawBox(drawStringPosX, drawStringPosY + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 15 + m_stringColorPlusA, 0xffdddd, true);
-	DrawBox(drawStringPosX, drawStringPosY + 15 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 30 + m_stringColorPlusA, 0xddffdd, true);
-	DrawBox(drawStringPosX, drawStringPosY + 30 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY + 45 + m_stringColorPlusA, 0xddddff, true);
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
+	
 	
 	m_stringColorPlusA++;
 	if (m_stringColorPlusA > 50)

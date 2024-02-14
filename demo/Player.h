@@ -137,8 +137,8 @@ private:
 	int flyingFrame=0;
 
 	int m_collisionRadius=0;//この範囲の中でしか当たり判定を取らない
-	int m_handle=0;//プレイヤーのgraphHandle;
-	int m_ShotGraph=0;//弾のグラフィックハンドル
+	int m_handle[5];//プレイヤーのgraphHandle;
+	int m_ShotGraph[5];//弾のグラフィックハンドル
 	int m_kindOfBullet=0;
 	int m_havingweaponNumber = 0;
 	int m_Hp=0;
