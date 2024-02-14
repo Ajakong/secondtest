@@ -91,6 +91,8 @@ private:
 	int m_eneShotHandle = 0;
 	int m_enemyBaseHandle = 0;
 
+	int m_targetHandle = 0;
+
 	int m_itenNumber0Graph = 0;
 	int m_itemNumber1Graph = 0;
 	int m_itemNumber2Graph = 0;

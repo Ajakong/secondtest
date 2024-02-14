@@ -56,6 +56,8 @@ SceneMain::SceneMain():
 	m_BulletKindNum[2] = LoadGraph("data/UI/SpreadBullet.png");
 	m_BulletKindNum[3] = LoadGraph("data/UI/BloodLaser.png");
 	m_BulletKindNum[4] = LoadGraph("data/UI/CircleShot.png");
+
+	m_targetHandle = LoadGraph("data/image/target.png");
 	for (auto& shot : m_pShot)
 	{
 		shot = nullptr;
@@ -811,11 +813,16 @@ void SceneMain::BossUpdate()
 			}
 		}
 	}
-	if (m_pLaser->OnLaserCollision(toTitle))
+	if (m_pLaser != nullptr)
 	{
-		m_isHitTitle = true;
+		if (m_pLaser->OnLaserCollision(toTitle))
+		{
+			m_isHitTitle = true;
+		}
 	}
 	
+	
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
+	DrawGraph(1200, 0, m_targetHandle, true);
 	
 }

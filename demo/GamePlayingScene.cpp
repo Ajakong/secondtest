@@ -39,10 +39,10 @@ void GamePlayingScene::Update()
 	m_backBlack++;
 	if (m_backBlack > 120)
 	{
-		m_Scene->Update();
-		m_fps = GetFPS();
+		
 		(this->*m_updateFunc)();
 	}
+	//Pad::Update();
 }
 
 void GamePlayingScene::Draw()
@@ -55,6 +55,9 @@ void GamePlayingScene::Draw()
 
 void GamePlayingScene::FadeInUpdate()
 {
+	m_Scene->Update();
+	m_fps = GetFPS();
+
 	m_frame--;
 	if (m_frame <= 0)
 	{
@@ -65,8 +68,11 @@ void GamePlayingScene::FadeInUpdate()
 
 void GamePlayingScene::NormalUpdate()
 {
+	m_Scene->Update();
+	m_fps = GetFPS();
 	if(m_Scene->GetGameOverFlag())
 	{
+
 		LightingPos = m_Scene->GetPlayerPos();
 		m_punishmentPos=LightingPos;
 		StopSoundMem(m_stageBgm);
@@ -101,6 +107,8 @@ void GamePlayingScene::NormalUpdate()
 
 void GamePlayingScene::FadeOutUpdate()
 {
+	m_Scene->Update();
+	m_fps = GetFPS();
 	m_frame++;
 	
 	if (m_Scene->GetClearFlag())
@@ -156,10 +164,13 @@ void GamePlayingScene::PlayerLightingUpdate()
 			}
 		}
 	}
+	Pad::Update();
 }
 
 void GamePlayingScene::PunishmentUpdate()
 {
+	m_Scene->Update();
+	m_fps = GetFPS();
 	m_punishmentFrame++;
 	m_punishmentRange *= 1.04f;
 	if (m_Scene->GetClearFlag())
@@ -188,6 +199,7 @@ void GamePlayingScene::PunishmentUpdate()
 
 void GamePlayingScene::FadeDraw()
 {
+
 	m_Scene->Draw();
 	//DrawString(10, 100, "GamePlayingScene", 0xffffff);
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_frame) / 60.0f));
