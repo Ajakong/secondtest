@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "SceneManager.h"
 #include "PauseScene.h"
+#include"GamePlayingScene.h"
 #include"Title.h"
 #include"Game.h"
 
@@ -13,8 +14,9 @@ namespace
 	constexpr int kMenuMargin = 50;
 }
 
-PauseScene::PauseScene(SceneManager& mgr) : Scene(mgr)
+PauseScene::PauseScene(SceneManager& mgr) : Scene(mgr) 
 {
+	m_chouseTitle = false;
 	m_updateFunc = &PauseScene::AppearUpdate;
 	m_drawFunc = &PauseScene::ExpandDraw;
 	m_tutoHandle=LoadGraph("data/image/tuto/controller_format.png");
@@ -69,19 +71,9 @@ void PauseScene::NormalUpdate()
 			m_updateFunc = &PauseScene::DisappearUpdate;
 			m_drawFunc = &PauseScene::ExpandDraw;
 		}
-		else
-		{
-			if (m_tutoFlag)
-			{
-				m_tutoFlag = false;
-			}
-			else
-			{
-				m_tutoFlag = true;
-
-			}
-		}
-		/*if(m_select % 3 == 1|| m_select % 3 == -2)
+		
+		
+		if(m_select % 3 == 1|| m_select % 3 == -2)
 		{
 			if (m_tutoFlag)
 			{
@@ -96,10 +88,10 @@ void PauseScene::NormalUpdate()
 		}
 		if (m_select % 3 == 2 || m_select % 3 == -1)
 		{
-			m_manager.PopScene();
-			
-			m_manager.InsertScene(std::make_shared<Title>(m_manager));
-		}*/
+			m_chouseTitle = true;
+			m_updateFunc = &PauseScene::DisappearUpdate;
+			m_drawFunc = &PauseScene::ExpandDraw;
+		}
 	}
 	
 }
@@ -158,10 +150,10 @@ void PauseScene::NormalDraw()
 	{
 		DrawBox(700, 580, 900, 650, 0xffffff, true);
 	}
-	/*if (m_select % 3 == 2 || m_select % 3 == -1)
+	if (m_select % 3 == 2 || m_select % 3 == -1)
 	{
-		DrawBox(770, 680, 970, 750, 0xffffff, true);
-	}*/
+		DrawBox(700, 680, 900, 750, 0xffffff, true);
+	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 

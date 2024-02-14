@@ -15,7 +15,7 @@ public:
     virtual void Draw();
 
     void getSlectNumber(int a) { m_selectNum = a; }
-
+    void ToTitle();
 private:
     
     int m_btnFrame = 0;
@@ -39,7 +39,7 @@ private:
 
 
     bool m_isEndRoll=false;
-    bool m_toTitle = false;
+    bool m_toTitle;
    
     int m_selectNum=0;
 

@@ -14,6 +14,7 @@ public:
 	void Update();
 	void Draw();
 
+	static bool getSelectTitle() { return m_chouseTitle; }
 private:
 	int m_frame = 0;
 	int m_select = 0;
@@ -21,6 +22,8 @@ private:
 	int m_tutoHandle = 0;
 
 	bool m_tutoFlag=false;
+	static bool m_chouseTitle;
+
 	// 更新メンバ関数ポインタ
 	using UpdateFunc_t = void(PauseScene::*)();
 	UpdateFunc_t  m_updateFunc;

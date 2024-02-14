@@ -53,6 +53,11 @@ void GamePlayingScene::Draw()
 	
 }
 
+void GamePlayingScene::ToTitle()
+{
+
+}
+
 void GamePlayingScene::FadeInUpdate()
 {
 	m_frame--;
@@ -91,6 +96,10 @@ void GamePlayingScene::NormalUpdate()
 	{
 		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
 	}
+	if (&PauseScene::getSelectTitle)
+	{
+		m_manager.ChangeScene(std::make_shared<Title>(m_manager));
+	}
 
 	if (m_Scene->OnHitTitle())
 	{
@@ -120,12 +129,12 @@ void GamePlayingScene::PlayerLightingUpdate()
 	{
 		if (200 <= m_lightingFrame)
 		{
-			if (m_selectNum==0)
+			if (m_selectNum==1)
 			{
 				m_manager.ChangeScene(std::make_shared<Title>(m_manager));
 				
 			}
-			if (m_selectNum == 1)
+			if (m_selectNum == 0)
 			{
 				m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 			}
