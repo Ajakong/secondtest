@@ -364,6 +364,10 @@ void EnemyToPlayerDir::NeutralUpdate()
 		m_WorldMana->AddScore(20000);
 		m_enemyUpdate = &EnemyToPlayerDir::DyingUpdate;
 	}
+	if (m_pos.x < 0)
+	{
+		m_velocity.x *= -1;
+	}
 }
 
 void EnemyToPlayerDir::AttackUpdate()

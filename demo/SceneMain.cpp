@@ -574,24 +574,7 @@ void SceneMain::NormalUpdate()
 		{
 			m_pPlayer->Update();
 			m_pPlayer->GetPos(m_pPlayer->GetVelocity().x);
-			//if (m_pPlayer->GetPos().x > Game::kScreenWidth * 6 / 8)
-			{
-				//m_pMap->GetScreenMove(10);
-			}
 		}
-		/*if (m_pPlayer->GetPos().x > (Game::kScreenWidth * 0.675))
-		{
-			m_pMap->OnScreenMoveAdd();
-			m_pPlayer->screenAdd();
-		}*/
-		/*if (m_pPlayer->GetPos().x < (Game::kScreenWidth * 0.375))
-		{
-			m_pMap->OnScreenMoveSub();
-			if (m_pMap->GetScreenMove() <= 0)
-			{
-				m_pPlayer->screenSub();
-			}
-		}*/
 
 		if (m_pMap != nullptr)
 		{
@@ -700,7 +683,6 @@ void SceneMain::NormalUpdate()
 			}
 		}
 		{
-			//m_pEnemy->GetScreenMove(m_pPlayer->GetVelocity().x);
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
 				if (m_pEnemy[e] != nullptr)
@@ -728,21 +710,10 @@ void SceneMain::NormalUpdate()
 				}
 			}
 
-			/*for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
-			{
-				if (m_pEnemyToPlayer[e] != nullptr)
-				{
-					if (m_pEnemyToPlayer[e]->OnDie())
-					{
-						m_pEnemyToPlayer[e]==nullptr ;
-					}
-				}
-			}*/
 		}
 
 		if (m_pBoss != nullptr)
 		{
-			//m_pBoss->GetScreenMove(m_pPlayer->GetVelocity().x);
 			m_pBoss->Update();
 			if (m_pBoss->OnDie())m_pBoss = nullptr;
 		}
@@ -823,6 +794,6 @@ void SceneMain::BossUpdate()
 	
 	
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
-	DrawGraph(1200, 0, m_targetHandle, true);
+	DrawRotaGraph(1200, 330,0.5f,0, m_targetHandle, true);
 	
 }

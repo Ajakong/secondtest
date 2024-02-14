@@ -47,8 +47,8 @@ bool Application::Init()
     SetChangeScreenModeGraphicsSystemResetFlag(false);
 
     
-    SetGraphMode(1600, 900, 32);
-    SetWindowSize(1600, 900);
+    SetGraphMode(800, 450, 32);
+    SetWindowSize(800, 450);
 
     void* CallBack();
 
