@@ -35,13 +35,13 @@ void CircleShot::Update()
 	if (m_isInVisible == false)
 	{
 		if (m_shotPos.x >= Game::kScreenWidth)
-			m_isInVisible = true;
+			m_isDestroy = true;
 		if (m_shotPos.x <= 0 - m_graphSize.x)
-			m_isInVisible = true;
+			m_isDestroy = true;
 		if (m_shotPos.y >= Game::kScreenHeight)
-			m_isInVisible = true;
+			m_isDestroy = true;
 		if (m_shotPos.y <= 0 - m_graphSize.y)
-			m_isInVisible = true;
+			m_isDestroy = true;
 
 		/*m_enePos = m_enemy->GetEnePos();
 		m_Velocity.x = (m_enePos.x-m_shotPos.x);

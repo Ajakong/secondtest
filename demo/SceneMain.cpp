@@ -57,6 +57,8 @@ SceneMain::SceneMain():
 	m_BulletKindNum[3] = LoadGraph("data/UI/BloodLaser.png");
 	m_BulletKindNum[4] = LoadGraph("data/UI/CircleShot.png");
 
+	m_Hpbar = LoadGraph("data/UI/HpBarFrame.png");
+
 	m_targetHandle = LoadGraph("data/image/target.png");
 	for (auto& shot : m_pShot)
 	{
@@ -85,8 +87,8 @@ SceneMain::SceneMain():
 	m_enePos[0] = Vec2(2400, 50);
 	m_enePos[1] = Vec2(3200, 50);
 	m_enePos[2] = Vec2(6000, 50);
-	m_enePos[3] = Vec2(6500, 50);
-	m_enePos[4] = Vec2(7100, 50);
+	m_enePos[3] = Vec2(1000, 200);
+	m_enePos[4] = Vec2(4100, 50);
 	m_enePos[5] = Vec2(500, 50);
 	m_enePos[6] = Vec2(5500, 500);
 
@@ -191,9 +193,9 @@ void SceneMain::CollisionUpdate()
 	
 	for (int e = 0; e < ENEMY_NUM; e++)
 	{//toEnemy‚ÌCollision
-		if (m_pEnemy[e] != nullptr)
+		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 		{
-			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+			if (m_pEnemy[e] != nullptr)
 			{
 				if (m_pShot[i] != nullptr)
 				{
@@ -202,11 +204,12 @@ void SceneMain::CollisionUpdate()
 						PlaySoundMem(m_hitShotToEnemyBaseHandle, DX_PLAYTYPE_BACK);
 						m_pEnemy[e]->OnHitShot();
 					}
-					if (m_pEnemy[e]->OnDie())
-					{
-						delete m_pEnemy[e];
-						m_pEnemy[e] = nullptr;
-					}
+					
+				}
+				if (m_pEnemy[e]->OnDie())
+				{
+					delete m_pEnemy[e];
+					m_pEnemy[e] = nullptr;
 				}
 			}
 		}
@@ -214,9 +217,9 @@ void SceneMain::CollisionUpdate()
 
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
-		if (m_circleShot[i] != nullptr)
+		for (int e = 0; e < ENEMY_NUM; e++)
 		{
-			for (int e = 0; e < ENEMY_NUM; e++)
+			if (m_circleShot[i] != nullptr)
 			{
 				if (m_pEnemy[e] != nullptr)
 				{
@@ -227,8 +230,9 @@ void SceneMain::CollisionUpdate()
 					}
 					if (m_circleShot[i]->GetIsDestroy() == true)
 					{
-						delete m_circleShot[i];
 						m_circleShot[i] = nullptr;
+						
+						
 					}
 				}
 			}
@@ -237,9 +241,9 @@ void SceneMain::CollisionUpdate()
 
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
-		if (m_circleShot[i] != nullptr)
+		for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 		{
-			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+			if (m_circleShot[i] != nullptr)
 			{
 				if (m_pEnemyToPlayer[e] != nullptr)
 				{
@@ -250,7 +254,7 @@ void SceneMain::CollisionUpdate()
 					}
 					if (m_circleShot[i]->GetIsDestroy() == true)
 					{
-						delete m_circleShot[i];
+						
 						m_circleShot[i] = nullptr;
 					}
 				}
@@ -290,9 +294,9 @@ void SceneMain::CollisionUpdate()
 		
 	for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
 	{
-		if (m_pEnemyToPlayer[e] != nullptr)
+		for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 		{
-			for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+			if (m_pEnemyToPlayer[e] != nullptr)
 			{
 				if (m_pShot[i] != nullptr)
 				{
@@ -474,12 +478,15 @@ void SceneMain::Draw() const
 			m_item[i]->Draw(m_pMap->GetScreenMove());
 		}
 
-		DrawFormatString(100, 0, 0xffffff, "score:%d", m_score);
+		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);
 		DrawRotaFormatString(100, Game::kScreenHeight - 75, 2.5, 2.5, 0, 0, 0, 0xffffff, 0, 0, "Hp:%d", m_pPlayer->GetHp());
 
+		DrawBox(0, 20, 900, 30, 0xff0000, true);
+		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00,true);
+		DrawGraph(0, 0, m_Hpbar, true);
 
-		DrawBox(10, 50, 90, 130, 0xffffff, false);
-		DrawGraph(10, 50, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
+		DrawBox(10, 70, 90, 150, 0xffffff, false);
+		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
 
 	}
 	else
@@ -493,11 +500,16 @@ void SceneMain::Draw() const
 
 		m_pMap->Draw();
 
-		DrawFormatString(100, 0, 0xffaaaa, "score:%d", m_score);
+		DrawFormatString(1200, 0, 0xffaaaa, "score:%d", m_score);
 		DrawRotaFormatString(100, Game::kScreenHeight - 100,3,3,0,0,0, 0xffffff,0,0, "Hp:%d", m_pPlayer->GetHp());
 
-		DrawBox(10, Game::kScreenHeight - 90, 90, Game::kScreenHeight - 10, 0xffffff, false);
-		DrawGraph(10, Game::kScreenHeight - 90, m_BulletKindNum[ m_pPlayer->GetKindOfBullet() ], true);
+		DrawBox(0, 20, 900, 30, 0xff0000, true);
+		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00, true);
+		DrawGraph(0, 0, m_Hpbar, true);
+
+		DrawBox(10, 70, 90, 150, 0xffffff, false);
+		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()], true);
+
 	}
 }
 
@@ -811,8 +823,8 @@ void SceneMain::BossUpdate()
 	Rect toTitle;
 	toTitle.bottom = 400;
 	toTitle.left = 1200;
-	toTitle.right = 1400;
-	toTitle.top = 0;
+	toTitle.right = 1450;
+	toTitle.top = 300;
 	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
 	{
 		if (m_pShot[i] != nullptr)
@@ -822,6 +834,10 @@ void SceneMain::BossUpdate()
 			{
 				m_isHitTitle = true;
 			}
+			if (m_pShot[i]->GetIsDestroy() == true)
+			{
+				m_pShot[i] = nullptr;
+			}
 		}
 	}
 	if (m_pLaser != nullptr)
@@ -830,10 +846,19 @@ void SceneMain::BossUpdate()
 		{
 			m_isHitTitle = true;
 		}
+		for (int e = 0; e < ENEMY_NUM; e++)
+		{
+			m_pLaser->GetScreenMove(m_pMap->GetScreenMove());
+		}
+		if (m_pLaser->GetVisible())
+		{
+			m_pLaser = nullptr;
+		}
 	}
 	
 	DrawRotaString(700, 100, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Clear!!!");
 
+	DrawBox(toTitle.left, toTitle.top, toTitle.right, toTitle.bottom, 0xff0000, false);
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "ƒ^ƒCƒgƒ‹‚Ö");
 	DrawRotaGraph(1250, 330,0.5f,0, m_targetHandle, true);
 	

@@ -35,6 +35,8 @@ public:
 	void Draw();
 	void VelocityToZero();
 
+	void WantHeal(int healNum);
+
 	void PlayerStop();
 
 	bool OnDamage();

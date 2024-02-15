@@ -162,7 +162,7 @@ void EnemyBase::Draw()
 				m_shot[i]->Draw(m_screenMove);
 		}
 	}
-
+	DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom,0xff00ff,false);
 	for (int i = 0; i < m_EneDeathEffect.size(); i++)
 	{
 		m_EneDeathEffect[i]->Draw(m_screenMove);
@@ -226,8 +226,8 @@ bool EnemyBase::OnDie()
 			{
 				m_shot[i]->GetDestroy();
 			}
-			return m_isDeathFlag;
+			
 		}
 	}
-	return false;
+	return m_isDeathFlag;
 }

@@ -26,6 +26,9 @@ public:
 
 	float GetPosX() { return m_shotPos.x; }
 
+	virtual void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
+
+
 	virtual void OnMapCol() { Shot::OnMapCol(); }
 
 

@@ -404,6 +404,7 @@ void EnemyToPlayerDir::DyingUpdate()
 		m_animInterval = 0;
 		if (animFrameMana.x > 22)
 		{
+			m_player->WantHeal(2);
 			m_isDeathFlag = true;
 		}
 	}

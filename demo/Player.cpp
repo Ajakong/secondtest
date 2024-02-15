@@ -21,7 +21,7 @@ namespace
 Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(80),
+	m_Hp(100),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
@@ -62,7 +62,7 @@ Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 
 Player::Player()://クリアシーン用のコンストラクタ
 	m_pos(0, 50),
-	m_Hp(80),
+	m_Hp(100),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f, 0.0f),
@@ -242,7 +242,7 @@ void Player::ShotIt()
 					if (m_shotBulletInterval > 10)
 					{
 						m_shot[i] = std::make_shared<Shot>();
-						m_dir.y = m_fireDir.y;
+						m_dir = m_fireDir;
 						m_shot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 						PlaySoundMem(m_shotSoundHandle, DX_PLAYTYPE_BACK);
 						m_WorldMana->AddShot(m_shot[i]);
@@ -306,7 +306,7 @@ void Player::ShotIt()
 				if (m_circleShot[i] == nullptr)
 				{
 					m_circleShot[i] = std::make_shared<CircleShot>();
-					m_dir.y = m_fireDir.y;
+					m_dir = m_fireDir;
 					m_circleShot[i]->ShotProgram(m_pos, m_dir, m_ShotGraph[m_kindOfBullet]);
 					m_WorldMana->AddCircleShot(m_circleShot[i]);
 					m_shotBulletInterval = 0;
@@ -425,6 +425,8 @@ void Player::CollisionUpdate()
 
 	m_bottomRay = m_playerCol;
 	m_bottomRay.top = m_bottomRay.bottom - 5;
+	m_bottomRay.left = m_bottomRay.left + 20;
+	m_bottomRay.right = m_bottomRay.right - 20;
 
 	m_topRay = m_playerCol;
 
@@ -487,6 +489,14 @@ void Player::VelocityToZero()
 	if (m_velocity.y < 0)
 	{
 		m_velocity.y += 0.5f;
+	}
+}
+
+void Player::WantHeal(int healNum)
+{
+	if (m_Hp < 100)
+	{
+		m_Hp += healNum;
 	}
 }
 
@@ -673,7 +683,7 @@ void Player::IdleUpdate()
 
 	//Die
 	ToDie();
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)
@@ -777,7 +787,7 @@ void Player::WalkingUpdate()
 	//Die
 	ToDie();
 
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)
@@ -839,7 +849,7 @@ void Player::FaceDownUpdate()
 	//Die
 	ToDie();
 
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)
@@ -890,7 +900,7 @@ void Player::JumpingUpdate()
 	//Die
 	ToDie();
 
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)
@@ -932,7 +942,7 @@ void Player::FlyingUpdate()
 	//Die
 	ToDie();
 
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)
@@ -1055,7 +1065,7 @@ void Player::EndingUpdate()
 		m_animInterval = 0;
 	}
 
-	if (Pad::IsPress(PAD_INPUT_Y))
+	//if (Pad::IsPress(PAD_INPUT_Y))
 	{
 		GetJoypadAnalogInput(&m_inputX, &m_inputY, DX_INPUT_PAD1);
 		if (m_fireDir.x != 0)

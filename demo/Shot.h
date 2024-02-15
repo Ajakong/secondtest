@@ -38,7 +38,7 @@ public:
 	void GetScreenMove(int screenmove);
 
 
-	void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
+	virtual void OnDestroy() { m_isDestroy = true; m_shotEffect = nullptr; }
 
 	void OnMapCol();
 
