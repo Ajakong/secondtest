@@ -16,7 +16,7 @@ namespace
 	constexpr int graphPosX = 800;
 	constexpr int graphPosY = 400;
 
-	constexpr int drawStringPosX = 550;
+	constexpr int drawStringPosX = 600;
 	constexpr int drawStringPosY = 700;
 }
 
@@ -27,6 +27,17 @@ Title::Title(SceneManager& manager) :
 	m_updateFunc = &Title::FadeInUpdate;
 	m_drawFunc = &Title::FadeDraw;
 	m_handle = LoadGraph("data/logo/Title.png");
+
+	m_gameIntroduceHandle[0] = LoadGraph("data/image/tuto/gameIntroduce.png");
+	m_gameIntroduceHandle[1] = LoadGraph("data/image/tuto/gameIntroduce2.png");
+	m_gameIntroduceHandle[2] = LoadGraph("data/image/tuto/gameIntroduce3.png");
+	m_gameIntroduceHandle[3] = LoadGraph("data/image/tuto/gameIntroduce4.png");
+	m_gameIntroduceHandle[4] = LoadGraph("data/image/tuto/gameIntroduce5.png");
+	m_gameIntroduceHandle[5] = LoadGraph("data/image/tuto/controller_format.png");
+
+	
+	
+	
 	// output string stream
 	// Debugログの表示
 	std::ostringstream oss;
@@ -89,6 +100,7 @@ void Title::FadeInStringUpdate()
 		
 	}
 	m_rightsNotationY -= 7;
+	m_gameIntroduceY -= 7;
 	if (0 >= m_fadeFrame)
 	{
 		m_updateFunc = &Title::NormalStringUpdate;
@@ -99,22 +111,26 @@ void Title::FadeInStringUpdate()
 
 void Title::NormalStringUpdate()
 {
-	if (Pad::IsTrigger(PAD_INPUT_DOWN) && !m_isrightsNotation)
+	if (Pad::IsTrigger(PAD_INPUT_UP) && !m_isrightsNotation&&!m_isGameIntroduce)
 	{
 		m_selectNumber--;
 	}
-	if (Pad::IsTrigger(PAD_INPUT_UP)&&!m_isrightsNotation)
+	if (Pad::IsTrigger(PAD_INPUT_DOWN)&&!m_isrightsNotation&&!m_isGameIntroduce)
 	{
 		m_selectNumber++;
 	}
-	if (Pad::IsTrigger(PAD_INPUT_1) && !m_isrightsNotation)
+	if (Pad::IsTrigger(PAD_INPUT_1) && !m_isrightsNotation && !m_isGameIntroduce)
 	{
-		if (m_selectNumber % 2 == 0)
+		if (m_selectNumber % 3 == 0)
 		{
 			m_updateFunc = &Title::FadeOutStringUpdate;
 			m_drawFunc = &Title::FadeOutStringDraw;
 		}
-		else
+		if (m_selectNumber % 3 == 1 || m_selectNumber % 3 == -2)
+		{
+			m_isGameIntroduce = true;
+		}
+		if(m_selectNumber%3==2||m_selectNumber%3==-1)
 		{
 			m_isrightsNotation = true;
 		}
@@ -123,6 +139,29 @@ void Title::NormalStringUpdate()
 	{
 		m_isrightsNotation = false;
 	}
+	if (m_isGameIntroduce)
+	{
+		if (Pad::IsTrigger(PAD_INPUT_RIGHT))
+		{
+			if (m_gameIntroduceNum < 5)
+			{
+				m_gameIntroduceNum++;
+			}
+		}
+		if (Pad::IsTrigger(PAD_INPUT_LEFT))
+		{
+			if (m_gameIntroduceNum > 0)
+			{
+				m_gameIntroduceNum--;
+			}
+		}
+		if (Pad::IsTrigger(PAD_INPUT_1)&&m_gameIntroduceNum==5)
+		{
+			m_isGameIntroduce = false;
+			m_gameIntroduceNum = 0;
+		}
+	}
+
 }
 
 void Title::NormalUpdate()
@@ -194,14 +233,14 @@ void Title::JammingUpdate()
 		m_updateFunc = &Title::NormalUpdate;
 		m_drawFunc = &Title::NormalDraw;
 	}
-	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) && !GetKeyState(KEY_INPUT_ESCAPE))
+	/*if (GetJoypadInputState(DX_INPUT_KEY_PAD1) && !GetKeyState(KEY_INPUT_ESCAPE))
 	{
 		m_updateFunc = &Title::FadeInStringUpdate;
 		m_drawFunc = &Title::FadeStringDraw;
 		m_fadeFrame = 0;
 		m_fadeFrame = m_fadeFrame + 8;
 		m_frame++;
-	}
+	}*/
 }
 
 void Title::FadeDraw()
@@ -229,16 +268,18 @@ void Title::FadeStringDraw()
 	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 	
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
-	DrawRotaString(drawStringPosX+100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX+50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
 	// フェード暗幕
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "Press any button");
-	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
@@ -259,7 +300,8 @@ void Title::FadeOutStringDraw()
 
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
 
 	// フェード暗幕
@@ -267,8 +309,9 @@ void Title::FadeOutStringDraw()
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "Press any button");
-	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
@@ -301,7 +344,8 @@ void Title::NormalDraw()
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
@@ -328,8 +372,10 @@ void Title::NormalStringDraw()
 	DrawRotaGraph(graphPosX, graphPosY, 0.8, 0, m_handle, true);
 
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
+	
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX+140 , drawStringPosY + m_gameIntroduceY+10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY+10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255/4);
 	DrawBox(drawStringPosX, drawStringPosY - 45 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);
@@ -342,21 +388,44 @@ void Title::NormalStringDraw()
 
 	SetDrawBlendMode(DX_BLENDMODE_ADD, 255 / 3);
 
-	if (m_selectNumber % 2 == 0)
+	if (m_selectNumber % 3 == 0)
 	{
 		DrawBox(drawStringPosX + 100, drawStringPosY + m_gameStartY, drawStringPosX +350, drawStringPosY + m_gameStartY + 50, 0xffffff, true);
 	}
-	else
+	else if (m_selectNumber % 3 == 1 || m_selectNumber % 3 == -2)
 	{
 
-		DrawBox(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, drawStringPosX + 430, drawStringPosY + m_rightsNotationY + 50, 0xffffff, true);
+		DrawBox(drawStringPosX + 100, drawStringPosY + m_gameIntroduceY, drawStringPosX + 350, drawStringPosY + m_gameIntroduceY + 50, 0xffffff, true);
 
 	}
+	else if (m_selectNumber % 3 == 2 || m_selectNumber % 3 == -1)
+	{
+
+		DrawBox(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, drawStringPosX + 430, drawStringPosY + m_rightsNotationY +50, 0xffffff, true);
+
+	}
+
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	if (m_isrightsNotation)
 	{
 		DrawRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight / 2, 1, 0, m_rightsHandle, true);
+	}
+	if (m_isGameIntroduce)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_MULA, 255 / 2);
+		DrawBox(0, 0, 2000, 1000, 0x000000, true);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		if (m_gameIntroduceNum != 5)
+		{
+			DrawRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight / 2, 1, 0, m_gameIntroduceHandle[m_gameIntroduceNum], true);
+		}
+		else
+		{
+			DrawRotaGraph(Game::kScreenWidth / 2, Game::kScreenHeight / 2, 0.7f, 0, m_gameIntroduceHandle[m_gameIntroduceNum], true);
+		}
+		DrawFormatString(800, 50,  0xffffbb, "%d/6",m_gameIntroduceNum+1);
+		DrawFormatString(900, 50, 0x00ffdd, "スティック入力で画像切り替え");
 	}
 }
 
@@ -379,7 +448,8 @@ void Title::JammingDraw()
 	SetDrawBlendMode(DX_BLENDMODE_ADD, alpha);
 	DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
-	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
+	DrawRotaString(drawStringPosX + 140, drawStringPosY + m_gameIntroduceY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "ゲーム紹介");
+	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_rightsNotationY + 10, 2, 2, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 	//DrawBox(0, 0, 2000, 2000, 0xffffff, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	

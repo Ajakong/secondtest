@@ -22,6 +22,8 @@ private:
 	int m_fadeSoundFrame = 0;
 	int m_handle;
 	int m_screenHandle = 0;
+	
+	int m_gameIntroduceHandle[6];
 
 	int m_jammingPosY = 0;
 	int m_windowHandle = 0;
@@ -34,11 +36,14 @@ private:
 	int m_selectNumber = 0;
 	int m_pressAnyButtonY = 0;
 	int m_gameStartY = 430;
-	int m_rightsNotationY = 530;
+	int m_rightsNotationY = 550;
+	int m_gameIntroduceY = 500;
+	int m_gameIntroduceNum = 0;
 	int m_rightsHandle = 0;
 
 	bool m_isSelectMode = false;
 	bool m_isrightsNotation = false;
+	bool m_isGameIntroduce = false;
 	Particle* m_particle;
 
 	// 更新メンバ関数ポインタ

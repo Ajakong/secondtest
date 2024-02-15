@@ -62,7 +62,7 @@ void PauseScene::NormalUpdate()
 		}
 	}
 	
-	if (Pad::IsTrigger(PAD_INPUT_2))
+	if (Pad::IsTrigger(PAD_INPUT_1))
 	{
 		if (m_select % 3 == 0)
 		{
@@ -143,7 +143,7 @@ void PauseScene::NormalDraw()
 		0x888888, true);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
-	DrawRotaString(650, 300, 6, 6, 0, 0, 0, 0xffffbb, 0, 0, "Pause");
+	DrawRotaString(670, 300, 6, 6, 0, 0, 0, 0xffffbb, 0, 0, "Pause");
 
 	DrawString(750, 500, "ÉQÅ[ÉÄÇ…ñﬂÇÈ", 0xffffff);
 	DrawString(770, 600, "ëÄçÏê‡ñæ", 0xffffff);

@@ -839,6 +839,18 @@ void SceneMain::BossUpdate()
 				m_pShot[i] = nullptr;
 			}
 		}
+		if (m_circleShot[i] != nullptr)
+		{
+			if (m_circleShot[i]->GetShotColli(toTitle))
+			{
+				m_isHitTitle = true;
+			}
+			if (m_circleShot[i]->GetIsDestroy() == true)
+			{
+				m_circleShot[i] = nullptr;
+			}
+		}
+		
 	}
 	if (m_pLaser != nullptr)
 	{
@@ -855,6 +867,7 @@ void SceneMain::BossUpdate()
 			m_pLaser = nullptr;
 		}
 	}
+	
 	
 	DrawRotaString(700, 100, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Clear!!!");
 

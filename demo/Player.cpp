@@ -41,7 +41,7 @@ Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 	m_angle(0),
 	m_collisionRadius(30),
 	m_kindOfBullet(0),
-	m_havingweaponNumber(4),
+	m_havingweaponNumber(0),
 	m_rotateAngle(0)
 {
 	for (auto& shot : m_shot)
