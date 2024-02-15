@@ -699,7 +699,7 @@ void SceneMain::NormalUpdate()
 			{
 				if (m_pShot[i] != nullptr)
 				{
-					
+					m_pShot[i]->GetScreenMove(m_pMap->GetScreenMove());
 				}
 			}
 

@@ -336,7 +336,6 @@ void Player::DeleteShot()
 		if (m_shot[i] != nullptr)
 		{
 			m_shot[i]->Update();
-			m_shot[i]->GetScreenMove(m_velocity.x);
 
 			if (m_shot[i]->GetIsDestroy())
 			{
