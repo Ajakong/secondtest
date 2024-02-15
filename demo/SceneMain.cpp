@@ -188,10 +188,7 @@ void SceneMain::Update()
 void SceneMain::CollisionUpdate()
 {
 	////ToDoオブジェクトそれぞれのRectを配列でとってfor文のiで管理する
-	//if (m_pBoss != nullptr)
-	//{
-	//	m_pBoss->Update();
-	//}
+	
 	for (int e = 0; e < ENEMY_NUM; e++)
 	{//toEnemyのCollision
 		if (m_pEnemy[e] != nullptr)
@@ -225,10 +222,35 @@ void SceneMain::CollisionUpdate()
 				{
 					if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
 					{
+						PlaySoundMem(m_hitShotToEnemyBaseHandle, DX_PLAYTYPE_BACK);
 						m_pEnemy[e]->OnHitShot();
 					}
 					if (m_circleShot[i]->GetIsDestroy() == true)
 					{
+						delete m_circleShot[i];
+						m_circleShot[i] = nullptr;
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < SHOT_NUM_LIMIT; i++)
+	{
+		if (m_circleShot[i] != nullptr)
+		{
+			for (int e = 0; e < ENEMY_TO_PLAYER_NUM; e++)
+			{
+				if (m_pEnemyToPlayer[e] != nullptr)
+				{
+					if (m_circleShot[i]->GetShotColli(m_pEnemyToPlayer[e]->GetCollRect()))
+					{
+						PlaySoundMem(m_hitShotToEnemyHandle, DX_PLAYTYPE_BACK);
+						m_pEnemyToPlayer[e]->OnDamage(10);
+					}
+					if (m_circleShot[i]->GetIsDestroy() == true)
+					{
+						delete m_circleShot[i];
 						m_circleShot[i] = nullptr;
 					}
 				}
@@ -254,7 +276,9 @@ void SceneMain::CollisionUpdate()
 			{
 				if (m_pLaser->OnLaserCollision(m_pEnemy[e]->GetCollRect()))
 				{
-					m_pEnemy[e]->OnDamage(5.0f);
+					//m_pEnemy[e]->OnDamage(5.0f);
+					PlaySoundMem(m_hitShotToEnemyBaseHandle, DX_PLAYTYPE_BACK);
+					m_pEnemy[e]->OnHitShot();
 				}
 			}
 		}
@@ -290,8 +314,6 @@ void SceneMain::CollisionUpdate()
 		{
 			if (m_pShot[i] != nullptr)
 			{
-				//m_pShot[i]->GetScreenMove(m_pPlayer->GetVelocity().x);
-				
 				if (m_pMap->IsCollision(m_pShot[i]->GetPos(), m_pShot[i]->GetRadius())==true)
 				{
 					m_pShot[i]->OnMapCol();
@@ -405,19 +427,6 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 
 		m_eneShot.erase(it, m_eneShot.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 
-		//for (int i = 0; i < ENEMY_NUM; i++)
-		//{
-		//	if (m_pEnemyToPlayer[i] != nullptr)
-		//	{
-		//		if (m_pPlayer->OnCollision(m_pEnemyToPlayer[i]->GetCollRect()))
-		//		{
-		//			//Playerが攻撃を受けた処理	
-		//			m_pPlayer->OnDamage(m_pEnemyToPlayer[i]->GetDirX());
-
-		//		}
-		//	}
-		//}
-
 		for (int i = 0; i < m_item.size(); i++)
 		{
 			if (m_pPlayer->OnCollision(m_item[i]->GetColRect()))
@@ -472,7 +481,6 @@ void SceneMain::Draw() const
 		DrawBox(10, 50, 90, 130, 0xffffff, false);
 		DrawGraph(10, 50, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
 
-		//DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
 	else
 	{

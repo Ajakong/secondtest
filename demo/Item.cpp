@@ -40,7 +40,6 @@ void Item::Draw(int screenMove)
 {
 	m_screenMove = screenMove;
 	DrawGraph(m_pos.x-screenMove, m_pos.y, m_handle, true);
-	//DrawBox(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom,0x00ff00,false);
 }
 
 void Item::CollisionUpdate()

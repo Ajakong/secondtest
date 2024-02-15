@@ -74,7 +74,7 @@ void EnemyBase::CollisionUpdate()
 
 void EnemyBase::Update()
 {
-	if(m_isDeathFlag == false)
+	if (m_isDeathFlag == false)
 	{
 		CollisionUpdate();
 		m_attackFrame++;
@@ -104,26 +104,27 @@ void EnemyBase::Update()
 				m_fireDir.x = m_velocity.x;
 				m_fireDir.y = m_velocity.y;
 				m_fireDir.Normalize();
-			if (m_attackFrame >= 120)
-			{
-				m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph, m_player));
-				for (int i = m_shot.size() - 1; i < m_shot.size(); i++)
+				if (m_attackFrame >= 120)
 				{
+					m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph, m_player));
+					for (int i = m_shot.size() - 1; i < m_shot.size(); i++)
+					{
 
-					m_pos.x -= m_screenMove;
-					m_shot.back()->ShotProgram();
-					m_WorldMana->AddEneShot(m_shot.back());
-					m_attackFrame = 0;
-					m_pos.x += m_screenMove;
+						m_pos.x -= m_screenMove;
+						m_shot.back()->ShotProgram();
+						m_WorldMana->AddEneShot(m_shot.back());
+						m_attackFrame = 0;
+						m_pos.x += m_screenMove;
 
 
+					}
 				}
-			}
 
-		}
-		for (int i = 0; i < m_shot.size(); i++)
-		{
-			m_shot[i]->Update();
+			}
+			for (int i = 0; i < m_shot.size(); i++)
+			{
+				m_shot[i]->Update();
+			}
 		}
 	}
 		auto it = remove_if(m_shot.begin(), m_shot.end(), [](const auto a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
@@ -140,7 +141,7 @@ void EnemyBase::Update()
 				m_EneDeathEffect.erase(m_EneDeathEffect.begin()+i);
 			}
 		}
-	}
+	
 
 	m_addFrame+=0.04f;
 }

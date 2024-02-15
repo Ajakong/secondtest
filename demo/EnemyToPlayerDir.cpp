@@ -224,7 +224,6 @@ void EnemyToPlayerDir::IdleUpdate()
 
 	if (m_moveNumber == 0)
 	{
-		
 		//m_enemyUpdate = &EnemyToPlayerDir::WanderingUpdate;
 	}
 	
@@ -345,16 +344,6 @@ void EnemyToPlayerDir::NeutralUpdate()
 		m_footPos.y = m_pos.y;
 		
 	}
-
-	/*for (int i = 0; i < m_HitEffect.size(); i++)
-	{
-		m_HitEffect[i]->Update();
-		if (m_HitEffect[i]->OnDestroy())
-		{
-			m_HitEffect.erase(m_HitEffect.begin()+i);
-		}
-	}*/
-	
 	
 	m_animInterval++;
 
@@ -390,7 +379,6 @@ void EnemyToPlayerDir::AttackUpdate()
 		}
 	}
 	
-	
 	m_animInterval++;
 
 	if (m_Hp <= 0)
@@ -404,10 +392,7 @@ void EnemyToPlayerDir::AttackUpdate()
 void EnemyToPlayerDir::DyingUpdate()
 {
 	m_velocity.x = 0.0f;
-	/*m_velocity.y = 0.0f;
-	
-	m_velocity.y += 9.8f;
-	CollisionUpdate();*/
+
 	m_colRect.top = -2000;
 	m_colRect.bottom = -2000;
 	m_colRect.left = -2000;

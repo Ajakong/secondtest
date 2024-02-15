@@ -18,9 +18,9 @@ public:
 	//Shotのプログラミング統括
 	void ShotProgram(const Vec2& Spos, const Vec2& DirVec,const int& graph);
 
-	bool GetIsDestroy()const { return m_isInVisible; }
+	bool GetIsDestroy()const { return m_isDestroy; }
 
-	bool GetShotColli(const Rect rect);
+	bool GetShotColli(const Rect& rect);
 
 	void setShotBullet() { m_isInVisible = false; }
 
@@ -53,7 +53,11 @@ private:
 
 	bool m_isInVisible = true;
 
+	bool m_isDestroy = false;
+
 	bool effectFlag = false;
+
+	bool m_isMapColFlag = false;
 
 	Vec2 m_graphSize;
 

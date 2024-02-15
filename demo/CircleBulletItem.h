@@ -13,6 +13,6 @@ public:
     virtual void CollisionUpdate();
 
 
-    int GetWeaponNum() { return 2; }
+    int GetWeaponNum() { return 4; }
 };
 

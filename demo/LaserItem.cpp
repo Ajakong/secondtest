@@ -27,6 +27,3 @@ void LaserItem::CollisionUpdate()
 {
 	Item::CollisionUpdate();
 }
-
-
-#include "LaserItem.h"

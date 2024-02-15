@@ -51,8 +51,8 @@ void CircleShot::Update()
 		m_Velocity.Normalize();
 		m_rotateCenter += m_Velocity * 20.0f;
 
-		rotatePos.x = (m_shotPos.x-m_rotateCenter.x)*cos(3.14 / 5)- (m_shotPos.y - m_rotateCenter.y) * sin(3.14 / 5);
-		rotatePos.y = (m_shotPos.x - m_rotateCenter.x) * sin(3.14 / 5) + (m_shotPos.y - m_rotateCenter.y) * cos(3.14 / 5);
+		rotatePos.x = (m_shotPos.x-m_rotateCenter.x)*cos(3.14 / 4)- (m_shotPos.y - m_rotateCenter.y) * sin(3.14 / 5);
+		rotatePos.y = (m_shotPos.x - m_rotateCenter.x) * sin(3.14 / 4) + (m_shotPos.y - m_rotateCenter.y) * cos(3.14 / 5);
 
 		/*m_shotPos.x = ;
 		m_shotPos.y = rotatePos.y * sin(3.14 / 30) + rotatePos.x * cos(3.14 / 15) ;*/
@@ -92,7 +92,7 @@ void CircleShot::ShotProgram(const Vec2& Spos,const Vec2& DirVec,const int& grap
 	m_handle = graph;
 }
 
-bool CircleShot::GetShotColli(const Rect rect)
+bool CircleShot::GetShotColli(const Rect& rect)
 {
 	if (m_isInVisible == false)
 	{
@@ -100,17 +100,13 @@ bool CircleShot::GetShotColli(const Rect rect)
 		{
 			if (m_shotPos.x + m_radius >= rect.left && m_shotPos.x - m_radius <= rect.right)
 			{
-
 				m_shotEffect = make_shared<ShotEffect>();
-				m_shotEffect->WantHitPos(this, m_shotPos,m_screenMove);
+				m_shotEffect->WantHitPos(this, m_shotPos, m_screenMove);
 				effectFlag = true;
 				m_isInVisible = true;
 				return true;
 			}
 		}
 	}
-
-
-
 	return false;
 }

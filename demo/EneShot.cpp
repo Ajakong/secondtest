@@ -38,20 +38,13 @@ void EneShot::Init()
 
 void EneShot::Update()
 {
-	
+	//collisionの更新
 	CollisionUpdate();
 	
-	////collisionの更新
-	//m_collider.pos = m_shotPos; m_collider.radius = m_radius;
+	
 
 	if (m_isInVisible == false)
-	{
-	/*	m_enePos = m_enemy->GetEnePos();
-		m_Velocity.x = (m_enePos.x-m_shotPos.x);
-		m_Velocity.y = (m_enePos.y- m_shotPos.y);
-		m_Velocity.Normalize();*/
-
-		
+	{	
 		m_shotPos += m_Velocity * 10.0f;
 	}
 	if (m_isEffectFlag == true)
