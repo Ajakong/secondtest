@@ -27,6 +27,8 @@ public:
 
 	void OnDestroy();
 
+	void GetDestroy() { m_isDestroy = true; }
+
 	void CollisionUpdate();
 
 	void OnHit();

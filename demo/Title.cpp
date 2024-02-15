@@ -154,11 +154,12 @@ void Title::NormalUpdate()
 void Title::FadeOutUpdate()
 {
 	m_fadeFrame++;
-	m_fadeSoundFrame--;
-	ChangeVolumeSoundMem(m_fadeSoundFrame*2, m_bgmHandle);
+	
+	
 	if (60 <= m_fadeFrame)
 	{
-		StopSoundMem(m_bgmHandle);
+		StopSoundMem(m_jammingSound);
+		
 		m_updateFunc = &Title::FadeInStringUpdate;
 		m_drawFunc = &Title::FadeStringDraw;
 		//m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
@@ -169,8 +170,11 @@ void Title::FadeOutStringUpdate()
 {
 	m_pressAnyButtonY+=7;
 	m_fadeFrame++;
+	m_fadeSoundFrame--;
+	ChangeVolumeSoundMem(m_fadeSoundFrame * 2, m_bgmHandle);
 	if (60 <= m_fadeFrame)
 	{
+		StopSoundMem(m_bgmHandle);
 		m_manager.ChangeScene(std::make_shared<GamePlayingScene>(m_manager));
 	}
 	
@@ -192,8 +196,8 @@ void Title::JammingUpdate()
 	}
 	if (GetJoypadInputState(DX_INPUT_KEY_PAD1) && !GetKeyState(KEY_INPUT_ESCAPE))
 	{
-		m_updateFunc = &Title::FadeOutUpdate;
-		m_drawFunc = &Title::FadeDraw;
+		m_updateFunc = &Title::FadeInStringUpdate;
+		m_drawFunc = &Title::FadeStringDraw;
 		m_fadeFrame = 0;
 		m_fadeFrame = m_fadeFrame + 8;
 		m_frame++;
@@ -228,7 +232,6 @@ void Title::FadeStringDraw()
 	DrawRotaString(drawStringPosX+100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
 	DrawRotaString(drawStringPosX+50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
 
-	
 	// フェード暗幕
 	int alpha = static_cast<int>(255 * (static_cast<float>(m_fadeFrame) / 60.0f));
 
@@ -236,7 +239,6 @@ void Title::FadeStringDraw()
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "Press any button");
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "GameStart");
 	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0x000000, 0, 0, "RightsNotation");
-
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, alpha);
@@ -328,9 +330,6 @@ void Title::NormalStringDraw()
 	//DrawRotaString(drawStringPosX, drawStringPosY + m_pressAnyButtonY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Press any button");
 	DrawRotaString(drawStringPosX + 100, drawStringPosY + m_gameStartY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "GameStart");
 	DrawRotaString(drawStringPosX + 50, drawStringPosY + m_rightsNotationY, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "RightsNotation");
-
-	
-	
 
 	SetDrawBlendMode(DX_BLENDMODE_MULA, 255/4);
 	DrawBox(drawStringPosX, drawStringPosY - 45 + m_stringColorPlusA, drawStringPosX + 1000, drawStringPosY - 30 + m_stringColorPlusA, 0xffddff, true);

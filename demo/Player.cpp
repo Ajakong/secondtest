@@ -21,7 +21,7 @@ namespace
 Player::Player(SceneMain* main,int shotSound,int damageSound,int lasersound) :
 	m_WorldMana(main),
 	m_pos(0,50),
-	m_Hp(80),
+	m_Hp(50),
 	m_velocity(0.0f, 0.0f),
 	m_fireDir(0.0f, 0.0f),
 	m_dir(1.0f,0.0f),
@@ -873,6 +873,8 @@ void Player::JumpingUpdate()
 		m_angle = 4.5f;
 		m_playerUpdate = &Player::FlyingUpdate;
 	}*/
+	
+
 	m_pos += m_velocity;
 
 	//Die

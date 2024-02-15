@@ -74,58 +74,64 @@ void EnemyBase::CollisionUpdate()
 
 void EnemyBase::Update()
 {
-	CollisionUpdate();
-	m_attackFrame++;
-	if (m_attackFrame > 120)
+	if(m_isDeathFlag == false)
 	{
-		m_attackFrame = 120;
-	}
-
-	if (m_player != nullptr)
-	{
-		m_targetPos.x = m_player->GetRect().right+20;
-		m_targetPos.y = m_player->GetRect().top;
-		/*
-		m_velocity.x = (m_targetPos.x+40 - m_pos.x)* (m_targetPos.x+40 - m_pos.x);
-		m_velocity.y = (m_targetPos.y - m_pos.y)* (m_targetPos.y - m_pos.y);
-		m_distance = sqrt(m_velocity.x + m_velocity.y);*/
-
-		float  delx = m_player->GetPos().x-(m_pos.x - m_screenMove) ;
-		m_velocity.x = delx;
-		float dely = m_player->GetPos().y-m_pos.y ;
-		m_velocity.y = dely;
-		float del = sqrt((delx * delx) + (dely * dely));
-
-		m_distance = del;
-		if (m_distance < 710)
+		CollisionUpdate();
+		m_attackFrame++;
+		if (m_attackFrame > 120)
 		{
-			m_fireDir.x = m_velocity.x;
-			m_fireDir.y = m_velocity.y;
-			m_fireDir.Normalize();
+			m_attackFrame = 120;
+		}
+
+		if (m_player != nullptr)
+		{
+			m_targetPos.x = m_player->GetRect().right + 20;
+			m_targetPos.y = m_player->GetRect().top;
+			/*
+			m_velocity.x = (m_targetPos.x+40 - m_pos.x)* (m_targetPos.x+40 - m_pos.x);
+			m_velocity.y = (m_targetPos.y - m_pos.y)* (m_targetPos.y - m_pos.y);
+			m_distance = sqrt(m_velocity.x + m_velocity.y);*/
+
+			float  delx = m_player->GetPos().x - (m_pos.x - m_screenMove);
+			m_velocity.x = delx;
+			float dely = m_player->GetPos().y - m_pos.y;
+			m_velocity.y = dely;
+			float del = sqrt((delx * delx) + (dely * dely));
+
+			m_distance = del;
+			if (m_distance < 710)
+			{
+				m_fireDir.x = m_velocity.x;
+				m_fireDir.y = m_velocity.y;
+				m_fireDir.Normalize();
 			if (m_attackFrame >= 120)
 			{
-				m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph,m_player));
-				for (int i = m_shot.size()-1; i < m_shot.size(); i++)
+				m_shot.push_back(std::make_shared<EneShot>(m_pos, m_fireDir, m_shotGraph, m_player));
+				for (int i = m_shot.size() - 1; i < m_shot.size(); i++)
 				{
-					
+
 					m_pos.x -= m_screenMove;
 					m_shot.back()->ShotProgram();
 					m_WorldMana->AddEneShot(m_shot.back());
 					m_attackFrame = 0;
 					m_pos.x += m_screenMove;
+
+
 				}
 			}
-			
+
 		}
 		for (int i = 0; i < m_shot.size(); i++)
 		{
- 			m_shot[i]->Update();
-			if (m_shot[i]->GetIsDestroy())
-			{
-				m_shot.erase(m_shot.begin() + i);
-			}
+			m_shot[i]->Update();
 		}
+	}
+		auto it = remove_if(m_shot.begin(), m_shot.end(), [](const auto a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+			{
+				return a->GetIsDestroy();
+			});
 
+		m_shot.erase(it, m_shot.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
 		for (int i = 0; i < m_EneDeathEffect.size(); i++)
 		{
 			m_EneDeathEffect[i]->Update();
@@ -149,9 +155,6 @@ void EnemyBase::Draw()
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawGraph(m_colRect.left, m_colRect.top, m_handle, true);
 		
-		/*SetDrawBlendMode(DX_BLENDMODE_ADD,m_attackFrame * 2);
-		DrawCircle(m_colRect.left + 37.5f, m_colRect.top+37.5f,m_attackFrame/10, 0xffaa11);
-		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);*/
 		for (int i = 0; i < m_shot.size(); i++)
 		{
 			if (m_shot[i] != nullptr)
@@ -213,14 +216,15 @@ void EnemyBase::GetScreenMove(float veloX)
 bool EnemyBase::OnDie()
 {
 	
+	
 	for (int i = 0; i < m_EneDeathEffect.size(); i++)
 	{
 		if (m_EneDeathEffect[i]->GetOnDestroy())
 		{
-			m_colRect.top = -5000;
-			m_colRect.bottom = -5000;
-			m_colRect.left = -5000;
-			m_colRect.right = -5000;
+			for (int i = 0; i < m_shot.size(); i++)
+			{
+				m_shot[i]->GetDestroy();
+			}
 			return m_isDeathFlag;
 		}
 	}

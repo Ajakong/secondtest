@@ -90,9 +90,9 @@ SceneMain::SceneMain():
 	m_enePos[5] = Vec2(500, 50);
 	m_enePos[6] = Vec2(5500, 500);
 
-	m_eneToPlayerPos[0] = Vec2(800, 100);
-	m_eneToPlayerPos[1] = Vec2(850, 100);
-	m_eneToPlayerPos[2] = Vec2(600, 100);
+	m_eneToPlayerPos[0] = Vec2(600, 100);
+	m_eneToPlayerPos[1] = Vec2(800, 100);
+	m_eneToPlayerPos[2] = Vec2(850, 100);
 	m_eneToPlayerPos[3] = Vec2(1200, 100);
 	m_eneToPlayerPos[4] = Vec2(1250, 100);
 	m_eneToPlayerPos[5] = Vec2(1300, 100);
@@ -205,6 +205,11 @@ void SceneMain::CollisionUpdate()
 						PlaySoundMem(m_hitShotToEnemyBaseHandle, DX_PLAYTYPE_BACK);
 						m_pEnemy[e]->OnHitShot();
 					}
+					if (m_pEnemy[e]->OnDie())
+					{
+						delete m_pEnemy[e];
+						m_pEnemy[e] = nullptr;
+					}
 				}
 			}
 		}
@@ -216,13 +221,16 @@ void SceneMain::CollisionUpdate()
 		{
 			for (int e = 0; e < ENEMY_NUM; e++)
 			{
-				if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+				if (m_pEnemy[e] != nullptr)
 				{
-					m_pEnemy[e]->OnHitShot();
-				}
-				if (m_circleShot[i]->GetIsDestroy() == true)
-				{
-					m_circleShot[i]=nullptr;
+					if (m_circleShot[i]->GetShotColli(m_pEnemy[e]->GetCollRect()))
+					{
+						m_pEnemy[e]->OnHitShot();
+					}
+					if (m_circleShot[i]->GetIsDestroy() == true)
+					{
+						m_circleShot[i] = nullptr;
+					}
 				}
 			}
 		}
@@ -347,14 +355,21 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 	{
 		if (m_pEnemyToPlayer[e] != nullptr)
 		{
-			if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
+			if (m_pEnemyToPlayer[e]->OnDie())
+			{
+				m_pEnemyToPlayer[e] = nullptr;
+			}
+			else if (m_pPlayer->OnCollision(m_pEnemyToPlayer[e]->GetCollRect()))
 			{
 				if (m_pPlayer->OnDamage())
 				{
+					//プレイヤーが敵にヒット
 					m_pEnemyToPlayer[e]->OnPlayerHit();
+					m_pPlayer->OnDamage(m_pEnemyToPlayer[e]->GetDirX());
+
 				}
-				//プレイヤーが敵にヒット
-				m_pPlayer->OnDamage();
+				
+				
 			}
 		}
 	}
@@ -362,8 +377,11 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 	//toPlayerのCollision
 	if (m_pPlayer != nullptr)
 	{
+		
+
 		for (int i = 0; i < m_eneShot.size(); i++)
 		{
+			
 			if (m_eneShot[i] != nullptr)
 			{
 				m_eneShot[i]->CollisionUpdate();
@@ -375,18 +393,31 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 			}
 			
 		}
-		for (int i = 0; i < ENEMY_NUM; i++)
-		{
-			if (m_pEnemyToPlayer[i] != nullptr)
-			{
-				if (m_pPlayer->OnCollision(m_pEnemyToPlayer[i]->GetCollRect()))
-				{
-					//Playerが攻撃を受けた処理	
-					m_pPlayer->OnDamage(m_pEnemyToPlayer[i]->GetDirX());
 
-				}
-			}
+		for (int i = 0; i < m_eneShot.size(); i++)
+		{
+			m_eneShot[i]->Update();
 		}
+		auto it = remove_if(m_eneShot.begin(), m_eneShot.end(), [](const auto& a)//リターンされるものを避ける(1,2,3,4,5)で3,4をリターンしたら(1,2,5,3,4)になる
+			{
+				return a->GetIsDestroy();
+			});
+
+		m_eneShot.erase(it, m_eneShot.end());//さっきの例をそのまま使うと(1,2,5,3,4)でitには5まで入ってるので取り除きたい3,4はitからend()までで指定できる
+
+		//for (int i = 0; i < ENEMY_NUM; i++)
+		//{
+		//	if (m_pEnemyToPlayer[i] != nullptr)
+		//	{
+		//		if (m_pPlayer->OnCollision(m_pEnemyToPlayer[i]->GetCollRect()))
+		//		{
+		//			//Playerが攻撃を受けた処理	
+		//			m_pPlayer->OnDamage(m_pEnemyToPlayer[i]->GetDirX());
+
+		//		}
+		//	}
+		//}
+
 		for (int i = 0; i < m_item.size(); i++)
 		{
 			if (m_pPlayer->OnCollision(m_item[i]->GetColRect()))
@@ -438,8 +469,8 @@ void SceneMain::Draw() const
 		DrawRotaFormatString(100, Game::kScreenHeight - 75, 2.5, 2.5, 0, 0, 0, 0xffffff, 0, 0, "Hp:%d", m_pPlayer->GetHp());
 
 
-		DrawBox(10, Game::kScreenHeight - 90, 90, Game::kScreenHeight - 10, 0xffffff, false);
-		DrawGraph(10, Game::kScreenHeight - 90, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
+		DrawBox(10, 50, 90, 130, 0xffffff, false);
+		DrawGraph(10, 50, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
 
 		//DrawFormatString(300, 200, 0xffffdd, "%f", m_pMap->GetScreenMove() + m_pPlayer->GetPos().x);
 	}
@@ -454,7 +485,7 @@ void SceneMain::Draw() const
 
 		m_pMap->Draw();
 
-		DrawFormatString(100, 0, 0xffffff, "score:%d", m_score);
+		DrawFormatString(100, 0, 0xffaaaa, "score:%d", m_score);
 		DrawRotaFormatString(100, Game::kScreenHeight - 100,3,3,0,0,0, 0xffffff,0,0, "Hp:%d", m_pPlayer->GetHp());
 
 		DrawBox(10, Game::kScreenHeight - 90, 90, Game::kScreenHeight - 10, 0xffffff, false);
@@ -691,7 +722,7 @@ void SceneMain::NormalUpdate()
 					m_pEnemy[e]->ScreenMove(m_pMap->GetScreenMove());
 					m_pEnemy[e]->Update();
 
-					if (m_pEnemy[e]->OnDie()) m_pEnemy[e]=nullptr;
+					
 				}
 			}
 
@@ -793,7 +824,8 @@ void SceneMain::BossUpdate()
 		}
 	}
 	
-	
+	DrawRotaString(700, 100, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "Clear!!!");
+
 	DrawRotaString(1200, 300, 3, 3, 0, 0, 0, 0xffffbb, 0, 0, "タイトルへ");
 	DrawRotaGraph(1250, 330,0.5f,0, m_targetHandle, true);
 	
