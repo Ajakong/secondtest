@@ -45,7 +45,7 @@ void EneShot::Update()
 
 	if (m_isInVisible == false)
 	{	
-		m_shotPos += m_Velocity * 10.0f;
+		m_shotPos += m_Velocity * 6.0f;
 	}
 	if (m_isEffectFlag == true)
 	{

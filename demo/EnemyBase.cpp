@@ -148,21 +148,21 @@ void EnemyBase::Update()
 
 void EnemyBase::Draw()
 {
-	if(m_isDeathFlag==false)
+	if (m_isDeathFlag == false)
 	{
 		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xff0000, true);
 		SetDrawBlendMode(DX_BLENDMODE_ADD, sin(m_addFrame) * 255);
 		DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom, 0xdddd11, true);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		DrawGraph(m_colRect.left, m_colRect.top, m_handle, true);
-		
+	}
 		for (int i = 0; i < m_shot.size(); i++)
 		{
 			if (m_shot[i] != nullptr)
 				m_shot[i]->Draw(m_screenMove);
 		}
-	}
-	DrawBox(m_colRect.left, m_colRect.top, m_colRect.right, m_colRect.bottom,0xff00ff,false);
+	
+	
 	for (int i = 0; i < m_EneDeathEffect.size(); i++)
 	{
 		m_EneDeathEffect[i]->Draw(m_screenMove);

@@ -84,7 +84,7 @@ SceneMain::SceneMain():
 	m_enePos[1] = Vec2(850, 700);
 	m_enePos[2] = Vec2(1500, 50);
 	*/
-	m_enePos[0] = Vec2(2400, 50);
+	m_enePos[0] = Vec2(2400, 50);//配列番号がMapで格納している座標情報のキーになる
 	m_enePos[1] = Vec2(3200, 50);
 	m_enePos[2] = Vec2(6000, 50);
 	m_enePos[3] = Vec2(1000, 200);
@@ -172,7 +172,7 @@ void SceneMain::Init()
 	}
 	for (int e = 0; e < 4; e++)
 	{
-		CreateEnemy(m_eneToPlayerPos[e],e);
+		CreateEnemy(m_eneToPlayerPos[e],e);//配列番号がMapで格納している座標情報のキーになる
 	}
 	
 }
@@ -403,11 +403,8 @@ void SceneMain::EnemyToPlayerCollisionUpdate()
 	//toPlayerのCollision
 	if (m_pPlayer != nullptr)
 	{
-		
-
 		for (int i = 0; i < m_eneShot.size(); i++)
 		{
-			
 			if (m_eneShot[i] != nullptr)
 			{
 				m_eneShot[i]->CollisionUpdate();
@@ -478,37 +475,30 @@ void SceneMain::Draw() const
 			m_item[i]->Draw(m_pMap->GetScreenMove());
 		}
 
-		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);
-		DrawRotaFormatString(100, Game::kScreenHeight - 75, 2.5, 2.5, 0, 0, 0, 0xffffff, 0, 0, "Hp:%d", m_pPlayer->GetHp());
+		DrawFormatString(1200, 0, 0xffffff, "score:%d", m_score);//スコア表示
 
-		DrawBox(0, 20, 900, 30, 0xff0000, true);
-		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00,true);
-		DrawGraph(0, 0, m_Hpbar, true);
+		DrawBox(0, 20, 900, 30, 0xff0000, true);//Hpゲージの減少バー
+		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00,true);//Hpバー
+		DrawGraph(0, 0, m_Hpbar, true);//Hpバーフレーム
 
-		DrawBox(10, 70, 90, 150, 0xffffff, false);
-		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);
+		DrawBox(10, 70, 90, 150, 0xffffff, false);//所持武器のUI枠
+		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()],true);//所持武器のUI
 
 	}
 	else
 	{
 		m_pPlayer->Draw();
 
-		if (m_pBoss != nullptr)
-		{
-			//m_pBoss->Draw();
-		}
-
 		m_pMap->Draw();
 
-		DrawFormatString(1200, 0, 0xffaaaa, "score:%d", m_score);
-		DrawRotaFormatString(100, Game::kScreenHeight - 100,3,3,0,0,0, 0xffffff,0,0, "Hp:%d", m_pPlayer->GetHp());
+		DrawFormatString(1200, 0, 0xffaaaa, "score:%d", m_score);//スコア表示
 
-		DrawBox(0, 20, 900, 30, 0xff0000, true);
-		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00, true);
-		DrawGraph(0, 0, m_Hpbar, true);
+		DrawBox(0, 20, 900, 30, 0xff0000, true);//Hpゲージの減少バー
+		DrawBox(0, 20, 9 * m_pPlayer->GetHp(), 30, 0xaaff00, true);//Hpバー
+		DrawGraph(0, 0, m_Hpbar, true);//Hpバーフレーム
 
-		DrawBox(10, 70, 90, 150, 0xffffff, false);
-		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()], true);
+		DrawBox(10, 70, 90, 150, 0xffffff, false);//所持武器のUI枠
+		DrawGraph(10, 70, m_BulletKindNum[m_pPlayer->GetKindOfBullet()], true);//所持武器のUI
 
 	}
 }
@@ -516,7 +506,7 @@ void SceneMain::Draw() const
 void SceneMain::CreateEnemy(Vec2 pos,int enemyNumber)
 {
 	m_enemyCreated[enemyNumber] = true;
-	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos,m_enemyDeathSound};
+	m_pEnemyToPlayer[enemyNumber] = new EnemyToPlayerDir{pos,m_enemyDeathSound};//引数は出現座標とDieSound
 	m_pEnemyToPlayer[enemyNumber]->GetSceneMain(this);
 	m_pEnemyToPlayer[enemyNumber]->Init( m_pPlayer,m_enemyToPlayerHandle);
 	PlaySoundMem(m_enemyBornSound, DX_PLAYTYPE_BACK);
@@ -540,12 +530,11 @@ void SceneMain::EnemyDelete()
 
 void SceneMain::GameOver()
 {
-	m_isGameOver = true; 
+	m_isGameOver = true;//これをGamePlayingSceneが読み取り、GameOver画面に移行 
 }
 
 float SceneMain::GetPlayerPos()
 {
-	
 	if (m_pPlayer != nullptr)
 	{
 		return m_pPlayer->GetPos().x;
