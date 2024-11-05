@@ -96,10 +96,7 @@ void GamePlayingScene::NormalUpdate()
 	{
 		m_manager.PushScene(std::make_shared<PauseScene>(m_manager));
 	}
-	if (&PauseScene::getSelectTitle)
-	{
-		m_manager.ChangeScene(std::make_shared<Title>(m_manager));
-	}
+	
 
 	if (m_Scene->OnHitTitle())
 	{

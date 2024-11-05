@@ -16,7 +16,7 @@ namespace
 
 PauseScene::PauseScene(SceneManager& mgr) : Scene(mgr) 
 {
-	m_chouseTitle = false;
+
 	m_updateFunc = &PauseScene::AppearUpdate;
 	m_drawFunc = &PauseScene::ExpandDraw;
 	m_tutoHandle=LoadGraph("data/image/tuto/controller_format.png");
@@ -88,7 +88,6 @@ void PauseScene::NormalUpdate()
 		}
 		if (m_select % 3 == 2 || m_select % 3 == -1)
 		{
-			m_chouseTitle = true;
 			m_updateFunc = &PauseScene::DisappearUpdate;
 			m_drawFunc = &PauseScene::ExpandDraw;
 		}
